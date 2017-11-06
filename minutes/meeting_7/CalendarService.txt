@@ -1,0 +1,54 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: TTN
+ * Date: 2017/07/06
+ * Time: 3:43 PM
+ */
+
+namespace App\services;
+
+
+use App\Calendar;
+
+class CalendarService
+{
+    public function getCalendars()
+    {
+        return Calendar::all();
+    }
+
+    public function getCalendar($id)
+    {
+        return Calendar::find($id);
+    }
+
+    public function storeCalendar($request)
+    {
+        $calendar= new Calendar();
+        $calendar->name         = $request['name'];
+        $calendar->description  = $request['description'];
+        $calendar->colour       = $request['colour'];
+        $calendar->save();
+
+        return $calendar;
+    }
+
+    public function updateCalendar($form)
+    {
+        $calendar                         = Calendar::find($form['calendar_id']);
+        $calendar->name                   = $form['name'];
+        $calendar->description            = $form['description'];
+        $calendar->color                  = $form['color'];
+
+        $calendar->save();
+        return $calendar;
+    }
+
+    public function deleteCalendar($id)
+    {
+
+        $calendar = User::find($id);
+        $calendar->delete();
+    }
+}

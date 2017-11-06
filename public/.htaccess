@@ -1,0 +1,37 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+##        Options -MultiViews
+    </IfModule>
+
+
+<IfModule mod_gzip.c>
+##mod_gzip_on Yes
+##mod_gzip_dechunk Yes
+##mod_gzip_item_include file .(html?|txt|css|js|php|pl|json)$
+##mod_gzip_item_include handler ^cgi-script$
+##mod_gzip_item_include mime ^text/.*
+##mod_gzip_item_include mime ^application/x-javascript.*
+##mod_gzip_item_include mime ^application/javascript.*
+##mod_gzip_item_include mime ^application/json.*
+##mod_gzip_item_exclude mime ^image/.*
+##mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+
+## mod_gzip_minimum_file_size    60000
+</IfModule>
+
+
+	
+
+    RewriteEngine On
+	RewriteBase /PortsLive
+RewriteCond %{SERVER_PORT} 8080
+RewriteRule (.*) https://154.0.164.72%{REQUEST_URI} [L,R]
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>

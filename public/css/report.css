@@ -1,0 +1,22 @@
+body{
+
+    color:white;
+
+}
+
+
+.background
+{
+    background-image: url("../images/piVms8T.jpg");
+
+}
+.title {
+
+    color: red;
+
+}
+
+.topnav {
+    background-color: #333;
+    overflow: hidden;
+}

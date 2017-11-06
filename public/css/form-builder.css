@@ -1,0 +1,148 @@
+
+
+.fb_wrapper .form-control {
+    display: inline;
+    height: auto;
+    width: auto;
+}
+
+.fb_wrapper input[type=submit] {
+    color: #000000;
+    margin: 1em 0;
+}
+
+.fb_wrapper input[type=radio], .fb_wrapper input[type=checkbox] {
+    margin: 0.5em 0.75em;
+}
+
+.fb_wrapper select {
+    color: #000000;
+    margin: 1em 0;
+}
+
+
+.fields {
+    margin: 1em;
+}
+.fields label {
+    text-align: right;
+    white-space: nowrap;
+}
+
+#formFields {
+    text-align: center;
+}
+.fieldTemplate {
+    padding: 0 0.5em;
+}
+.fieldTemplate .wHeader {
+    /*border-top: 2px dashed green;*/
+    cursor: move;
+    /*margin-top: -25px;*/
+    margin: 1px 0 1em 0;
+    padding: 0.125em 1em;
+}
+
+.ui-spinner-button {
+    padding-left: 0.5em;
+}
+
+.toolbar {
+    overflow-x: auto;
+    width: 100%;
+}
+.icon {
+    border: 0 dashed #FF00FF;
+    display: inline-block;
+    /*float: left;*/
+    height: 32px;
+    /*margin: 0.5em 1em;*/
+    margin: 5px 10px;
+    /*vertical-align: bottom;*/
+    width: 32px;
+}
+.icon.a {
+    background-color: #FF0000;
+}
+.icon.b {
+    background-color: yellow;
+}
+.icon.c {
+    background-color: #00FF00;
+}
+.icon.d {
+    background-color: darkred;
+}
+.icon.e {
+    background-color: #FFEA20;
+}
+.icon.f {
+    background-color: darkgreen;
+}
+.icon.g {
+    background-color: #cccccc;
+}
+.icon.h {
+    background-color: #999999;
+}
+.icon.i {
+    background-color: #808080;
+}
+.icon.j {
+    background-color: #666666;
+}
+.placeholder {
+    border: thin dotted #999999;
+    height: 64px;
+    width: 80%;
+    display: inline-block;
+    background-color: #F0F0F0;
+}
+
+.toolbar {
+    border: 1px dashed blue;
+    display: inline-block;
+    float: inherit;
+    margin: 0.25em;
+    overflow-x: auto;
+    vertical-align: top;
+    /*width: 50%;*/
+    /*white-space: nowrap;*/
+}
+
+#formsTable_wrapper .dataTables_processing {
+    /*background: none !important;*/
+    background-image: url(../img/media-player/loading.gif);
+    background-position: center center;
+    background-repeat: no-repeat;
+    /*background-size: contain;*/
+    background-size: 2em;
+    /*border: 2px dashed #20FF26;*/
+    /*display: inherit !important;*/
+    height: auto !important;
+    margin: 0.5em 0.75em !important;
+    margin-left: -100px !important;
+    padding: 0 !important;
+    width: 200px !important;
+}
+
+/*
+.toolbar {
+    border: 1px dashed blue;
+    display: inline-block;
+    margin: 0.25em;
+    overflow-x: auto;
+    width: 50%;
+    white-space: nowrap;
+}*/
+
+.wForm label {
+    font-size: 10px;
+}
+.wForm .input-sm, .wForm .select-sm {
+    font-size: 10px;
+}
+.form-control {
+    height: auto;
+    padding: 0.25em 0.5em;
+}
