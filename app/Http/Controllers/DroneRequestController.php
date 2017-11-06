@@ -177,6 +177,9 @@ class DroneRequestController extends Controller
 
         $data1 = array(
             'name'    => $firstResponder->name,
+            'droneType'=>$droneRequest->DroneType->name,
+            'dronesSubtype'=>$droneRequest->DroneSubType->name,
+            'department'=>$droneRequest->Department->name,
 
         );
 
@@ -188,6 +191,9 @@ class DroneRequestController extends Controller
 
         $data = array(
             'name'    => $droneRequest->User->name,
+            'droneType'=>$droneRequest->DroneType->name,
+            'dronesSubtype'=>$droneRequest->DroneSubType->name,
+            'department'=>$droneRequest->Department->name,
 
         );
 
