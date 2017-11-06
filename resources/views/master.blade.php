@@ -47,6 +47,8 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
 <!-- jQuery Library -->
   <script src="{{ asset('js/jquery.min.js') }}"></script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=geometry,places"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
   {{--<script>--}}
 
   {{--$(document).ready(function() {--}}
@@ -83,6 +85,9 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
       background-image: url("{{ asset('public/img/01_fix_background.png') }}");
       width: 100%;
       height: 100%;
+    }
+    label {
+        font-size: 14px;
     }
   </style>
 </head>
@@ -389,20 +394,27 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
 
           @if(isset($userViewReportsPermission) && $userViewReportsPermission->permission_id =='16')
 
+                  @if (Auth::user())
+                      <li {{ (Request::is('reports') ? "class=active" : '') }}>
+                          <a class="sa-side-drone" href="{{ url('DroneList/')}}">
+                              <span class="menu-item">Drone Requests</span>
+                          </a>
+                      </li>
+
+                  @endif
 
           @endif
 
 
           @if(isset($userViewReportsPermission) && $userViewReportsPermission->permission_id =='16')
 
-            @if (Auth::user())
-              <li {{ (Request::is('reports') ? "class=active" : '') }}>
-                <a class="sa-side-agenda" href="{{ url('addressbookList/'.Auth::user()->id )}}">
-                  <span class="menu-item">Address Book</span>
-                </a>
-              </li>
-
-            @endif
+                  @if (Auth::user())
+                      <li {{ (Request::is('reports') ? "class=active" : '') }}>
+                          <a class="sa-side-agenda" href="{{ url('addressbookList/'.Auth::user()->id )}}">
+                              <span class="menu-item">Address Book</span>
+                          </a>
+                      </li>
+                  @endif
 
           @endif
         </ul>
