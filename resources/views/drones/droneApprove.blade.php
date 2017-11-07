@@ -71,7 +71,7 @@
                 {!! Form::hidden('user',Auth::user()->id)!!}
                 <div class="form-group">
                     <div class="col-md-6" style="margin-top:20px;">
-                        <button type="submit" class="btn btn-primary" id="approveId">Approve</button>
+                        <button type="submit" class="btn btn-primary"  onclick="getApproveToaster()" id="approveId">Approve</button>
 
                     </div>
                 </div>
@@ -113,10 +113,14 @@
 
                 <div class="form-group submit hidden">
                     <div class="col-md-10">
-                        <button type="submit" type="button" class="btn btn-sm" id="submitId" disabled>Submit</button>
+                        <button type="submit" type="button" class="btn btn-sm" id="submitId" onclick="getRejectToaster()" disabled>Submit</button>
                     </div>
                 </div>
                 {!! Form::close() !!}
+
+                <div id="snackbar">The Request was already approved</div>
+                <div id="rejectSnackbar">The Request was already rejected</div>
+
             </div>
         </div>
     </div>
@@ -124,6 +128,49 @@
 @section('footer')
 
     <script>
+
+        function getApproveToaster() {
+            if (typeof(Storage) !== "undefined") {
+                if (localStorage.clickcount) {
+                    localStorage.clickcount = Number(localStorage.clickcount) + 1;
+
+                    var x = document.getElementById("snackbar");
+                    x.className = "show";
+                    setTimeout(function () {
+                        x.className = x.className.replace("show", "");
+                    }, 3000);
+
+                    event.preventDefault();
+
+                } else {
+                    localStorage.clickcount = 1;
+                }
+            }
+        }
+
+        function getRejectToaster() {
+
+            if (typeof(Storage) !== "undefined") {
+                if (localStorage.rejectClickCount) {
+                    localStorage.rejectClickCount = Number(localStorage.rejectClickCount) + 1;
+
+                    var x = document.getElementById("rejectSnackbar");
+                    x.className = "show";
+                    setTimeout(function () {
+                        x.className = x.className.replace("show", "");
+                    }, 3000);
+
+                    event.preventDefault();
+
+                } else {
+                    localStorage.rejectClickCount = 1;
+                }
+            }
+        }
+
+
+
+
         $('#rejectId').on('click',function(){
 
             $('.reason').removeClass('hidden');
@@ -142,7 +189,7 @@
                 $('.otherReason').addClass('hidden');
             }
 
-        })
+        });
         $("#firstRejectionForm").validate();
     </script>
 @endsection
