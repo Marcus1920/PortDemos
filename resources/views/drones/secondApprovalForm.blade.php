@@ -2,11 +2,19 @@
 @section('content')
     <div class="block-area container" id="droneApproval">
         <ol class="breadcrumb hidden-xs">
-            <li><a href="{{ url('tasks') }}">TASK LIST</a></li>
-            <li class="active"></li>
+            <li><a href="{{ url('DroneList') }}">Drone Requests List</a></li>
+            <li class="active">Approval Form</li>
         </ol>
         <h4 class="page-title">Second Approval</h4>
         <br>
+
+        @if(Session::has('success'))
+            <div class="alert alert-success alert-icon">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {{ Session::get('success') }}
+                <i class="icon">&#61845;</i>
+            </div>
+        @endif
         <div class="row justify-content-center">
             <div  class="col-md-4 ">
                 <h3 class="block-title">CASE DETAILS</h3>
@@ -69,8 +77,7 @@
                 {!! Form::hidden('user',Auth::user()->id)!!}
                 <div class="form-group">
                     <div class="col-md-6" style="margin-top:20px;">
-                        <button type="submit" class="btn btn-primary" id="approveId">Approve</button>
-
+                        <button type="submit" class="btn btn-primary"  onclick="getApproveToaster()" id="approveId" >Approve</button>
                     </div>
                 </div>
                 {!! Form::close() !!}
@@ -81,7 +88,7 @@
 
                 <div class="form-group">
                     <div class="col-md-6" style="margin-top:20px;">
-                        <button type="button" class="btn  btn-danger" id="rejectId">Reject</button>
+                        <button type="button" class="btn  btn-danger"   id="rejectId" >Reject</button>
 
                     </div>
                 </div>
@@ -111,10 +118,12 @@
 
                 <div class="form-group submit hidden">
                     <div class="col-md-10">
-                        <button type="submit" type="button" class="btn btn-sm" id="submitId" disabled>Submit</button>
+                        <button type="submit"  class="btn btn-sm" id="submitId" onclick="getRejectToaster()" disabled>Submit</button>
                     </div>
                 </div>
                 {!! Form::close() !!}
+                <div id="snackbar">The Request was already approved</div>
+                <div id="rejectSnackbar">The Request was already rejected</div>
             </div>
         </div>
     </div>
@@ -122,13 +131,51 @@
 @section('footer')
 
     <script>
+        function getApproveToaster() {
+            if (typeof(Storage) !== "undefined") {
+                if (localStorage.clickcount) {
+                    localStorage.clickcount = Number(localStorage.clickcount) + 1;
+
+                    var x = document.getElementById("snackbar");
+                    x.className = "show";
+                    setTimeout(function () {
+                        x.className = x.className.replace("show", "");
+                    }, 3000);
+
+                    event.preventDefault();
+
+                } else {
+                    localStorage.clickcount = 1;
+                }
+            }
+        }
+
+        function getRejectToaster() {
+
+            if (typeof(Storage) !== "undefined") {
+                if (localStorage.rejectClickCount) {
+                    localStorage.rejectClickCount = Number(localStorage.rejectClickCount) + 1;
+
+                    var x = document.getElementById("rejectSnackbar");
+                    x.className = "show";
+                    setTimeout(function () {
+                        x.className = x.className.replace("show", "");
+                    }, 3000);
+
+                    event.preventDefault();
+
+                } else {
+                    localStorage.rejectClickCount = 1;
+                }
+            }
+        }
+
         $('#rejectId').on('click',function(){
-            //alert('okay');
             $('.reason').removeClass('hidden');
             $('.submit').removeClass('hidden');
             $("#submitId").removeAttr('disabled');
             $("#approveId").attr('disabled','disabled');
-        })
+        });
 
         $('#reject_reason').on('change',function(){
             var selectedval  = $(this).find("option:selected").val();
@@ -140,7 +187,7 @@
                 $('.noneReason').addClass('hidden');
             }
 
-        })
+        });
         $("#secondRejectForm").validate();
     </script>
 @endsection

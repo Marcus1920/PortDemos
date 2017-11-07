@@ -39,6 +39,7 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
   <link href="{{ asset('css/awesome.css') }}" rel="stylesheet">
   <link href="{{ asset('css/table.css') }}" rel="stylesheet">
   <link href="{{ asset('css/toggles.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/toast.css') }}" rel="stylesheet">
   <link href="{{ asset('css/toggle-themes/toggles-all.css') }}" rel="stylesheet">
   <!-- DataTables CSS -->
   <link href="{{ asset('bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css') }}" rel="stylesheet">
