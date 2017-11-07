@@ -175,31 +175,31 @@ class DroneRequestController extends Controller
             ->where('id',$id)
             ->first();
 
-//        $droneActivity = DroneRequestActivity::where('drone_request_id',$id)->get();
-//
-//        $firstResponder = User::find($droneActivity[1]['user']);
-//
-//        $data1 = array(
-//            'name'    => $firstResponder->name,
-//
-//        );
-//
-//        \Mail::send('emails.Drones.DronesRequestCreate',$data1,function($message) use ($firstResponder)
-//        {
-//            $message->from('info@siyaleader.net', 'Siyaleader');
-//            $message->to($firstResponder->email)->subject('Second approved drone request');
-//        });
-//
-//        $data = array(
-//            'name'    => $droneRequest->User->name,
-//
-//        );
-//
-//        \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequest)
-//        {
-//            $message->from('info@siyaleader.net', 'Siyaleader');
-//            $message->to($droneRequest->User->email)->subject('Second approved drone request');
-//        });
+        $droneActivity = DroneRequestActivity::where('drone_request_id',$id)->get();
+
+        $firstResponder = User::find($droneActivity[1]['user']);
+
+        $data1 = array(
+            'name'    => $firstResponder->name,
+
+        );
+
+        \Mail::send('emails.Drones.DronesRequestCreate',$data1,function($message) use ($firstResponder)
+        {
+            $message->from('info@siyaleader.net', 'Siyaleader');
+            $message->to($firstResponder->email)->subject('Second approved drone request');
+        });
+
+        $data = array(
+            'name'    => $droneRequest->User->name,
+
+        );
+
+        \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequest)
+        {
+            $message->from('info@siyaleader.net', 'Siyaleader');
+            $message->to($droneRequest->User->email)->subject('Second approved drone request');
+        });
 
         $dronRequestActivity = new DroneRequestActivity();
         $dronRequestActivity->drone_request_id = $id;
@@ -228,26 +228,26 @@ class DroneRequestController extends Controller
                     'reject_other_reason'=>$request['reject_other_reason'],
                     'updated_at'=>\Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString()]);
         }
-//
-//        $droneRequest = DroneRequest::with('DroneType')
-//            ->with('User')
-//            ->with('DroneSubType')
-//            ->with('DroneCaseStatus')
-//            ->with('Department')
-//            ->with('RejectReason')
-//            ->where('id',$id)
-//            ->first();
-//
-//        $data = array(
-//            'name'    => $droneRequest->User->name,
-//
-//        );
-//
-//        \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequest)
-//        {
-//            $message->from('info@siyaleader.net', 'Siyaleader');
-//            $message->to($droneRequest->User->email)->subject('rejected drone request');
-//        });
+
+        $droneRequest = DroneRequest::with('DroneType')
+            ->with('User')
+            ->with('DroneSubType')
+            ->with('DroneCaseStatus')
+            ->with('Department')
+            ->with('RejectReason')
+            ->where('id',$id)
+            ->first();
+
+        $data = array(
+            'name'    => $droneRequest->User->name,
+
+        );
+
+        \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequest)
+        {
+            $message->from('info@siyaleader.net', 'Siyaleader');
+            $message->to($droneRequest->User->email)->subject('rejected drone request');
+        });
 
 
         $dronRequestActivity = new DroneRequestActivity();
