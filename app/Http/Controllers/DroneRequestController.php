@@ -11,6 +11,9 @@ use App\DroneRequestActivity;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Auth;
+use Redirect;
+use App\Http\Requests\DroneRequestForm;
+use App\DroneRejectReason;
 
 class DroneRequestController extends Controller
 {
@@ -64,14 +67,14 @@ class DroneRequestController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store(DroneRequestForm $request)
     {
         $newDroneRequest = new DroneRequest();
         $newDroneRequest->created_by = $request['created_by'];
         $newDroneRequest->drone_type_id = $request['drone_type_id'];
         $newDroneRequest->sub_drone_type_id = $request['sub_drone_type_id'];
         $newDroneRequest->drone_case_status = 1;
-        $newDroneRequest->comments = $request['comments'];
+        $newDroneRequest->comments = $request['comment'];
         $newDroneRequest->department = $request['department'];
         $newDroneRequest->reject_reason = 4;
         $newDroneRequest->reject_other_reason = "None";
@@ -103,7 +106,7 @@ class DroneRequestController extends Controller
                 $message->to($email)->subject('testing notification');
             });
 
-            return "Drone request created";
+
         }
         else if($position->name == "Engineering officer")
         {
@@ -118,7 +121,8 @@ class DroneRequestController extends Controller
             return "joint operations centre monitor";
         }
 
-        return "Drone request created";
+        \Session::flash('success', 'A drone request   has been sent, you will get a response soon!');
+        return Redirect::back();
     }
 
     public function FirstApprove($id, Request $request)
@@ -275,7 +279,9 @@ class DroneRequestController extends Controller
             ->where('drone_request_id',$id)
             ->get();
 
-        return compact('droneRequest','droneRequestActivity');
+        $droneRejectReasons = DroneRejectReason::find([1,2,3]);
+
+        return  view('drones.secondApprovalForm',compact('droneRequest','droneRequestActivity','droneRejectReasons'));
     }
 
     public function edit($id)
@@ -285,11 +291,43 @@ class DroneRequestController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
     }
 
     public function destroy($id)
     {
         //
+    }
+
+    public function userDepartment()
+    {
+
+        $searchString = \Input::get('q');
+        $userDepartment = \DB::table('departments')
+            ->whereRaw(
+                "CONCAT(`departments`.`id`, ' ', `departments`.`name`) LIKE '%{$searchString}%'")
+            ->select(
+                array
+
+                (
+                    'departments.id as id',
+                    'departments.name as name',
+                )
+            )
+            ->get();
+
+        $data = array();
+
+        foreach ($userDepartment as $department) {
+
+            $data[] = array(
+
+
+                "name" => "Department ID: {$department->id} >  Name: {$department->name}",
+                "id" => "{$department->id}"
+            );
+        }
+
+        return $data;
+
     }
 }

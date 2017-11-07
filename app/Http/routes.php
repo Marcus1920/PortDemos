@@ -1231,10 +1231,12 @@ Route::group(array('prefix' => 'api/v1'), function()
 {    /*|--------------------------------------------------------------------------|
     DRONE ROUTING
     |--------------------------------------------------------------------------|*/
-    Route::resource('drone', 'DroneRequestController');
+    Route::get('userDepartment','DroneRequestController@userDepartment');
     Route::post('firstDroneApproval/{id}', 'DroneRequestController@FirstApprove');
     Route::post('finalDroneApproval/{id}', 'DroneRequestController@Approve');
     Route::post('rejectDroneRequest/{id}', 'DroneRequestController@Reject');
+    Route::get('droneSubType/{id}','DroneSubTypesController@droneSubTypes');
+    Route::resource('drone', 'DroneRequestController');
 
     /*|--------------------------------------------------------------------------|
     END DRONE ROUTING
@@ -1244,18 +1246,21 @@ Route::group(array('prefix' => 'api/v1'), function()
      DRONE TYPES AND SUB TYPES ROUTING
     |--------------------------------------------------
     ------------------------|*/
+
+
     Route::resource('drone-type','DroneTypesController');
     Route::resource('drone-sub-type','DroneSubTypesController');
+
+
 
 
     /*|--------------------------------------------------------------------------|
     END DRONE TYPES AND SUB TYPES ROUTING
     |--------------------------------------------------------------------------|*/
 
-    Route::get('userDepartment','DronesController@userDepartment');
+    //Route::get('userDepartment','DronesController@userDepartment');
 });
 
 Route::get('DroneList','DroneRequestController@getList');
-
 Route::get('requestForm','DroneTypesController@index');
-
+Route::get('test/{id}','DroneRequestController@test');
