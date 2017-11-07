@@ -274,13 +274,12 @@ class DroneRequestController extends Controller
             ->get();
 
         $droneRejectReasons = DroneRejectReason::find([1,2,3]);
-
         return  view('drones.secondApprovalForm',compact('droneRequest','droneRequestActivity','droneRejectReasons'));
     }
 
     public function edit($id)
     {
-        //
+
     }
 
     public function update(Request $request, $id)
@@ -289,7 +288,7 @@ class DroneRequestController extends Controller
 
     public function destroy($id)
     {
-        //
+
     }
 
     public function userDepartment()
