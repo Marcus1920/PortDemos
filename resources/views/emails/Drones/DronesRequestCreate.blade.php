@@ -38,32 +38,39 @@
                             <tr><!-- spacing top -->
                                 <td width="100%" height="20"></td>
                             </tr>
-                            <tr><!-- title -->
-                                <td width="100%" style="font-family: helvetica, Arial, sans-serif; font-size: 18px; letter-spacing: 0px; text-align: center; color:#F07057;">
-                                    <strong>NEW CASE</strong> ACCEPTED!
-                                </td>
-                            </tr>
-                            <tr><!-- spacing bottom -->
-                                <td width="100%" height="30"></td>
-                            </tr>
+                            {{--<tr><!-- title -->--}}
+                                {{--<td width="100%" style="font-family: helvetica, Arial, sans-serif; font-size: 18px; letter-spacing: 0px; text-align: center; color:#0000FF;">--}}
+                                    {{--<strong>{{ $droneType }} request has been </strong> Approved.--}}
+                                {{--</td>--}}
+                            {{--</tr>--}}
+                            {{--<tr><!-- spacing bottom -->--}}
+                                {{--<td width="100%" height="30"></td>--}}
+                            {{--</tr>--}}
                             <tr>
-                                <td width="100%" style="font-family: helvetica, Arial, sans-serif; font-size: 18px; letter-spacing: 0px; text-align: center; color:#2E363F;">
+                                <td width="100%" style="font-family: helvetica, Arial, sans-serif;padding-left: 20px; font-size: 18px; letter-spacing: 0px; color:#2E363F;">
                                     Hi {{ $name }}
                                 </td>
                             </tr>
-                            <tr><!-- spacing bottom -->
-                                <td width="100%" height="30"></td>
-                            </tr>
-                            <tr>
-                                <td width="100%" style="font-family: helvetica, Arial, sans-serif; font-size: 18px; letter-spacing: 0px; text-align: center; color:#2E363F;">
+                            {{--<tr><!-- spacing bottom -->--}}
+
+                                {{--<td width="100%" style="font-family: helvetica, Arial, sans-serif;padding-left: 20%;">--}}
+                                    {{--{{$dronesSubtype}}--}}
+                                {{--</td>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                                {{--<td width="100%" style="font-family: helvetica, Arial, sans-serif;padding-left: 20%; font-size: 18px; letter-spacing: 0px; color:#2E363F;">--}}
                                     {{--A Case your involved in has been accepted by {{ $acceptedBy }}--}}
-                                </td>
-                            </tr>
-                            <tr><!-- spacing bottom -->
-                                <td width="100%" height="30"></td>
-                            </tr>
+
+                                {{--</td>--}}
+                            {{--</tr>--}}
+                            {{--<tr><!-- spacing bottom -->--}}
+
+                                {{--<td width="100%" style="font-family: helvetica, Arial, sans-serif;padding-left: 20%;">--}}
+                                    {{--{{$department}}--}}
+                                {{--</td>--}}
+                            {{--</tr>--}}
                             <tr>
-                                <td width="100%" style="font-family:helvetica, Arial, sans-serif; font-size: 13px; text-align: left; color:#2E363F; line-height: 24px;">
+                                <td width="100%" style="font-family:helvetica, Arial, sans-serif; padding-left: 20px; font-size: 13px; text-align: left; color:#2E363F; line-height: 24px;">
                                     <strong>Case Number:</strong>
                                 </td>
                             </tr>
@@ -81,7 +88,7 @@
                                 <td width="100%" height="15"></td>
                             </tr>
                             <tr>
-                                <td width="100%" style="font-family:helvetica, Arial, sans-serif; font-size: 13px; text-align: left; color:#2E363F; line-height: 24px;">
+                                <td width="100%" style="font-family:helvetica, Arial, sans-serif; padding-left: 20px; font-size: 13px; text-align: left; color:#2E363F; line-height: 24px;">
                                     <a href="{{ env('LIVE_URL') }}"><strong>Click here to login</strong></a>
 
                                 </td>

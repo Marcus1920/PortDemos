@@ -34,57 +34,57 @@ use App\Position;
 |
 */
 Route::group(['middleware' => 'adminmiddlewar'], function () {
-	Route::get('admin', 'SeniorHomeController@index');
-	// Route::get('admin', 'SeniorHomeController@index');
+    Route::get('admin', 'SeniorHomeController@index');
+    // Route::get('admin', 'SeniorHomeController@index');
 });
 Route::group(['middleware' => 'adminmiddlewar'], function () {
-	Route::get('/', function () {
-		if (!\Auth::check()) return view('auth.login');
-		else return redirect("/home");
-	});
-	Route::get('home', ['uses' => 'HomeController@index']);
-	Route::get('home', ['uses' => 'HomeController@index']);
-	Route::get('generatecharts', ['uses' => 'HomeController@getcharts']);
+    Route::get('/', function () {
+        if (!\Auth::check()) return view('auth.login');
+        else return redirect("/home");
+    });
+    Route::get('home', ['uses' => 'HomeController@index']);
+    Route::get('home', ['uses' => 'HomeController@index']);
+    Route::get('generatecharts', ['uses' => 'HomeController@getcharts']);
 });
 $this->post('dologin', 'Auth\LoginController@doLogin');
 $this->post('dosignup', 'Auth\LoginController@dosignup');
 Route::group(array('prefix' => 'api/v1'), function () {
-	Route::post('logi', 'UserController@login');
-	Route::post('pedingcases', 'ReportController@Pendingcases');
-	Route::post('allocatecase', 'ReportController@Allocatercase');
-	Route::post('referecases', 'ReportController@Referecases');
-	Route::get('getallusers', 'ReportController@Getallusers');
-	Route::post('acceptedcases', 'ReportController@Acceptedcases');
-	Route::post('declinsecase', 'ReportController@Declinsecase');
-	Route::get('categoriess', 'DepartController@index');
-	Route::get('myreport', 'ReportCController@myReport');
-	Route::post('report', 'ReportController@store');
-	Route::get('messagenofication', 'CaseNotesController@messagenofication');
-	Route::post('mobilecaeCreate', 'MobliCasesController@mobilecaeCreate');
-	Route::post('newmessagenofication', 'CaseNotesController@newmessagenofication');
-	Route::get('showcontactmobile', 'AddressBookController@showcontactmobile');
-	Route::post('requestcloser', 'ReportCController@requestcloser');
-	Route::post('updatecasemobile', 'ReportCController@updatecasemobile');
-	Route::get('statuss', 'ReportCController@statuss');
-	Route::post('mobilerallocate', 'MobliCasesController@store');
-	Route::post('actionteken', 'DepartController@action');
-	Route::post('Casetype', 'DepartController@castype');
-	Route::get('mobiledepartement', 'DepartController@mobiledepartement');
-	Route::get('subcategories', 'DepartController@mobilesubcategories');
-	Route::get('subsubcategories', 'DepartController@mobilesusubbcategories');
-	Route::get('categories', 'DepartController@index');
-	Route::get('mobilecalendarListPerUser', 'CasesController@mobilecalendarListPerUser');
-	Route::post('reportImage', 'ReportCController@saveReportImage');
-	Route::post('createincident', 'ReportCController@creatReport');
-	Route::post('closeIncidentmobile', 'ReportCController@closeIncidentmobile');
-	Route::post('login', 'UserCController@login');
-	Route::post('forgot', 'UserCController@forgot');
+    Route::post('logi', 'UserController@login');
+    Route::post('pedingcases', 'ReportController@Pendingcases');
+    Route::post('allocatecase', 'ReportController@Allocatercase');
+    Route::post('referecases', 'ReportController@Referecases');
+    Route::get('getallusers', 'ReportController@Getallusers');
+    Route::post('acceptedcases', 'ReportController@Acceptedcases');
+    Route::post('declinsecase', 'ReportController@Declinsecase');
+    Route::get('categoriess', 'DepartController@index');
+    Route::get('myreport', 'ReportCController@myReport');
+    Route::post('report', 'ReportController@store');
+    Route::get('messagenofication', 'CaseNotesController@messagenofication');
+    Route::post('mobilecaeCreate', 'MobliCasesController@mobilecaeCreate');
+    Route::post('newmessagenofication', 'CaseNotesController@newmessagenofication');
+    Route::get('showcontactmobile', 'AddressBookController@showcontactmobile');
+    Route::post('requestcloser', 'ReportCController@requestcloser');
+    Route::post('updatecasemobile', 'ReportCController@updatecasemobile');
+    Route::get('statuss', 'ReportCController@statuss');
+    Route::post('mobilerallocate', 'MobliCasesController@store');
+    Route::post('actionteken', 'DepartController@action');
+    Route::post('Casetype', 'DepartController@castype');
+    Route::get('mobiledepartement', 'DepartController@mobiledepartement');
+    Route::get('subcategories', 'DepartController@mobilesubcategories');
+    Route::get('subsubcategories', 'DepartController@mobilesusubbcategories');
+    Route::get('categories', 'DepartController@index');
+    Route::get('mobilecalendarListPerUser', 'CasesController@mobilecalendarListPerUser');
+    Route::post('reportImage', 'ReportCController@saveReportImage');
+    Route::post('createincident', 'ReportCController@creatReport');
+    Route::post('closeIncidentmobile', 'ReportCController@closeIncidentmobile');
+    Route::post('login', 'UserCController@login');
+    Route::post('forgot', 'UserCController@forgot');
 });
 Route::get('reports', 'MainreportController@index');
 Route::get('creatCase', function () {
-	$user = \App\User::findOrNew(\Auth::id());
+    $user = \App\User::findOrNew(\Auth::id());
 
-	return view('cases.createFor')->with("user", $user);
+    return view('cases.createFor')->with("user", $user);
 });
 Route::get('creatCase', "MapController@index");
 /*
@@ -100,7 +100,7 @@ Route::get('creatCase', "MapController@index");
 |
 */
 Route::get('list-roles', ['middleware' => 'UsersMilldware', function () {
-	return view('roles.list');
+    return view('roles.list');
 }]);
 Route::get('roles-list', ['middleware' => 'resetLastActive', 'uses' => 'RolesController@index']);
 Route::get('roles/{id}', ['middleware' => 'resetLastActive', 'uses' => 'RolesController@edit']);
@@ -132,18 +132,18 @@ Route::get('getCaseSearch', ['middleware' => 'resetLastActive', 'uses' => 'UserC
 Route::get('getUsers', ['middleware' => 'auth', 'uses' => 'UserController@getUsers']);
 Route::get('getAddressBookUsers', ['middleware' => 'auth', 'uses' => 'AddressBookController@getAddressBookUsers']);
 Route::get('add-user', function () {
-	return view('users.registration');
+    return view('users.registration');
 });
 Route::get('user-profile', function () {
-	return view('users.profile');
+    return view('users.profile');
 });
 Route::post('editProfilePic', ['middleware' => 'resetLastActive', 'uses' => 'UserController@UpdateUserProfile']);
 Route::get('edit-profile', function () {
-	return view('users.editProfile');
+    return view('users.editProfile');
 });
 Route::controllers([
-	'auth'     => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
+    'auth'     => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController',
 ]);
 Route::get('users/{id}', ['middleware' => 'resetLastActive', 'uses' => 'UserController@edit']);
 Route::post('updateUser', ['middleware' => 'resetLastActive', 'uses' => 'UserController@update']);
@@ -152,11 +152,11 @@ Route::get('getPoi', ['middleware' => 'resetLastActive', 'uses' => 'UserControll
 Route::post('filterUsersReports', ['middleware' => 'resetLastActive', 'uses' => 'UserController@show']);
 Route::get('getFieldWorker', ['middleware' => 'resetLastActive', 'uses' => 'UserController@getFieldWorker']);
 Route::get('list-poi-users', ['middleware' => 'resetLastActive', function () {
-	return view('users.poi');
+    return view('users.poi');
 }]);
 Route::get('poi-list', ['middleware' => 'resetLastActive', 'uses' => 'UserController@list_poi']);
 Route::get('add-poi-user', ['middleware' => 'resetLastActive', function () {
-	return view('users.poiregistration');
+    return view('users.poiregistration');
 }]);
 Route::get('edit-poi-user/{id}', ['middleware' => 'resetLastActive', 'uses' => 'UserController@edit_poi']);
 Route::get('view-poi-associates/{id}', ['middleware' => 'resetLastActive', 'uses' => 'UserController@view_poi_associates']);
@@ -172,11 +172,11 @@ Route::post('edit_poi', ['middleware' => 'resetLastActive', 'uses' => 'UserContr
 */
 Route::get('getOfficer/{id}', ['middleware' => 'resetLastActive', 'uses' => 'InvestigationOfficerController@show']);
 Route::get('getReporter/{id}', function ($id) {
-	$officer = \App\Reporter::select('id', 'name', 'cellphone', 'email')
-		->where('id', '=', $id)
-		->get();
+    $officer = \App\Reporter::select('id', 'name', 'cellphone', 'email')
+        ->where('id', '=', $id)
+        ->get();
 
-	return $officer;
+    return $officer;
 });
 /*
 |--------------------------------------------------------------------------
@@ -186,14 +186,14 @@ Route::get('getReporter/{id}', function ($id) {
 */
 Route::get('documents-list', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@index']);
 Route::get('list-documents', ['middleware' => 'auth', function () {
-	return view('documents.list');
+    return view('documents.list');
 }]);
 Route::get('list-filemanager', ['middleware' => 'auth', function () {
-	return view('documents.file-manager');
+    return view('documents.file-manager');
 }]);
 Route::get('documentLog-list', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@documentLogIndex']);
 Route::get('list-documentLog', ['middleware' => 'auth', function () {
-	return view('documents.list-document-log');
+    return view('documents.list-document-log');
 }]);
 Route::get('list-folder/{id}', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@folder_document']);
 Route::get('show_repository', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@show_repository']);
@@ -221,10 +221,10 @@ Route::get('downloadsDoc/{id}', ['middleware' => 'auth', 'uses' => 'DocumentRepo
 |
 */
 Route::get('erro', function () {
-	return view('messages.erro');
+    return view('messages.erro');
 });
 Route::get('list-departments/{id_company?}', ['middleware' => 'UsersMilldware', function ($id_company = null) {
-	return view('departments.list')->with(compact("id_company"));
+    return view('departments.list')->with(compact("id_company"));
 }]);
 Route::get('departments-list/{id_company?}', ['middleware' => 'UsersMilldware', 'uses' => 'DepartmentController@index']);
 Route::get('departments/{id}', ['middleware' => 'UsersMilldware', 'uses' => 'DepartmentController@edit']);
@@ -243,7 +243,7 @@ Route::post('addDepartment', ['middleware' => 'UsersMilldware', 'uses' => 'Depar
 |
 */
 Route::get('list-meetings', ['middleware' => 'resetLastActive', function () {
-	return view('meetings.list');
+    return view('meetings.list');
 }]);
 Route::get('meetings-list', ['middleware' => 'resetLastActive', 'uses' => 'MeetingsController@index']);
 Route::get('meetings-attendees-list/{id}', ['middleware' => 'resetLastActive', 'uses' => 'MeetingsController@indexAttendee']);
@@ -295,7 +295,7 @@ Route::get('getMeetingFacilitators', ['middleware' => 'resetLastActive', 'uses' 
 |
 */
 Route::get('list-statuses', ['middleware' => 'resetLastActive', function () {
-	return view('statuses.list');
+    return view('statuses.list');
 }]);
 Route::get('statuses-list', ['middleware' => 'resetLastActive', 'uses' => 'CasesStatusesController@index']);
 Route::get('statuses/{id}', ['middleware' => 'resetLastActive', 'uses' => 'CasesStatusesController@edit']);
@@ -314,7 +314,7 @@ Route::post('addCaseStatus', ['middleware' => 'resetLastActive', 'uses' => 'Case
 |
 */
 Route::get('list-priorities', ['middleware' => 'resetLastActive', function () {
-	return view('priorities.list');
+    return view('priorities.list');
 }]);
 Route::get('priorities-list', ['middleware' => 'resetLastActive', 'uses' => 'CasesPrioritiesController@index']);
 Route::get('priorities/{id}', ['middleware' => 'resetLastActive', 'uses' => 'CasesPrioritiesController@edit']);
@@ -333,7 +333,7 @@ Route::post('addCasePriority', ['middleware' => 'resetLastActive', 'uses' => 'Ca
 |
 */
 Route::get('list-provinces', ['middleware' => 'resetLastActive', function () {
-	return view('provinces.list');
+    return view('provinces.list');
 }]);
 Route::get('provinces-list', ['middleware' => 'resetLastActive', 'uses' => 'ProvincesController@index']);
 Route::get('provinces/{id}', ['middleware' => 'resetLastActive', 'uses' => 'ProvincesController@edit']);
@@ -352,9 +352,9 @@ Route::post('addProvince', ['middleware' => 'resetLastActive', 'uses' => 'Provin
 |
 */
 Route::get('list-districts/{province}', ['middleware' => 'resetLastActive', function ($province) {
-	$provinceObj = Province::find($province);
+    $provinceObj = Province::find($province);
 
-	return view('districts.list', compact('provinceObj'));
+    return view('districts.list', compact('provinceObj'));
 }]);
 Route::get('districts-list/{id}', ['middleware' => 'resetLastActive', 'uses' => 'DistricsController@index']);
 Route::get('districts/{id}', ['middleware' => 'resetLastActive', 'uses' => 'DistricsController@edit']);
@@ -373,10 +373,10 @@ Route::post('addDistrict', ['middleware' => 'resetLastActive', 'uses' => 'Distri
 |
 */
 Route::get('list-municipalities/{district}', ['middleware' => 'resetLastActive', function ($district) {
-	$districtObj = District::find($district);
-	$provinceObj = Province::find($districtObj->province);
+    $districtObj = District::find($district);
+    $provinceObj = Province::find($districtObj->province);
 
-	return view('municipalities.list', compact('districtObj', 'provinceObj'));
+    return view('municipalities.list', compact('districtObj', 'provinceObj'));
 }]);
 Route::get('municipalities-list/{id}', ['middleware' => 'resetLastActive', 'uses' => 'MunicipalitiesController@index']);
 Route::get('municipalities/{id}', ['middleware' => 'resetLastActive', 'uses' => 'MunicipalitiesController@edit']);
@@ -395,11 +395,11 @@ Route::post('addMunicipality', ['middleware' => 'resetLastActive', 'uses' => 'Mu
 |
 */
 Route::get('list-wards/{municipality}', ['middleware' => 'resetLastActive', function ($municipality) {
-	$municipalityObj = Municipality::find($municipality);
-	$districtObj     = District::find($municipalityObj->district);
-	$provinceObj     = Province::find($districtObj->province);
+    $municipalityObj = Municipality::find($municipality);
+    $districtObj     = District::find($municipalityObj->district);
+    $provinceObj     = Province::find($districtObj->province);
 
-	return view('wards.list', compact('districtObj', 'municipalityObj', 'provinceObj'));
+    return view('wards.list', compact('districtObj', 'municipalityObj', 'provinceObj'));
 }]);
 Route::get('wards-list/{id}', ['middleware' => 'resetLastActive', 'uses' => 'WardsController@index']);
 Route::get('wards/{id}', ['middleware' => 'resetLastActive', 'uses' => 'WardsController@edit']);
@@ -418,9 +418,9 @@ Route::post('addWard', ['middleware' => 'resetLastActive', 'uses' => 'WardsContr
 |
 */
 Route::get('list-categories/{department}', ['middleware' => 'resetLastActive', function ($department) {
-	$deptObj = Department::find($department);
+    $deptObj = Department::find($department);
 
-	return view('categories.list', compact('deptObj'));
+    return view('categories.list', compact('deptObj'));
 }]);
 Route::get('categories/{id}', ['middleware' => 'resetLastActive', 'uses' => 'CategoriesController@edit']);
 Route::get('categories-list/{id}', ['middleware' => 'resetLastActive', 'uses' => 'CategoriesController@index']);
@@ -439,10 +439,10 @@ Route::post('addCategory', ['middleware' => 'resetLastActive', 'uses' => 'Catego
 |
 */
 Route::get('list-sub-categories/{category}', ['middleware' => 'auth', function ($category) {
-	$catObj   = CaseType::find($category);
-	$deptName = Department::find($catObj->department);
+    $catObj   = CaseType::find($category);
+    $deptName = Department::find($catObj->department);
 
-	return view('subcategories.list', compact('catObj', 'deptName'));
+    return view('subcategories.list', compact('catObj', 'deptName'));
 }]);
 Route::get('subcategories/{id}', ['middleware' => 'resetLastActive', 'uses' => 'SubCategoriesController@edit']);
 Route::get('sub-categories-list/{id}', ['middleware' => 'resetLastActive', 'uses' => 'SubCategoriesController@index']);
@@ -461,11 +461,11 @@ Route::post('addSubCategory', ['middleware' => 'resetLastActive', 'uses' => 'Sub
 |
 */
 Route::get('list-sub-sub-categories/{sub_category}', ['middleware' => 'resetLastActive', function ($sub_category) {
-	$subCatObj = CaseSubType::find($sub_category);
-	$catObj    = CaseType::find($subCatObj->case_type);
-	$deptObj   = Department::find($catObj->department);
+    $subCatObj = CaseSubType::find($sub_category);
+    $catObj    = CaseType::find($subCatObj->case_type);
+    $deptObj   = Department::find($catObj->department);
 
-	return view('subsubcategories.list', compact('subCatObj', 'deptObj', 'catObj'));
+    return view('subsubcategories.list', compact('subCatObj', 'deptObj', 'catObj'));
 }]);
 Route::get('sub-sub-categories-list/{id}', ['middleware' => 'resetLastActive', 'uses' => 'SubSubCategoriesController@index']);
 Route::get('subsubcategories/{id}', ['middleware' => 'resetLastActive', 'uses' => 'SubSubCategoriesController@edit']);
@@ -515,20 +515,20 @@ Route::get('getCases', ['middleware' => 'auth', 'uses' => 'CasesController@getCa
 Route::post('updateCase', ['middleware' => 'resetLastActive', 'uses' => 'CasesController@updateCase']);
 Route::get('allCases', ['middleware' => 'auth', 'uses' => 'CasesController@allCases']);
 Route::get('pendingClosureCases', function () {
-	return view('cases.pendingClosureCases');
+    return view('cases.pendingClosureCases');
 });
 Route::get('users', function () {
-	return view('users.editusers');
+    return view('users.editusers');
 });
 Route::get('pendingCases', function () {
-	return view('cases.pendingCases');
+    return view('cases.pendingCases');
 });
 Route::get('closedCases', function () {
-	return view('cases.closedCases');
+    return view('cases.closedCases');
 });
 //Route::get('allocatedCases', ['middleware' => 'auth', 'uses' => 'CasesController@allocatedCases']);
 Route::get('allocatedCases', function () {
-	return view('cases.allocatedCases');
+    return view('cases.allocatedCases');
 });
 /*
 |--------------------------------------------------------------------------
@@ -577,7 +577,7 @@ Route::get('deleteuserprofilePrivate/{id}', 'AddressBookController@deleteuser');
 |
 */
 Route::get('list-relationships', ['middleware' => 'resetLastActive', function () {
-	return view('relationships.list');
+    return view('relationships.list');
 }]);
 Route::get('relationships-list', ['middleware' => 'resetLastActive', 'uses' => 'RelationshipController@index']);
 Route::get('relationships/{id}', ['middleware' => 'resetLastActive', 'uses' => 'RelationshipController@edit']);
@@ -680,7 +680,7 @@ Route::get('caseActivities-list/{id}', ['middleware' => 'resetLastActive', 'uses
 |
 */
 Route::get('list-positions', ['middleware' => 'UsersMilldware', function () {
-	return view('positions.list');
+    return view('positions.list');
 }]);
 Route::get('positions-list', ['middleware' => 'resetLastActive', 'uses' => 'PositionsController@index']);
 Route::get('positions/{id}', ['middleware' => 'resetLastActive', 'uses' => 'PositionsController@edit']);
@@ -788,83 +788,83 @@ Route::post('filterReports', ['middleware' => 'resetLastActive', 'uses' => 'Repo
 $router->resource('users', 'UserController');
 $router->resource('groups', 'RolesController');
 Route::get('/api/dropdown/{to}/{from}', function ($to, $from) {
-	$name = Input::get('option');
-	if ($from == 'province') {
-		$object = Province::where('slug', '=', $name)->first();
-	}
-	if ($from == 'district') {
-		$object = District::where('slug', '=', $name)->first();
-	}
-	if ($from == 'municipality') {
-		$object  = Municipality::where('slug', '=', $name)->first();
-		$listing = DB::table($to)->where($from, $object->id)->lists('name', 'slug');
-	}
-	else {
-		$listing = DB::table($to)->where($from, $object->id)->orderBy('name', 'ASC')->lists('name', 'slug');
-	}
+    $name = Input::get('option');
+    if ($from == 'province') {
+        $object = Province::where('slug', '=', $name)->first();
+    }
+    if ($from == 'district') {
+        $object = District::where('slug', '=', $name)->first();
+    }
+    if ($from == 'municipality') {
+        $object  = Municipality::where('slug', '=', $name)->first();
+        $listing = DB::table($to)->where($from, $object->id)->lists('name', 'slug');
+    }
+    else {
+        $listing = DB::table($to)->where($from, $object->id)->orderBy('name', 'ASC')->lists('name', 'slug');
+    }
 
-	return $listing;
+    return $listing;
 });
 Route::get('/api/dropdownDepartment/{to}/{from}', function ($to, $from) {
-	$name = Input::get('option');
-	if ($from == 'department') {
-		$object  = Department::where('slug', '=', $name)->first();
-		$listing = DB::table('categories')
-			->where('department', '=', $object->id)
-			->orderBy('name', 'ASC')
-			->lists('name', 'slug');
-	}
-	if ($from == 'category') {
-		$object  = Category::where('slug', '=', $name)->first();
-		$listing = DB::table('sub_categories')
-			->where('category', '=', $object->id)
-			->orderBy('name', 'ASC')
-			->lists('name', 'slug');
-	}
-	if ($from == 'sub_category') {
-		$object  = SubCategory::where('slug', '=', $name)->first();
-		$listing = DB::table('sub_sub_categories')
-			->where('sub_category', '=', $object->id)
-			->orderBy('name', 'ASC')
-			->lists('name', 'slug');
-	}
+    $name = Input::get('option');
+    if ($from == 'department') {
+        $object  = Department::where('slug', '=', $name)->first();
+        $listing = DB::table('categories')
+            ->where('department', '=', $object->id)
+            ->orderBy('name', 'ASC')
+            ->lists('name', 'slug');
+    }
+    if ($from == 'category') {
+        $object  = Category::where('slug', '=', $name)->first();
+        $listing = DB::table('sub_categories')
+            ->where('category', '=', $object->id)
+            ->orderBy('name', 'ASC')
+            ->lists('name', 'slug');
+    }
+    if ($from == 'sub_category') {
+        $object  = SubCategory::where('slug', '=', $name)->first();
+        $listing = DB::table('sub_sub_categories')
+            ->where('sub_category', '=', $object->id)
+            ->orderBy('name', 'ASC')
+            ->lists('name', 'slug');
+    }
 
-	return $listing;
+    return $listing;
 });
 Route::get('/api/dropdownCaseType/{to}/{from}', function ($to, $from) {
-	$id = Input::get('option');
-	if ($from == 'case_type') {
-		$object  = CaseType::where('id', '=', $id)->first();
-		$listing = DB::table('cases_sub_types')
-			->where('case_type', '=', $object->id)
-			->orderBy('name', 'ASC')
-			->lists('name', 'id');
-	}
+    $id = Input::get('option');
+    if ($from == 'case_type') {
+        $object  = CaseType::where('id', '=', $id)->first();
+        $listing = DB::table('cases_sub_types')
+            ->where('case_type', '=', $object->id)
+            ->orderBy('name', 'ASC')
+            ->lists('name', 'id');
+    }
 
-	return $listing;
+    return $listing;
 });
 Route::get('/api/dropdownCategory/{to}/{from}', function ($to, $from) {
-	$name = Input::get('option');
-	if ($from == 'category') {
-		$object = Category::where('slug', '=', $name)->first();
-	}
-	else {
-		$object = SubCategory::where('slug', '=', $name)->first();
-	}
-	if ($from == 'category') {
-		$listing = DB::table('sub-categories')
-			->where('category', '=', $object->id)
-			->orderBy('name', 'ASC')
-			->lists('name', 'slug');
-	}
-	else {
-		$listing = DB::table('sub-sub-categories')
-			->where('sub_category', '=', $object->id)
-			->orderBy('name', 'ASC')
-			->lists('name', 'slug');
-	}
+    $name = Input::get('option');
+    if ($from == 'category') {
+        $object = Category::where('slug', '=', $name)->first();
+    }
+    else {
+        $object = SubCategory::where('slug', '=', $name)->first();
+    }
+    if ($from == 'category') {
+        $listing = DB::table('sub-categories')
+            ->where('category', '=', $object->id)
+            ->orderBy('name', 'ASC')
+            ->lists('name', 'slug');
+    }
+    else {
+        $listing = DB::table('sub-sub-categories')
+            ->where('sub_category', '=', $object->id)
+            ->orderBy('name', 'ASC')
+            ->lists('name', 'slug');
+    }
 
-	return $listing;
+    return $listing;
 });
 /*Route::get('/api/dropdown/{table}', function ($table) {
 	$txtDebug = __CLASS__."->".__FUNCTION__."(\$table) \$table - {$table}";
@@ -887,53 +887,53 @@ Route::get('/api/dropdownCategory/{to}/{from}', function ($to, $from) {
 	return $listing->lists('name', 'id');
 });*/
 Route::get('/api/dropdown/{table}', function ($table) {
-	$txtDebug = __CLASS__."->".__FUNCTION__."(\$table) \$table - {$table}";
-	$thing = array_key_exists("thing", $_REQUEST) ? $_REQUEST['thing'] : 0;;
-	$listing = \DB::table($table);//->orderBy('name', 'ASC');
-	if ($table == "cases_types") {
-		//if ($parent)
-		$listing->where("department",$thing);
-	} else if ($table == "departments") {
-		//if ($parent)
-		$listing->where("company",$thing);
-	} else if ($table == "cases_sub_types") {
-		//if ($parent)
-		$listing->where("case_type",$thing);
-	}
-	$txtDebug .= "\n  \$parent - {$thing}";
-	$txtDebug .= "\n  \$listing SQL - ".print_r($listing->toSql(),1).", bindings - ".print_r($listing->getBindings(),1);
-	$txtDebug .= "\n  \$listing - ".print_r($listing->get(),1);
+    $txtDebug = __CLASS__."->".__FUNCTION__."(\$table) \$table - {$table}";
+    $thing = array_key_exists("thing", $_REQUEST) ? $_REQUEST['thing'] : 0;;
+    $listing = \DB::table($table);//->orderBy('name', 'ASC');
+    if ($table == "cases_types") {
+        //if ($parent)
+        $listing->where("department",$thing);
+    } else if ($table == "departments") {
+        //if ($parent)
+        $listing->where("company",$thing);
+    } else if ($table == "cases_sub_types") {
+        //if ($parent)
+        $listing->where("case_type",$thing);
+    }
+    $txtDebug .= "\n  \$parent - {$thing}";
+    $txtDebug .= "\n  \$listing SQL - ".print_r($listing->toSql(),1).", bindings - ".print_r($listing->getBindings(),1);
+    $txtDebug .= "\n  \$listing - ".print_r($listing->get(),1);
 
-	//die("<pre>{$txtDebug}</pre>");
-	return $listing->lists('name', 'id');
+    //die("<pre>{$txtDebug}</pre>");
+    return $listing->lists('name', 'id');
 });
 Route::post('postChat', ['middleware' => 'auth', 'uses' => 'ChatController@postChat']);
 Event::listen('auth.login', function () {
-	$user               = User::find(\Auth::user()->id);
-	$user->availability = 1;
-	$user->last_login   = new DateTime;
-	$user->save();
+    $user               = User::find(\Auth::user()->id);
+    $user->availability = 1;
+    $user->last_login   = new DateTime;
+    $user->save();
 });
 Event::listen('auth.logout', function () {
-	$user               = User::find(\Auth::user()->id);
-	$user->availability = 0;
-	$user->last_logout  = new DateTime;
-	$user->save();
+    $user               = User::find(\Auth::user()->id);
+    $user->availability = 0;
+    $user->last_logout  = new DateTime;
+    $user->save();
 });
 Route::get('getLoggedInUsers', function () {
-	$allUsers = User::where('id', '<>', \Auth::user()->id)->orderBy('availability', 'desc')->get();
-	$html     = "";
-	foreach ($allUsers as $user) {
-		$availability = ($user->availability == 1) ? "<i class='fa fa-circle-o status m-r-5'></i>" : "<i class='fa fa-circle-o offline m-r-5'></i>";
-		$html .= "<div class='media'>";
-		$html .= "<a href='#' onClick='chatStart(this)' class='chatWith' data-userid = '$user->id' data-names = '$user->name $user->surname'> <img class='pull-left' src='img/profile-pics/7.png' width='30' alt=''></a>";
-		$html .= "<div class='media-body'>";
-		$html .= "<span class='t-overflow p-t-5'>$user->name  $user->surname $availability</span>";
-		$html .= "</div>";
-		$html .= "</div>";
-	}
+    $allUsers = User::where('id', '<>', \Auth::user()->id)->orderBy('availability', 'desc')->get();
+    $html     = "";
+    foreach ($allUsers as $user) {
+        $availability = ($user->availability == 1) ? "<i class='fa fa-circle-o status m-r-5'></i>" : "<i class='fa fa-circle-o offline m-r-5'></i>";
+        $html .= "<div class='media'>";
+        $html .= "<a href='#' onClick='chatStart(this)' class='chatWith' data-userid = '$user->id' data-names = '$user->name $user->surname'> <img class='pull-left' src='img/profile-pics/7.png' width='30' alt=''></a>";
+        $html .= "<div class='media-body'>";
+        $html .= "<span class='t-overflow p-t-5'>$user->name  $user->surname $availability</span>";
+        $html .= "</div>";
+        $html .= "</div>";
+    }
 
-	return $html;
+    return $html;
 });
 /*
 |--------------------------------------------------------------------------
@@ -944,27 +944,27 @@ Route::get('getLoggedInUsers', function () {
 Route::post('addCaseMessage', ['middleware' => 'resetLastActive', 'uses' => 'MessageController@store']);
 Route::post('sendCaseMessage', ['middleware' => 'resetLastActive', 'uses' => 'MessageController@storeEmail']);
 Route::get('/getOfflineMessage', function () {
-	$offlineMessages = Message::where('to', '=', \Auth::user()->id)
-		->where('online', '=', 0)
-		->orderBy('created_at', 'desc')
-		->take(5)
-		->get();
-	$html = "";
-	foreach ($offlineMessages as $message) {
-		$user = User::where('id', '=', $message->from)->first();
-		$read = ($message->read == 0) ? "<span class='label label-danger'>New</span>" : "";
-		$html .= "<div class='media'>";
-		$html .= "<div class='pull-left'>";
-		$html .= "<a href='#' onClick='chatStart(this)'> <img class='pull-left' src='img/profile-pics/7.png' width='30' alt=''></a>";
-		$html .= "</div>";
-		$html .= "<div class='media-body'>";
-		$html .= "<small class='text-muted'>$user->name  $user->surname - $message->created_at</small> $read<br>";
-		$html .= "<a class='t-overflow' href='message-detail/$message->id'>$message->message .Ref:Case ID $message->caseId</a>";
-		$html .= "</div>";
-		$html .= "</div>";
-	}
+    $offlineMessages = Message::where('to', '=', \Auth::user()->id)
+        ->where('online', '=', 0)
+        ->orderBy('created_at', 'desc')
+        ->take(5)
+        ->get();
+    $html = "";
+    foreach ($offlineMessages as $message) {
+        $user = User::where('id', '=', $message->from)->first();
+        $read = ($message->read == 0) ? "<span class='label label-danger'>New</span>" : "";
+        $html .= "<div class='media'>";
+        $html .= "<div class='pull-left'>";
+        $html .= "<a href='#' onClick='chatStart(this)'> <img class='pull-left' src='img/profile-pics/7.png' width='30' alt=''></a>";
+        $html .= "</div>";
+        $html .= "<div class='media-body'>";
+        $html .= "<small class='text-muted'>$user->name  $user->surname - $message->created_at</small> $read<br>";
+        $html .= "<a class='t-overflow' href='message-detail/$message->id'>$message->message .Ref:Case ID $message->caseId</a>";
+        $html .= "</div>";
+        $html .= "</div>";
+    }
 
-	return $html;
+    return $html;
 });
 Route::get('message-detail/{id}', 'MessageController@edit');
 Route::get('all-messages', 'MessageController@index');
@@ -981,23 +981,23 @@ Route::get('all-messages', 'MessageController@index');
 |
 */
 Route::get('middle', function () {
-	echo "hello";
+    echo "hello";
 })->middleware('adminmiddlewar');
 Route::get('list-affiliations', ['middleware' => 'UsersMilldware', function () {
-	return view('affiliations.list');
+    return view('affiliations.list');
 }]);
 Route::get('list-affiliation-positions/{affiliation}', ['middleware' => 'UsersMilldware', function ($affiliation) {
-	$affiliationObj     = Affiliation::find($affiliation);
-	$afflpos            = AffiliationPositions::where('affiliation', $affiliation)->first();
-	$id                 = $affiliation;
-	$created            = $afflpos->created_at;
-	$users              = User::where('id', $afflpos->created_by)->first();
-	$created_by_name    = $users->name;
-	$created_by_surname = $users->surname;
-	$position      = Position::where('id', $afflpos->positions)->first();
-	$position_name = $position->name;
+    $affiliationObj     = Affiliation::find($affiliation);
+    $afflpos            = AffiliationPositions::where('affiliation', $affiliation)->first();
+    $id                 = $affiliation;
+    $created            = $afflpos->created_at;
+    $users              = User::where('id', $afflpos->created_by)->first();
+    $created_by_name    = $users->name;
+    $created_by_surname = $users->surname;
+    $position      = Position::where('id', $afflpos->positions)->first();
+    $position_name = $position->name;
 
-	return view('affiliations.positions', compact('affiliationObj', 'id', 'created', 'created_by_name', 'created_by_surname', 'position_name'));
+    return view('affiliations.positions', compact('affiliationObj', 'id', 'created', 'created_by_name', 'created_by_surname', 'position_name'));
 }]);
 Route::get('affiliations-list', ['middleware' => 'resetLastActive', 'uses' => 'AffiliationsController@index']);
 Route::get('affiliations/{id}', ['middleware' => 'resetLastActive', 'uses' => 'AffiliationsController@edit']);
@@ -1012,7 +1012,7 @@ Route::post('addAffiliationPosition', ['middleware' => 'resetLastActive', 'uses'
 |
 */
 Route::get('list-permissions', ['middleware' => 'resetLastActive', function () {
-	return view('permissions.list');
+    return view('permissions.list');
 }]);
 //Route::get('permissions-list', ['middleware' => 'resetLastActive', 'uses' => 'PermissionController@index']);
 Route::get('permissions/{id}', ['middleware' => 'resetLastActive', 'uses' => 'PermissionController@edit']);
@@ -1023,8 +1023,8 @@ Route::post('addGroupPermission', ['middleware' => 'resetLastActive', 'uses' => 
 Route::post('removeGroupPermission', ['middleware' => 'resetLastActive', 'uses' => 'PermissionController@removeGroupPermission']);
 Route::post('updateGroupPermissions', ['middleware' => 'resetLastActive', 'uses' => 'PermissionController@updateGroupPermissions']);
 Route::get('list-permissions-per-group/{group}', ['middleware' => 'resetLastActive', function ($group) {
-	//$deptObj = Department::find($department);
-	return view('permissions.group', compact('group', $group));
+    //$deptObj = Department::find($department);
+    return view('permissions.group', compact('group', $group));
 }]);
 Route::get('group-users-list/{id}', ['middleware' => 'resetLastActive', 'uses' => 'PermissionController@group_users_list']);
 Route::get('map', ['middleware' => 'resetLastActive', 'uses' => 'MapController@index']);
@@ -1155,7 +1155,7 @@ Route::post('task-reminders', 'TaskRemindersController@store');
 //Route::get('map', function() { return view('map.map'); } );
 Route::get('maps', 'MapsController@Getmaps');
 Route::get('map2', function () {
-	return view('cornford.map2');
+    return view('cornford.map2');
 });
 Route::post('search', 'MapsController@search');
 Route::post('searchCase', 'MapsController@searchCase');
@@ -1169,56 +1169,56 @@ Route::post('createMapCase', 'MapsController@storeCase');
 */
 // VD BEGIN: Companies
 Route::get('list-companies', ['middleware' => 'resetLastActive', function () {
-	return view('companies.list');
+    return view('companies.list');
 }]);
 Route::get('companies-list', ['middleware' => 'resetLastActive', 'uses' => 'CompanyController@index']);
 Route::get('companies/{id}', ['middleware' => 'resetLastActive', 'uses' => 'CompanyController@edit']);
 Route::post('updateCompany', ['middleware' => 'resetLastActive', 'uses' => 'CompanyController@update']);
 // VD END: Companies
 Route::any("logPIR", function () {
-	$txtDebug = "logPIR";
-	$idPIR    = (array_key_exists("id", $_REQUEST) && $_REQUEST['id']) ? $_REQUEST['id'] : -1;
-	//$idPIR = rand(63800, 63810);
-	//$idPIR = 63808;
-	if ($idPIR == -1) return Response::json(array('status' => 0, 'message' => "Event ID not specified"));
-	$msg  = array_key_exists("msg", $_REQUEST) ? $_REQUEST['msg'] : "";
-	$msg  = "PIR: Event ID - {$idPIR}\n{$msg}";
-	$attr = array('user' => 0, 'status' => 1, 'source' => 5, 'description' => $msg, 'gps_lat' => 0, 'gps_lng' => 0);
-	//$attr['id'] = 63807;
-	//$case = CaseReport::where("id",54);
-	$exists = CaseReport::where("description", "like", "%PIR: Event ID - {$idPIR}%")->count() == 0 ? false : true;
-	$txtDebug .= "\n  exists - {$exists}";//.print_r($case->toArray(),1);
-	$resp = array('status' => 0, 'message' => "Trying to create case for PIR");
-	if ($exists) {
-		$resp = array('status' => 0, 'message' => "Exists");
-	}
-	else {
-		$newCase = New CaseReport($attr);
-		$newCase->setAttribute("department", 1);
-		$newCase->setAttribute("case_type", 5);
-		$newCase->setAttribute("case_sub_type", 22001);
-		$txtDebug .= "\n  newCase - " . print_r($newCase->toArray(), 1);
-		try {
-			$newCase->save();
-			$attrOwner            = array('case_id' => -1, 'user' => 10, 'type' => 5);
-			$attrOwner['case_id'] = $newCase->id;
-			\DB::table('cases_owners')->insert($attrOwner);
-			$txtDebug .= "\n  Success saving";
-			$resp = array('status' => 1, 'message' => "Created case for PIR");
-		}
-		catch (Exception $ex) {
-			$txtDebug .= "\n  Error saving";
-			$txtDebug .= "\n  " . $ex->getMessage();
-			$resp = array('status' => 0, 'message' => $ex->getMessage());
-		}
-	}
+    $txtDebug = "logPIR";
+    $idPIR    = (array_key_exists("id", $_REQUEST) && $_REQUEST['id']) ? $_REQUEST['id'] : -1;
+    //$idPIR = rand(63800, 63810);
+    //$idPIR = 63808;
+    if ($idPIR == -1) return Response::json(array('status' => 0, 'message' => "Event ID not specified"));
+    $msg  = array_key_exists("msg", $_REQUEST) ? $_REQUEST['msg'] : "";
+    $msg  = "PIR: Event ID - {$idPIR}\n{$msg}";
+    $attr = array('user' => 0, 'status' => 1, 'source' => 5, 'description' => $msg, 'gps_lat' => 0, 'gps_lng' => 0);
+    //$attr['id'] = 63807;
+    //$case = CaseReport::where("id",54);
+    $exists = CaseReport::where("description", "like", "%PIR: Event ID - {$idPIR}%")->count() == 0 ? false : true;
+    $txtDebug .= "\n  exists - {$exists}";//.print_r($case->toArray(),1);
+    $resp = array('status' => 0, 'message' => "Trying to create case for PIR");
+    if ($exists) {
+        $resp = array('status' => 0, 'message' => "Exists");
+    }
+    else {
+        $newCase = New CaseReport($attr);
+        $newCase->setAttribute("department", 1);
+        $newCase->setAttribute("case_type", 5);
+        $newCase->setAttribute("case_sub_type", 22001);
+        $txtDebug .= "\n  newCase - " . print_r($newCase->toArray(), 1);
+        try {
+            $newCase->save();
+            $attrOwner            = array('case_id' => -1, 'user' => 10, 'type' => 5);
+            $attrOwner['case_id'] = $newCase->id;
+            \DB::table('cases_owners')->insert($attrOwner);
+            $txtDebug .= "\n  Success saving";
+            $resp = array('status' => 1, 'message' => "Created case for PIR");
+        }
+        catch (Exception $ex) {
+            $txtDebug .= "\n  Error saving";
+            $txtDebug .= "\n  " . $ex->getMessage();
+            $resp = array('status' => 0, 'message' => $ex->getMessage());
+        }
+    }
 
-	//$txtDebug .= "\n  case - {$case->count()}";//.print_r($case->toArray(),1);
-	return Response::json($resp);
-	die("<pre>{$txtDebug}</pre>");
+    //$txtDebug .= "\n  case - {$case->count()}";//.print_r($case->toArray(),1);
+    return Response::json($resp);
+    die("<pre>{$txtDebug}</pre>");
 });
 Route::group(['prefix' => "api"], function () {
-	Route::any("switchseen", "CasesSeenController@switchSeen");
+    Route::any("switchseen", "CasesSeenController@switchSeen");
 });
 
 /*-------------------------------------------------------------------
@@ -1231,7 +1231,14 @@ Route::group(array('prefix' => 'api/v1'), function()
 {    /*|--------------------------------------------------------------------------|
     DRONE ROUTING
     |--------------------------------------------------------------------------|*/
+
     Route::get('userDepartment','DroneRequestController@userDepartment');
+
+
+    Route::get('showDroneRequest/{id}','DroneRequestController@showFirst');
+
+    Route::resource('drone', 'DroneRequestController');
+
     Route::post('firstDroneApproval/{id}', 'DroneRequestController@FirstApprove');
     Route::post('finalDroneApproval/{id}', 'DroneRequestController@Approve');
     Route::post('rejectDroneRequest/{id}', 'DroneRequestController@Reject');
