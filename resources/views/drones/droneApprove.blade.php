@@ -10,6 +10,7 @@
         <div class="row justify-content-center">
             <div  class="col-md-4 ">
                 <h3 class="block-title">CASE DETAILS</h3>
+
                 <h5 class="h3"><small style="color: white;" >Case  Number</small>   : {{$droneRequest->id}}</h5>
                 <h5 class="h3"><small style="color: white;">Case Status </small>     : {{$droneRequest->DroneCaseStatus->name}} </h5>
                 <h5 class="h3"><small style="color: white;">Case logged Date</small> : {{$droneRequest->created_at}} </h5>
@@ -17,9 +18,9 @@
             </div>
             <div  class="col-md-4">
                 <h3 class="block-title">DRONES DETAILS</h3>
-                <h5 class="h3"><small style="color: white;">Drone Type</small>   : {{$droneRequest->DroneType->name}} </h5>
-                <h5 class="h3"><small style="color: white;">Drone Service Request</small>  :  {{$droneRequest->DroneSubType->name}} </h5>
                 <h5 class="h3"><small style="color: white;">Requested by</small> : {{$droneRequest->User->name}} {{$droneRequest->User->surname}}</h5>
+                <h5 class="h3"><small style="color: white;">Drone Type</small>   : {{$droneRequest->DroneType->name}} </h5>
+                <h5 class="h3"><small style="color: white;">Drone Service Request</small>  :     {{$droneRequest->DroneSubType->name}} </h5>
                 <h5 class="h3"><small style="color: white;">Department Requested Service</small> :  {{$droneRequest->Department->name}}</h5>
             </div>
 
@@ -34,8 +35,8 @@
                         @foreach($droneRequestActivity as $item)
                             <div class="media p-l-5">
                                 <div class="media-body">
-                                    <a class="t-overflow" href="">{{$item->User->name}} {{$item->User->surname}}</a><br/>
-                                    <small class="text-muted">{{$item->activity}}</small>
+                                    <a class="t-overflow" href="">{{$item->User->name}} {{$item->User->surname}} {{$item->activity}}  </a><br/>
+                                    <small class="text-muted">{{$item->created_at->diffForHumans()}}</small>
                                 </div>
                             </div>
                         @endforeach
