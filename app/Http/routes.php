@@ -939,6 +939,7 @@ Route::get('getLoggedInUsers', function () {
 |--------------------------------------------------------------------------
 | CASE MESSAGE ROUTING
 |--------------------------------------------------------------------------
+|
 */
 Route::post('addCaseMessage', ['middleware' => 'resetLastActive', 'uses' => 'MessageController@store']);
 Route::post('sendCaseMessage', ['middleware' => 'resetLastActive', 'uses' => 'MessageController@storeEmail']);
@@ -1145,48 +1146,6 @@ Route::post('task-reminders', 'TaskRemindersController@store');
 |--------------------------------------------------------------------------
 |
 */
-
-Route::group(array('prefix' => 'api/v1'), function() {
-    /*
-|--------------------------------------------------------------------------
-| DRONE ROUTING
-|--------------------------------------------------------------------------
-|
-*/
-    Route::resource('drone', 'DroneRequestController');
-    Route::post('firstDroneApproval/{id}', 'DroneRequestController@FirstApprove');
-    Route::post('finalDroneApproval/{id}', 'DroneRequestController@Approve');
-    Route::post('rejectDroneRequest/{id}', 'DroneRequestController@Reject');
-
-    /*
-|--------------------------------------------------------------------------
-| END DRONE ROUTING
-|--------------------------------------------------------------------------
-|
-*/
-
-    /*
-|--------------------------------------------------------------------------
-| DRONE TYPES AND SUB TYPES ROUTING
-|--------------------------------------------------------------------------
-|
-*/
-    Route::resource('drone-type','DroneTypesController');
-    Route::resource('drone-sub-type','DroneSubTypesController');
-    Route::get('droneSubType/{id}','DroneSubTypesController@droneSubTypes');
-
-    Route::get('request','DroneRequestController@index');
-
-    Route::get('userDepartment','DronesController@userDepartment');
-
-    /*
-|--------------------------------------------------------------------------
-| END DRONE TYPES AND SUB TYPES ROUTING
-|--------------------------------------------------------------------------
-|
-*/
-});
-
 /*
 |--------------------------------------------------------------------------
 | MAP ROUTING
@@ -1260,42 +1219,25 @@ Route::any("logPIR", function () {
 });
 Route::group(['prefix' => "api"], function () {
     Route::any("switchseen", "CasesSeenController@switchSeen");
-
 });
-
-
-
-//Route::get('test', function ()
-//{
-//    return view('testVue');
-//});
-//
-//
-//Route::get('vue',function()
-//{
-//    return view('droneAprove');
-//});
-//Route::get('create', function()
-//{
-//
-//  return view::make('DroneApproves.create');
-//});
 
 /*-------------------------------------------------------------------
 DRONES ROUTING
 ---------------------------------------------------------------------
 */
 
+
 Route::group(array('prefix' => 'api/v1'), function()
 {    /*|--------------------------------------------------------------------------|
     DRONE ROUTING
     |--------------------------------------------------------------------------|*/
+
+    Route::get('showDroneRequest/{id}','DroneRequestController@showFirst');
+
+    Route::resource('drone', 'DroneRequestController');
     Route::post('firstDroneApproval/{id}', 'DroneRequestController@FirstApprove');
     Route::post('finalDroneApproval/{id}', 'DroneRequestController@Approve');
     Route::post('rejectDroneRequest/{id}', 'DroneRequestController@Reject');
-    Route::resource('drone', 'DroneRequestController');
-
-
 
     /*|--------------------------------------------------------------------------|
     END DRONE ROUTING
@@ -1307,54 +1249,16 @@ Route::group(array('prefix' => 'api/v1'), function()
     ------------------------|*/
     Route::resource('drone-type','DroneTypesController');
     Route::resource('drone-sub-type','DroneSubTypesController');
+
+
     /*|--------------------------------------------------------------------------|
     END DRONE TYPES AND SUB TYPES ROUTING
- |--------------------------------------------------------------------------|*/
+    |--------------------------------------------------------------------------|*/
 
     Route::get('userDepartment','DronesController@userDepartment');
 });
 
-Route::get('requestForm','DronesController@create');
-Route::get('approveForm','DroneRequestController@index');
+Route::get('DroneList','DroneRequestController@getList');
 
-//Route::get('');
+Route::get('requestForm','DroneTypesController@index');
 
-//Route::group(array('prefix' => 'api/v1'), function()
-//{    /*|--------------------------------------------------------------------------|
-//    DRONE ROUTING
-//    |--------------------------------------------------------------------------|*/
-Route::resource('drone', 'DroneRequestController');
-//    Route::post('firstDroneApproval/{id}', 'DroneRequestController@FirstApprove');
-//    Route::post('finalDroneApproval/{id}', 'DroneRequestController@Approve');
-//    Route::post('rejectDroneRequest/{id}', 'DroneRequestController@Reject');
-//
-//    /*|--------------------------------------------------------------------------|
-//    END DRONE ROUTING
-//    |--------------------------------------------------------------------------|*/
-//
-//    /*|--------------------------------------------------------------------------|
-//     DRONE TYPES AND SUB TYPES ROUTING
-//    |--------------------------------------------------
-//    ------------------------|*/
-//    Route::resource('drone-type','DroneTypesController');
-//    Route::resource('drone-sub-type','DroneSubTypesController');
-//
-//
-//    /*|--------------------------------------------------------------------------|
-//    END DRONE TYPES AND SUB TYPES ROUTING
-//    |--------------------------------------------------------------------------|*/
-//
-//    Route::get('userDepartment','DronesController@userDepartment');
-//    //Route::post('newRequest','DronesController@store');
-//});
-//
-
-Route::get('test/{id}','DroneRequestController@test');
-
-Route::get('firstDroneApproval', 'DroneRequestController@FirstApprove');
-
-//Route::get('Drone','DroneRequestController@index');
-
-//Route::get('droneApprove','DroneRequestController@show');
-
-//Route::get('approveForm','DroneRequestController@show');

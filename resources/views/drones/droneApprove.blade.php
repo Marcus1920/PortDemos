@@ -2,21 +2,19 @@
 @section('content')
     <div class="block-area container" id="droneApproval">
         <ol class="breadcrumb hidden-xs">
-            <li><a href="{{ url('drones') }}">Drone LIST</a></li>
+            <li><a href="{{ url('DroneList') }}">Drone LIST</a></li>
             <li class="active"></li>
         </ol>
         <h4 class="page-title">First Approval</h4>
         <br>
         <div class="row justify-content-center">
             <div  class="col-md-4 ">
-                <h3 class="block-title">CASE DETAILS</h3>
+                <h3 class="block-title">ALL DETAILS</h3>
                 <h5 class="h3"><small style="color: white;" >Case  Number</small>   : {{$droneRequest->id}}</h5>
                 <h5 class="h3"><small style="color: white;">Case Status </small>     : {{$droneRequest->DroneCaseStatus->name}} </h5>
                 <h5 class="h3"><small style="color: white;">Case logged Date</small> : {{$droneRequest->created_at}} </h5>
                 <h5 class="h3"><small style="color: white;">Case Duration </small>   : {{$droneRequest->created_at->diffForHumans()}}</h5>
-            </div>
-            <div  class="col-md-4">
-                <h3 class="block-title">DRONES DETAILS</h3>
+
                 <h5 class="h3"><small style="color: white;">Drone Type</small>   : {{$droneRequest->DroneType->name}} </h5>
                 <h5 class="h3"><small style="color: white;">Drone Service Request</small>  :  {{$droneRequest->DroneSubType->name}} </h5>
                 <h5 class="h3"><small style="color: white;">Requested by</small> : {{$droneRequest->User->name}} {{$droneRequest->User->surname}}</h5>
@@ -26,8 +24,6 @@
         </div>
         <h3 class="block-title">COMMENTS</h3>
         <div class="row">
-            {!! Form::open(['url' => 'tasks', 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"addTaskCaptureForm" ]) !!}
-            {!! Form::hidden('user',Auth::user()->id)!!}
             <div class="form-group">
                 {!! Form::label('', '', array('class' => 'col-md-1 control-label')) !!}
                 <div class="col-md-6">
@@ -39,12 +35,12 @@
         </div>
         <br/>
 
-        <h3 class="block-title">ACTION</h3>
+
 
         <div class="row" style="margin-left: 100px;">
 
             <div class="col">
-                {!! Form::open(['url' => 'http://localhost:8000/api/v1/firstDroneApproval/1', 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"drone_request_id" ]) !!}
+                {!! Form::open(['url' => '/api/v1/firstDroneApproval/'.$droneRequest->id, 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"drone_request_id" ]) !!}
                 {!! Form::hidden('user',Auth::user()->id)!!}
                 <div class="form-group">
                     <div class="col-md-6" style="margin-top:20px;">
@@ -55,7 +51,7 @@
                 {!! Form::close() !!}
             </div>
             <div class="col">
-                {!! Form::open(['url' => 'http://localhost:8000/api/v1/rejectDroneRequest/1', 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"drone_request_id" ]) !!}
+                {!! Form::open(['url' => '/api/v1/rejectDroneRequest/'.$droneRequest->id, 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"drone_request_id" ]) !!}
                 {!! Form::hidden('user',Auth::user()->id)!!}
 
                 <div class="form-group">
@@ -122,6 +118,8 @@
             }
 
         })
+
+
     </script>
 @endsection
 
