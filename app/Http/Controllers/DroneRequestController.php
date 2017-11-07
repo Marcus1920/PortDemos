@@ -247,8 +247,9 @@ class DroneRequestController extends Controller
         $dronRequestActivity->user = $request['user'];
         $dronRequestActivity->activity = "final approved drone request";
         $dronRequestActivity->save();
-
-        return "Successfully Approved";
+        \Session::flash('success', 'Finally Approved');
+        return Redirect::back();
+        //return "Successfully Approved";
     }
 
     public function Reject($id, Request $request)
@@ -296,6 +297,7 @@ class DroneRequestController extends Controller
         $dronRequestActivity->activity = "rejected drone request";
         $dronRequestActivity->save();
 
+
         \Session::flash('success', 'Successfully rejected Drone request '.$id);
         return Redirect::to('DroneList');
     }
@@ -319,6 +321,10 @@ class DroneRequestController extends Controller
 
        // return compact('droneRequest','droneRequestActivity');
         return view('drones.droneApprove',compact('droneRequest','droneRequestActivity','droneRejectReasons'));
+
+
+        \Session::flash('success', 'Finally Rejected');
+        return Redirect::back();
 
     }
 
