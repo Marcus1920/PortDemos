@@ -70,6 +70,26 @@ class DroneRequestController extends Controller
     public function store(Request $request)
     {
         $newDroneRequest = new DroneRequest();
+//        $userRole = User::find($request['created_by']);
+//        $position = Position::find($userRole->position);
+//
+//        if($position->name == "SHE Representative") {
+//            $responderPosition = Position::where('name', 'Environmental Manager')->first();
+//            $newDroneRequest->drone_request_owner = $responderPosition->id;
+//        }
+//        else if($position->name == "Engineering Officer") {
+//            $responderPosition = Position::where('name', 'Senior Engineer')->first();
+//            $newDroneRequest->drone_request_owner = $responderPosition->id;
+//        }
+//        else if($position->name == "Vessel Traffic Controller") {
+//            $responderPosition = Position::where('name', 'Deputy Harbour Master')->first();
+//            $newDroneRequest->drone_request_owner = $responderPosition->id;
+//        }
+//        else if($position->name == "Joint Operations Centre Monitor") {
+//            $responderPosition = Position::where('name', 'Deputy Harbour Master')->first();
+//            $newDroneRequest->drone_request_owner = $responderPosition->id;
+//        }
+
         $newDroneRequest->created_by = $request['created_by'];
         $newDroneRequest->drone_type_id = $request['drone_type_id'];
         $newDroneRequest->sub_drone_type_id = $request['sub_drone_type_id'];
@@ -255,7 +275,8 @@ class DroneRequestController extends Controller
         $dronRequestActivity->activity = "rejected drone request";
         $dronRequestActivity->save();
 
-        return "Successfully Rejected drone request";
+        \Session::flash('success', 'Successfully rejected Drone request '.$id);
+        return Redirect::to('DroneList');
     }
 
     public function showFirst($id)
