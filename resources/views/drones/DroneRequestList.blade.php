@@ -58,10 +58,11 @@ var oTable     = $('#DroneRequestTable').DataTable({
                 {data: 'CaseStatus', name: 'CaseStatus'},
                 {data: 'Department', name: 'Department'},
                 {data: 'comments', name: 'comments'},
-                     {data: function(b)
-                     {
-                         return "<a href='{!! url('api/v1/showDroneRequest/" + b.id + "') !!}' class='btn btn-sm'>" + 'View' + "</a>";
-                     },"names" : 'names'},
+                    {data: 'actions', name: 'actions'}
+                     {{--{data: function(b)--}}
+                     {{--{--}}
+                         {{--return "<a href='{!! url('api/v1/showDroneRequest/" + b.id + "') !!}' class='btn btn-sm'>" + 'View' + "</a>";--}}
+                     {{--},"names" : 'names'},--}}
                ],
 
             "aoColumnDefs": [

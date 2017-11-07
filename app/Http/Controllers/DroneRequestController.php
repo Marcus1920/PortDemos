@@ -62,6 +62,22 @@ class DroneRequestController extends Controller
             ->groupBy('drone_requests.id');
 
         return \Datatables::of($droneRequests)
+            ->addColumn('actions','
+            <div class="row">
+            
+            <div class="col-md-3">
+                 
+                  <a class="btn btn-xs btn-alt"  href="api/v1/showDroneRequest/{{ $id }}" target="">View</a>
+                  </div>
+                  <div class="col-md-1"></div>
+            
+                    <div class="col-md-3">
+                  <a class="btn btn-xs btn-alt" data-toggle="modal" href="api/v1/drone/{{ $id }}" target="">View</a>
+
+                  </div> 
+</div>
+                      '
+            )
             ->make(true);
       //  return $droneRequests;
     }
