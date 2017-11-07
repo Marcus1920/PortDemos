@@ -5,6 +5,13 @@
 <!-- Responsive Table -->
 <div class="block-area" id="responsiveTable">
     <div class="table-responsive overflow">
+        @if(Session::has('success'))
+            <div class="alert alert-success alert-icon">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {{ Session::get('success') }}
+                <i class="icon">&#61845;</i>
+            </div>
+        @endif
         <table class="table tile table-striped" id="DroneRequestTable">
             <thead>
               <tr>
@@ -46,7 +53,7 @@ var oTable     = $('#DroneRequestTable').DataTable({
                 {data: 'comments', name: 'comments'},
                      {data: function(b)
                      {
-                         return "<a href='{!! url('api/v1/drone/" + b.id + "') !!}' class='btn btn-sm'>" + 'View' + "</a>";
+                         return "<a href='{!! url('api/v1/showDroneRequest/" + b.id + "') !!}' class='btn btn-sm'>" + 'View' + "</a>";
                      },"names" : 'names'},
                ],
 

@@ -12,6 +12,7 @@ use App\DroneRejectReason;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Auth;
+use Redirect;
 
 class DroneRequestController extends Controller
 {
@@ -155,7 +156,8 @@ class DroneRequestController extends Controller
         $dronRequestActivity->activity = "first approved drone request";
         $dronRequestActivity->save();
 
-        return " Successfully First Approved!";
+        \Session::flash('success', 'Successfully first approved Drone request '.$id);
+        return Redirect::to('DroneList');
     }
 
     public function Approve($id, Request $request)
