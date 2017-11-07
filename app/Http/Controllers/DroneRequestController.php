@@ -14,6 +14,10 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Redirect;
 
+use App\Http\Requests\DroneRequestForm;
+
+
+
 class DroneRequestController extends Controller
 {
     public function getList()
@@ -58,6 +62,22 @@ class DroneRequestController extends Controller
             ->groupBy('drone_requests.id');
 
         return \Datatables::of($droneRequests)
+            ->addColumn('actions','
+            <div class="row">
+            
+            <div class="col-md-3">
+                 
+                  <a class="btn btn-xs btn-alt"  href="api/v1/showDroneRequest/{{ $id }}" target="">View</a>
+                  </div>
+                  <div class="col-md-1"></div>
+            
+                    <div class="col-md-3">
+                  <a class="btn btn-xs btn-alt" data-toggle="modal" href="api/v1/drone/{{ $id }}" target="">View</a>
+
+                  </div> 
+</div>
+                      '
+            )
             ->make(true);
       //  return $droneRequests;
     }
@@ -67,14 +87,34 @@ class DroneRequestController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store(DroneRequestForm $request)
     {
         $newDroneRequest = new DroneRequest();
+//        $userRole = User::find($request['created_by']);
+//        $position = Position::find($userRole->position);
+//
+//        if($position->name == "SHE Representative") {
+//            $responderPosition = Position::where('name', 'Environmental Manager')->first();
+//            $newDroneRequest->drone_request_owner = $responderPosition->id;
+//        }
+//        else if($position->name == "Engineering Officer") {
+//            $responderPosition = Position::where('name', 'Senior Engineer')->first();
+//            $newDroneRequest->drone_request_owner = $responderPosition->id;
+//        }
+//        else if($position->name == "Vessel Traffic Controller") {
+//            $responderPosition = Position::where('name', 'Deputy Harbour Master')->first();
+//            $newDroneRequest->drone_request_owner = $responderPosition->id;
+//        }
+//        else if($position->name == "Joint Operations Centre Monitor") {
+//            $responderPosition = Position::where('name', 'Deputy Harbour Master')->first();
+//            $newDroneRequest->drone_request_owner = $responderPosition->id;
+//        }
+
         $newDroneRequest->created_by = $request['created_by'];
         $newDroneRequest->drone_type_id = $request['drone_type_id'];
         $newDroneRequest->sub_drone_type_id = $request['sub_drone_type_id'];
         $newDroneRequest->drone_case_status = 1;
-        $newDroneRequest->comments = $request['comments'];
+        $newDroneRequest->comments = $request['comment'];
         $newDroneRequest->department = $request['department'];
         $newDroneRequest->reject_reason = 4;
         $newDroneRequest->reject_other_reason = "None";
@@ -106,7 +146,7 @@ class DroneRequestController extends Controller
                 $message->to($email)->subject('testing notification');
             });
 
-            return "Drone request created";
+
         }
         else if($position->name == "Engineering officer")
         {
@@ -121,7 +161,8 @@ class DroneRequestController extends Controller
             return "joint operations centre monitor";
         }
 
-        return "Drone request created";
+        \Session::flash('success', 'A drone request   has been sent, you will get a response soon!');
+        return Redirect::back();
     }
 
     public function FirstApprove($id, Request $request)
@@ -206,8 +247,9 @@ class DroneRequestController extends Controller
         $dronRequestActivity->user = $request['user'];
         $dronRequestActivity->activity = "final approved drone request";
         $dronRequestActivity->save();
-
-        return "Successfully Approved";
+        \Session::flash('success', 'Finally Approved');
+        return Redirect::back();
+        //return "Successfully Approved";
     }
 
     public function Reject($id, Request $request)
@@ -255,7 +297,9 @@ class DroneRequestController extends Controller
         $dronRequestActivity->activity = "rejected drone request";
         $dronRequestActivity->save();
 
-        return "Successfully Rejected drone request";
+
+        \Session::flash('success', 'Successfully rejected Drone request '.$id);
+        return Redirect::to('DroneList');
     }
 
     public function showFirst($id)
@@ -278,6 +322,10 @@ class DroneRequestController extends Controller
        // return compact('droneRequest','droneRequestActivity');
         return view('drones.droneApprove',compact('droneRequest','droneRequestActivity','droneRejectReasons'));
 
+
+        \Session::flash('success', 'Finally Rejected');
+        return Redirect::back();
+
     }
 
     public function show($id)
@@ -295,21 +343,54 @@ class DroneRequestController extends Controller
             ->where('drone_request_id',$id)
             ->get();
 
-        return compact('droneRequest','droneRequestActivity');
+        $droneRejectReasons = DroneRejectReason::find([1,2,3]);
+        return  view('drones.secondApprovalForm',compact('droneRequest','droneRequestActivity','droneRejectReasons'));
     }
 
     public function edit($id)
     {
-        //
+
     }
 
     public function update(Request $request, $id)
     {
-        //
     }
 
     public function destroy($id)
     {
-        //
+
+    }
+
+    public function userDepartment()
+    {
+
+        $searchString = \Input::get('q');
+        $userDepartment = \DB::table('departments')
+            ->whereRaw(
+                "CONCAT(`departments`.`id`, ' ', `departments`.`name`) LIKE '%{$searchString}%'")
+            ->select(
+                array
+
+                (
+                    'departments.id as id',
+                    'departments.name as name',
+                )
+            )
+            ->get();
+
+        $data = array();
+
+        foreach ($userDepartment as $department) {
+
+            $data[] = array(
+
+
+                "name" => "Department ID: {$department->id} >  Name: {$department->name}",
+                "id" => "{$department->id}"
+            );
+        }
+
+        return $data;
+
     }
 }

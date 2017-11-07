@@ -2,6 +2,13 @@
 
 @section('content')
 
+    <div class="block-area" id="alternative-buttons">
+        <h3 class="block-title">Manage Drones</h3>
+        <a href="{{ url('requestForm') }}" class="btn btn-sm">
+            <i class="fa fa-plus" aria-hidden="true" title="Add Your New Task Here" data-toggle="tooltip"></i>
+        </a>
+    </div>
+
 <!-- Responsive Table -->
 <div class="block-area" id="responsiveTable">
     <div class="table-responsive overflow">
@@ -43,7 +50,7 @@ var oTable     = $('#DroneRequestTable').DataTable({
                 "dom": 'T<"clear">lfrtip',
                 "order" :[[0,"desc"]],
                 "ajax": "{!! url('/api/v1/drone/')!!}",
-                 "columns": [
+                "columns": [
                 {data: 'id', name: 'id'},
                 {data: 'DroneType', name: 'DroneType'},
                 {data: 'DroneSubType', name: 'DroneSubType'},
@@ -51,18 +58,18 @@ var oTable     = $('#DroneRequestTable').DataTable({
                 {data: 'CaseStatus', name: 'CaseStatus'},
                 {data: 'Department', name: 'Department'},
                 {data: 'comments', name: 'comments'},
-                     {data: function(b)
-                     {
-                         return "<a href='{!! url('api/v1/showDroneRequest/" + b.id + "') !!}' class='btn btn-sm'>" + 'View' + "</a>";
-                     },"names" : 'names'},
+                    {data: 'actions', name: 'actions'}
+                     {{--{data: function(b)--}}
+                     {{--{--}}
+                         {{--return "<a href='{!! url('api/v1/showDroneRequest/" + b.id + "') !!}' class='btn btn-sm'>" + 'View' + "</a>";--}}
+                     {{--},"names" : 'names'},--}}
                ],
 
             "aoColumnDefs": [
                 { "bSearchable": false, "aTargets": [ 1] },
                 { "bSortable": false, "aTargets": [ 1 ] }
             ]
-
-  });
+              });
 
           });
       </script>

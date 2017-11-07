@@ -41,7 +41,7 @@ use App\InvestigationOfficer;
 use App\TaskCategory;
 use App\TaskPriority;
 use App\TaskStatus;
-
+use App\DroneType;
 use Auth;
 use App\CalendarEventType; 
 
@@ -138,6 +138,21 @@ class AppServiceProvider extends ServiceProvider
              \View::share('selectTrainingTypes',$selectTrainingTypes);
 
         }
+
+        if (\Schema::hasTable('drone_types'))
+        {
+            $droneTypes          = DroneType::orderBy('name','ASC')->get();
+            $selectDroneTypes    = array();
+            $selectDroneTypes[0] = "Choose a Drone";
+
+            foreach ($droneTypes as $droneType) {
+                $selectDroneTypes[$droneType->id] = $droneType->name;
+            }
+
+            \View::share('selectDroneTypes',$selectDroneTypes);
+
+        }
+
 
         if (\Schema::hasTable('religions'))
         {
