@@ -8,12 +8,15 @@ use App\User;
 use App\Position;
 use App\DroneRequest;
 use App\DroneRequestActivity;
+use App\DroneRejectReason;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Auth;
 use Redirect;
+
 use App\Http\Requests\DroneRequestForm;
-use App\DroneRejectReason;
+
+
 
 class DroneRequestController extends Controller
 {
@@ -60,6 +63,7 @@ class DroneRequestController extends Controller
 
         return \Datatables::of($droneRequests)
             ->make(true);
+      //  return $droneRequests;
     }
 
     public function create()
@@ -70,6 +74,26 @@ class DroneRequestController extends Controller
     public function store(DroneRequestForm $request)
     {
         $newDroneRequest = new DroneRequest();
+//        $userRole = User::find($request['created_by']);
+//        $position = Position::find($userRole->position);
+//
+//        if($position->name == "SHE Representative") {
+//            $responderPosition = Position::where('name', 'Environmental Manager')->first();
+//            $newDroneRequest->drone_request_owner = $responderPosition->id;
+//        }
+//        else if($position->name == "Engineering Officer") {
+//            $responderPosition = Position::where('name', 'Senior Engineer')->first();
+//            $newDroneRequest->drone_request_owner = $responderPosition->id;
+//        }
+//        else if($position->name == "Vessel Traffic Controller") {
+//            $responderPosition = Position::where('name', 'Deputy Harbour Master')->first();
+//            $newDroneRequest->drone_request_owner = $responderPosition->id;
+//        }
+//        else if($position->name == "Joint Operations Centre Monitor") {
+//            $responderPosition = Position::where('name', 'Deputy Harbour Master')->first();
+//            $newDroneRequest->drone_request_owner = $responderPosition->id;
+//        }
+
         $newDroneRequest->created_by = $request['created_by'];
         $newDroneRequest->drone_type_id = $request['drone_type_id'];
         $newDroneRequest->sub_drone_type_id = $request['sub_drone_type_id'];
@@ -157,7 +181,8 @@ class DroneRequestController extends Controller
         $dronRequestActivity->activity = "first approved drone request";
         $dronRequestActivity->save();
 
-        return "First Approved!";
+        \Session::flash('success', 'Successfully first approved Drone request '.$id);
+        return Redirect::to('DroneList');
     }
 
     public function Approve($id, Request $request)
@@ -181,9 +206,6 @@ class DroneRequestController extends Controller
 
         $data1 = array(
             'name'    => $firstResponder->name,
-            'droneType'=>$droneRequest->DroneType->name,
-            'dronesSubtype'=>$droneRequest->DroneSubType->name,
-            'department'=>$droneRequest->Department->name,
 
         );
 
@@ -195,9 +217,6 @@ class DroneRequestController extends Controller
 
         $data = array(
             'name'    => $droneRequest->User->name,
-            'droneType'=>$droneRequest->DroneType->name,
-            'dronesSubtype'=>$droneRequest->DroneSubType->name,
-            'department'=>$droneRequest->Department->name,
 
         );
 
@@ -261,7 +280,30 @@ class DroneRequestController extends Controller
         $dronRequestActivity->activity = "rejected drone request";
         $dronRequestActivity->save();
 
-        return "Successfully Rejected drone request";
+        \Session::flash('success', 'Successfully rejected Drone request '.$id);
+        return Redirect::to('DroneList');
+    }
+
+    public function showFirst($id)
+    {
+        $droneRequest = DroneRequest::with('DroneType')
+            ->with('DroneSubType')
+            ->with('DroneCaseStatus')
+            ->with('Department')
+            ->with('RejectReason')
+            ->where('id',$id)
+            ->first();
+
+        $droneRejectReasons=DroneRejectReason::find([1,2,3]);
+
+        $droneRequestActivity = DroneRequestActivity::with('DroneRequest')
+            ->with('User')
+            ->where('drone_request_id',$id)
+            ->get();
+
+       // return compact('droneRequest','droneRequestActivity');
+        return view('drones.droneApprove',compact('droneRequest','droneRequestActivity','droneRejectReasons'));
+
     }
 
     public function show($id)

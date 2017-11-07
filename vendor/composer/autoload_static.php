@@ -388,6 +388,7 @@ class ComposerStaticInit1c721112013bbf52b0a2636c6824a7ee
 
     public static $classMap = array (
 
+
         'App\\Affiliation' => __DIR__ . '/../..' . '/app/Affiliation.php',
         'App\\AffiliationPositions' => __DIR__ . '/../..' . '/app/AffiliationPositions.php',
         'App\\Bank' => __DIR__ . '/../..' . '/app/Bank.php',
@@ -437,6 +438,7 @@ class ComposerStaticInit1c721112013bbf52b0a2636c6824a7ee
         'App\\FormFieldType' => __DIR__ . '/../..' . '/app/FormFieldType.php',
         'App\\FormsData' => __DIR__ . '/../..' . '/app/FormsData.php',
         'App\\GroupPermission' => __DIR__ . '/../..' . '/app/GroupPermission.php',
+
 
         'App\\Http\\Controllers\\AddressBookController' => __DIR__ . '/../..' . '/app/Http/Controllers/AddressBookController.php',
         'App\\Http\\Controllers\\AffiliationsController' => __DIR__ . '/../..' . '/app/Http/Controllers/AffiliationsController.php',
@@ -513,6 +515,7 @@ class ComposerStaticInit1c721112013bbf52b0a2636c6824a7ee
         'CalendarGroupsTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CalendarGroupsTableSeeder.php',
         'CalendarTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CalendarTableSeeder.php',
 
+
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',
         'Carbon\\CarbonInterval' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
         'Carbon\\Exceptions\\InvalidDateException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php',
@@ -566,6 +569,7 @@ class ComposerStaticInit1c721112013bbf52b0a2636c6824a7ee
         'Cornford\\Googlmapper\\Models\\Polyline' => __DIR__ . '/..' . '/cornford/googlmapper/src/Cornford/Googlmapper/Models/Polyline.php',
         'Cornford\\Googlmapper\\Models\\Rectangle' => __DIR__ . '/..' . '/cornford/googlmapper/src/Cornford/Googlmapper/Models/Rectangle.php',
         'Cornford\\Googlmapper\\Models\\Streetview' => __DIR__ . '/..' . '/cornford/googlmapper/src/Cornford/Googlmapper/Models/Streetview.php',
+
 
         'CreateCasesSeensTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_29_003544_create_cases_seens_table.php',
         'CreateDroneApprovalStatusesTable' => __DIR__ . '/../..' . '/database/migrations/2017_10_18_183502_create_drone_approval_statuses_table.php',
@@ -648,6 +652,7 @@ class ComposerStaticInit1c721112013bbf52b0a2636c6824a7ee
         'Hamcrest\\Util' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Util.php',
         'Hamcrest\\Xml\\HasXPath' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Xml/HasXPath.php',
         'IlluminateQueueClosure' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Queue/IlluminateQueueClosure.php',
+
 
         'Illuminate\\Auth\\Access\\Gate' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Access/Gate.php',
         'Illuminate\\Auth\\Access\\HandlesAuthorization' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Access/HandlesAuthorization.php',
@@ -1397,6 +1402,8 @@ class ComposerStaticInit1c721112013bbf52b0a2636c6824a7ee
         'Monolog\\Processor\\UidProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Processor/UidProcessor.php',
         'Monolog\\Processor\\WebProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Processor/WebProcessor.php',
         'Monolog\\Registry' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Registry.php',
+        'Languages' => __DIR__ . '/../..' . '/database/seeds/Languages.php',
+
         'Languages' => __DIR__ . '/../..' . '/database/seeds/Languages.php',
 
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/Assert.php',

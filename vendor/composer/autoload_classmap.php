@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
 
+
     'App\\Affiliation' => $baseDir . '/app/Affiliation.php',
     'App\\AffiliationPositions' => $baseDir . '/app/AffiliationPositions.php',
     'App\\Bank' => $baseDir . '/app/Bank.php',
@@ -56,6 +57,7 @@ return array(
     'App\\FormFieldType' => $baseDir . '/app/FormFieldType.php',
     'App\\FormsData' => $baseDir . '/app/FormsData.php',
     'App\\GroupPermission' => $baseDir . '/app/GroupPermission.php',
+
 
     'App\\Http\\Controllers\\AddressBookController' => $baseDir . '/app/Http/Controllers/AddressBookController.php',
     'App\\Http\\Controllers\\AffiliationsController' => $baseDir . '/app/Http/Controllers/AffiliationsController.php',
@@ -131,7 +133,7 @@ return array(
     'CalendarEventTypesSeeder' => $baseDir . '/database/seeds/CalendarEventTypesSeeder.php',
     'CalendarGroupsTableSeeder' => $baseDir . '/database/seeds/CalendarGroupsTableSeeder.php',
     'CalendarTableSeeder' => $baseDir . '/database/seeds/CalendarTableSeeder.php',
-<<<<<<< HEAD
+
     'Carbon\\Carbon' => $vendorDir . '/nesbot/carbon/src/Carbon/Carbon.php',
     'Carbon\\CarbonInterval' => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
     'Carbon\\Exceptions\\InvalidDateException' => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php',
@@ -185,8 +187,7 @@ return array(
     'Cornford\\Googlmapper\\Models\\Polyline' => $vendorDir . '/cornford/googlmapper/src/Cornford/Googlmapper/Models/Polyline.php',
     'Cornford\\Googlmapper\\Models\\Rectangle' => $vendorDir . '/cornford/googlmapper/src/Cornford/Googlmapper/Models/Rectangle.php',
     'Cornford\\Googlmapper\\Models\\Streetview' => $vendorDir . '/cornford/googlmapper/src/Cornford/Googlmapper/Models/Streetview.php',
-=======
->>>>>>> 4c212472856e8529dd1d12819a0f3c3c501991a7
+
     'CreateCasesSeensTable' => $baseDir . '/database/migrations/2017_08_29_003544_create_cases_seens_table.php',
     'CreateDroneApprovalStatusesTable' => $baseDir . '/database/migrations/2017_10_18_183502_create_drone_approval_statuses_table.php',
     'CreateDroneRejectReasonsTable' => $baseDir . '/database/migrations/2017_10_18_183613_create_drone_reject_reasons_table.php',
@@ -268,7 +269,7 @@ return array(
     'Hamcrest\\Util' => $vendorDir . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Util.php',
     'Hamcrest\\Xml\\HasXPath' => $vendorDir . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Xml/HasXPath.php',
     'IlluminateQueueClosure' => $vendorDir . '/laravel/framework/src/Illuminate/Queue/IlluminateQueueClosure.php',
-<<<<<<< HEAD
+
     'Illuminate\\Auth\\Access\\Gate' => $vendorDir . '/laravel/framework/src/Illuminate/Auth/Access/Gate.php',
     'Illuminate\\Auth\\Access\\HandlesAuthorization' => $vendorDir . '/laravel/framework/src/Illuminate/Auth/Access/HandlesAuthorization.php',
     'Illuminate\\Auth\\Access\\Response' => $vendorDir . '/laravel/framework/src/Illuminate/Auth/Access/Response.php',
@@ -1017,9 +1018,10 @@ return array(
     'Monolog\\Processor\\UidProcessor' => $vendorDir . '/monolog/monolog/src/Monolog/Processor/UidProcessor.php',
     'Monolog\\Processor\\WebProcessor' => $vendorDir . '/monolog/monolog/src/Monolog/Processor/WebProcessor.php',
     'Monolog\\Registry' => $vendorDir . '/monolog/monolog/src/Monolog/Registry.php',
-=======
+
     'Languages' => $baseDir . '/database/seeds/Languages.php',
->>>>>>> 4c212472856e8529dd1d12819a0f3c3c501991a7
+
+
     'PHPUnit\\Framework\\Assert' => $vendorDir . '/phpunit/phpunit/src/ForwardCompatibility/Assert.php',
     'PHPUnit\\Framework\\AssertionFailedError' => $vendorDir . '/phpunit/phpunit/src/ForwardCompatibility/AssertionFailedError.php',
     'PHPUnit\\Framework\\BaseTestListener' => $vendorDir . '/phpunit/phpunit/src/ForwardCompatibility/BaseTestListener.php',
