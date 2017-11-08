@@ -10,6 +10,7 @@
         <div class="row justify-content-center">
             <div  class="col-md-4 ">
                 <h3 class="block-title">CASE DETAILS</h3>
+
                 <h5 class="h3"><small style="color: white;" >Case  Number</small>   : {{$droneRequest->id}}</h5>
                 <h5 class="h3"><small style="color: white;">Case Status </small>     : {{$droneRequest->DroneCaseStatus->name}} </h5>
                 <h5 class="h3"><small style="color: white;">Case logged Date</small> : {{$droneRequest->created_at}} </h5>
@@ -17,9 +18,9 @@
             </div>
             <div  class="col-md-4">
                 <h3 class="block-title">DRONES DETAILS</h3>
-                <h5 class="h3"><small style="color: white;">Drone Type</small>   : {{$droneRequest->DroneType->name}} </h5>
-                <h5 class="h3"><small style="color: white;">Drone Service Request</small>  :  {{$droneRequest->DroneSubType->name}} </h5>
                 <h5 class="h3"><small style="color: white;">Requested by</small> : {{$droneRequest->User->name}} {{$droneRequest->User->surname}}</h5>
+                <h5 class="h3"><small style="color: white;">Drone Type</small>   : {{$droneRequest->DroneType->name}} </h5>
+                <h5 class="h3"><small style="color: white;">Drone Service Request</small>  :     {{$droneRequest->DroneSubType->name}} </h5>
                 <h5 class="h3"><small style="color: white;">Department Requested Service</small> :  {{$droneRequest->Department->name}}</h5>
             </div>
 
@@ -34,8 +35,8 @@
                         @foreach($droneRequestActivity as $item)
                             <div class="media p-l-5">
                                 <div class="media-body">
-                                    <a class="t-overflow" href="">{{$item->User->name}} {{$item->User->surname}}</a><br/>
-                                    <small class="text-muted">{{$item->activity}}</small>
+                                    <a class="t-overflow" href="">{{$item->User->name}} {{$item->User->surname}} {{$item->activity}}  </a><br/>
+                                    <small class="text-muted">{{$item->created_at->diffForHumans()}}</small>
                                 </div>
                             </div>
                         @endforeach
@@ -70,7 +71,7 @@
                 {!! Form::hidden('user',Auth::user()->id)!!}
                 <div class="form-group">
                     <div class="col-md-6" style="margin-top:20px;">
-                        <button type="submit" class="btn btn-primary" id="approveId">Approve</button>
+                        <button type="submit" class="btn btn-primary"  onclick="getApproveToaster()" id="approveId">Approve</button>
 
                     </div>
                 </div>
@@ -112,10 +113,14 @@
 
                 <div class="form-group submit hidden">
                     <div class="col-md-10">
-                        <button type="submit" type="button" class="btn btn-sm" id="submitId" disabled>Submit</button>
+                        <button type="submit" type="button" class="btn btn-sm" id="submitId" onclick="getRejectToaster()" disabled>Submit</button>
                     </div>
                 </div>
                 {!! Form::close() !!}
+
+                <div id="snackbar">The Request was already approved</div>
+                <div id="rejectSnackbar">The Request was already rejected</div>
+
             </div>
         </div>
     </div>
@@ -123,6 +128,49 @@
 @section('footer')
 
     <script>
+
+        function getApproveToaster() {
+            if (typeof(Storage) !== "undefined") {
+                if (localStorage.clickcount) {
+                    localStorage.clickcount = Number(localStorage.clickcount) + 1;
+
+                    var x = document.getElementById("snackbar");
+                    x.className = "show";
+                    setTimeout(function () {
+                        x.className = x.className.replace("show", "");
+                    }, 3000);
+
+                    event.preventDefault();
+
+                } else {
+                    localStorage.clickcount = 1;
+                }
+            }
+        }
+
+        function getRejectToaster() {
+
+            if (typeof(Storage) !== "undefined") {
+                if (localStorage.rejectClickCount) {
+                    localStorage.rejectClickCount = Number(localStorage.rejectClickCount) + 1;
+
+                    var x = document.getElementById("rejectSnackbar");
+                    x.className = "show";
+                    setTimeout(function () {
+                        x.className = x.className.replace("show", "");
+                    }, 3000);
+
+                    event.preventDefault();
+
+                } else {
+                    localStorage.rejectClickCount = 1;
+                }
+            }
+        }
+
+
+
+
         $('#rejectId').on('click',function(){
 
             $('.reason').removeClass('hidden');
@@ -141,7 +189,7 @@
                 $('.otherReason').addClass('hidden');
             }
 
-        })
+        });
         $("#firstRejectionForm").validate();
     </script>
 @endsection

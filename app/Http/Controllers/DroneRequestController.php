@@ -25,6 +25,58 @@ class DroneRequestController extends Controller
         return view('drones.DroneRequestList');
     }
 
+    public function getPerUser($id)
+    {
+        $user = User::find($id);
+
+        $droneRequests = \DB::table('drone_requests')
+            ->join('drone_types', 'drone_requests.drone_type_id', '=', 'drone_types.id')
+            ->join('drone_sub_types', 'drone_requests.sub_drone_type_id', '=', 'drone_sub_types.id')
+            ->join('users', 'drone_requests.created_by', '=', 'users.id')
+            ->join('drone_approval_statuses', 'drone_requests.drone_case_status', '=', 'drone_approval_statuses.id')
+            ->join('departments', 'drone_requests.department', '=', 'departments.id')
+            ->join('drone_reject_reasons', 'drone_requests.reject_reason', '=', 'drone_reject_reasons.id')
+            ->select(\DB::raw
+            (
+                "
+                    drone_requests.id,
+                    drone_requests.created_at,
+                    drone_types.name as DroneType,
+                    drone_sub_types.name as DroneSubType,
+                    drone_requests.comments,
+                    users.name as CreatedBy,
+                    drone_approval_statuses.name as CaseStatus,
+                    departments.name as Department,
+                    drone_requests.comments,
+                    drone_reject_reasons.reason as RejectReason
+                "
+            )
+            )
+            ->where('drone_request_owner',$user->position)
+            ->groupBy('drone_requests.id');
+
+        return \Datatables::of($droneRequests)
+            ->addColumn('actions','
+            <div class="row">
+            
+            <div class="col-md-3">
+                 
+                  <a class="btn btn-xs btn-alt"  href="api/v1/showDroneRequest/{{ $id }}" target="">View</a>
+                  </div>
+                  <div class="col-md-1"></div>
+            
+                    <div class="col-md-3">
+                  <a class="btn btn-xs btn-alt" data-toggle="modal" href="api/v1/drone/{{ $id }}" target="">View</a>
+
+                  </div> 
+                  </div>
+                      '
+            )
+            ->make(true);
+
+//        return $droneRequests;
+    }
+
     public function index()
     {
         //Eloquent
@@ -75,7 +127,7 @@ class DroneRequestController extends Controller
                   <a class="btn btn-xs btn-alt" data-toggle="modal" href="api/v1/drone/{{ $id }}" target="">View</a>
 
                   </div> 
-</div>
+                  </div>
                       '
             )
             ->make(true);
@@ -90,25 +142,25 @@ class DroneRequestController extends Controller
     public function store(DroneRequestForm $request)
     {
         $newDroneRequest = new DroneRequest();
-//        $userRole = User::find($request['created_by']);
-//        $position = Position::find($userRole->position);
-//
-//        if($position->name == "SHE Representative") {
-//            $responderPosition = Position::where('name', 'Environmental Manager')->first();
-//            $newDroneRequest->drone_request_owner = $responderPosition->id;
-//        }
-//        else if($position->name == "Engineering Officer") {
-//            $responderPosition = Position::where('name', 'Senior Engineer')->first();
-//            $newDroneRequest->drone_request_owner = $responderPosition->id;
-//        }
-//        else if($position->name == "Vessel Traffic Controller") {
-//            $responderPosition = Position::where('name', 'Deputy Harbour Master')->first();
-//            $newDroneRequest->drone_request_owner = $responderPosition->id;
-//        }
-//        else if($position->name == "Joint Operations Centre Monitor") {
-//            $responderPosition = Position::where('name', 'Deputy Harbour Master')->first();
-//            $newDroneRequest->drone_request_owner = $responderPosition->id;
-//        }
+        $userRole = User::find($request['created_by']);
+        $position = Position::find($userRole->position);
+
+        if($position->name == "SHE Representative") {
+            $responderPosition = Position::where('name', 'Environmental Manager')->first();
+            $newDroneRequest->drone_request_owner = $responderPosition->id;
+        }
+        else if($position->name == "Engineering Officer") {
+            $responderPosition = Position::where('name', 'Senior Engineer')->first();
+            $newDroneRequest->drone_request_owner = $responderPosition->id;
+        }
+        else if($position->name == "Vessel Traffic Controller") {
+            $responderPosition = Position::where('name', 'Deputy Harbour Master')->first();
+            $newDroneRequest->drone_request_owner = $responderPosition->id;
+        }
+        else if($position->name == "Joint Operations Centre Monitor") {
+            $responderPosition = Position::where('name', 'Deputy Harbour Master')->first();
+            $newDroneRequest->drone_request_owner = $responderPosition->id;
+        }
 
         $newDroneRequest->created_by = $request['created_by'];
         $newDroneRequest->drone_type_id = $request['drone_type_id'];
