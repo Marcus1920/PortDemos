@@ -43,13 +43,15 @@
 
         $(document).ready(function() {
 
+            var userId = {{Auth::user()->id}};
+
 var oTable     = $('#DroneRequestTable').DataTable({
                 "autoWidth":false,
                 "processing": true,
                 "serverSide": true,
                 "dom": 'T<"clear">lfrtip',
                 "order" :[[0,"desc"]],
-                "ajax": "{!! url('/api/v1/drone/')!!}",
+                "ajax": "{!! url('/getDroneRequests/"+ userId +"')!!}",
                 "columns": [
                 {data: 'id', name: 'id'},
                 {data: 'DroneType', name: 'DroneType'},
