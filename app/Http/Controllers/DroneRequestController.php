@@ -268,6 +268,9 @@ class DroneRequestController extends Controller
             ->where('id',$id)
             ->first();
 
+//        $finalApproverPosition = Position::where('name','Harbour Master')->first();
+//        return $finalApproverPosition;
+
         $droneActivity = DroneRequestActivity::where('drone_request_id',$id)->get();
 
         $firstResponder = User::find($droneActivity[1]['user']);
