@@ -48,11 +48,13 @@ class DroneRequestController extends Controller
                     drone_approval_statuses.name as CaseStatus,
                     departments.name as Department,
                     drone_requests.comments,
-                    drone_reject_reasons.reason as RejectReason
+                    drone_reject_reasons.reason as RejectReason,
+                    drone_requests.created_by
                 "
             )
             )
             ->where('drone_request_owner',$user->position)
+            ->orWhere('drone_requests.created_by',$id)
             ->groupBy('drone_requests.id');
 
         return \Datatables::of($droneRequests)

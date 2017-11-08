@@ -114,7 +114,8 @@
             {!! Form::close() !!}
         </div>
         <br/>
-
+    @if(Auth::user()->id != $droneRequest->created_by)
+        <a aria-hidden="true">
         <h3 class="block-title">ACTION</h3>
 
         <div class="row" style="margin-left: 330px;">
@@ -138,10 +139,10 @@
                 {!! Form::hidden('user',Auth::user()->id)!!}
 
                 {{--<div class="form-group">--}}
-                    {{--<div class="col-md-6">--}}
-                        {{--<button type="button" class="btn  btn-danger" id="rejectId">Reject</button>--}}
+                {{--<div class="col-md-6">--}}
+                {{--<button type="button" class="btn  btn-danger" id="rejectId">Reject</button>--}}
 
-                    {{--</div>--}}
+                {{--</div>--}}
                 {{--</div>--}}
 
                 <div class="form-group reason hidden ">
@@ -179,6 +180,9 @@
 
             </div>
         </div>
+        </a>
+    @endif
+
 
 @endsection
 @section('footer')
