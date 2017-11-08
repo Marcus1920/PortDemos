@@ -1,5 +1,8 @@
 @extends('master')
 @section('content')
+
+
+
     <div class="block-area container" id="droneApproval">
         <ol class="breadcrumb hidden-xs">
             <li><a href="{{ url('DroneList') }}">Drone LIST</a></li>
@@ -8,21 +11,71 @@
         <h4 class="page-title">First Approval</h4>
         <br>
         <div class="row justify-content-center">
-            <div  class="col-md-4 ">
+            {{--<div  class="col-md-4 ">--}}
+                {{--<h3 class="block-title">CASE DETAILS</h3>--}}
+
+
+            <div  class="col-md-4">
                 <h3 class="block-title">CASE DETAILS</h3>
 
-                <h5 class="h3"><small style="color: white;" >Case  Number</small>   : {{$droneRequest->id}}</h5>
-                <h5 class="h3"><small style="color: white;">Case Status </small>     : {{$droneRequest->DroneCaseStatus->name}} </h5>
-                <h5 class="h3"><small style="color: white;">Case logged Date</small> : {{$droneRequest->created_at}} </h5>
-                <h5 class="h3"><small style="color: white;">Case Duration </small>   : {{$droneRequest->created_at->diffForHumans()}}</h5>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        {{--<td><h5 class="h3"><small style="color: white;" >Case  Number</small>   : {{$droneRequest->id}}</h5></td>--}}
+                        {{--<td> <h5 class="h3"><small style="color: white;">Case Status </small>     : {{$droneRequest->DroneCaseStatus->name}} </h5></td>--}}
+                        {{--<td> <h5 class="h3"><small style="color: white;">Case logged Date</small> : {{$droneRequest->created_at}} </h5></td>--}}
+                        {{--<td> <h5 class="h3"><small style="color: white;">Case Duration </small>   : {{$droneRequest->created_at->diffForHumans()}}</h5></td>--}}
+
+
+                        <td>Case  Number</td>
+                        <td> {{$droneRequest->id}}</td>
+                    </tr>
+                    <tr>
+                        <td>Case Status</td>
+                        <td>{{$droneRequest->DroneCaseStatus->name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Case logged Date</td>
+                        <td>{{$droneRequest->created_at}}</td>
+                    </tr>
+                    <tr>
+                        <td>Case Duration</td>
+                        <td>{{$droneRequest->created_at->diffForHumans()}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
             </div>
             <div  class="col-md-4">
+
                 <h3 class="block-title">DRONES DETAILS</h3>
-                <h5 class="h3"><small style="color: white;">Requested by</small> : {{$droneRequest->User->name}} {{$droneRequest->User->surname}}</h5>
-                <h5 class="h3"><small style="color: white;">Drone Type</small>   : {{$droneRequest->DroneType->name}} </h5>
-                <h5 class="h3"><small style="color: white;">Drone Service Request</small>  :     {{$droneRequest->DroneSubType->name}} </h5>
-                <h5 class="h3"><small style="color: white;">Department Requested Service</small> :  {{$droneRequest->Department->name}}</h5>
+
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td>Requested by</td>
+                    <td>{{$droneRequest->User->name}} {{$droneRequest->User->surname}} </td>
+                </tr>
+                <tr>
+                    <td> Drone Type</td>
+                    <td>{{$droneRequest->DroneType->name}}</td>
+                </tr>
+                <tr>
+                    <td>Drone Service Request</td>
+                    <td>{{$droneRequest->DroneSubType->name}}</td>
+                </tr>
+                <tr>
+                    <td>Department Requested Service</td>
+                    <td>{{$droneRequest->Department->name}}</td>
+                </tr>
+                </tbody>
+            </table>
+                {{--<h5 class="h3"><small style="color: white;">Requested by</small> : {{$droneRequest->User->name}} {{$droneRequest->User->surname}}</h5>--}}
+                {{--<h5 class="h3"><small style="color: white;">Drone Type</small>   : {{$droneRequest->DroneType->name}} </h5>--}}
+                {{--<h5 class="h3"><small style="color: white;">Drone Service Request</small>  :     {{$droneRequest->DroneSubType->name}} </h5>--}}
+                {{--<h5 class="h3"><small style="color: white;">Department Requested Service</small> :  {{$droneRequest->Department->name}}</h5>--}}
             </div>
+
 
             <div  class="col-md-4">
                 <h3 class="block-title">DRONES REQUEST ACTIVITIES</h3>
@@ -45,16 +98,16 @@
                     </div>
                 </div>
 
-
+            </div>
             </div>
         </div>
         <h3 class="block-title">COMMENTS</h3>
-        <div class="row">
+        <div class="row " style="margin-left:200px">
             {!! Form::open(['url' => '', 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"commentId" ]) !!}
             <div class="form-group">
                 {!! Form::label('', '', array('class' => 'col-md-1 control-label')) !!}
-                <div class="col-md-6">
-                    {!! Form::textarea('comment',$droneRequest->comments,['class' => 'form-control input-sm','id' => 'comment']) !!}
+                <div class="col-sm-4">
+                    {!! Form::textarea('comment',$droneRequest->comments,['class' => 'form-control input-sm','id' => 'comment','disabled']) !!}
 
                 </div>
             </div>
@@ -64,14 +117,17 @@
 
         <h3 class="block-title">ACTION</h3>
 
-        <div class="row" style="margin-left: 100px;">
+        <div class="row" style="margin-left: 330px;">
 
             <div class="col">
                 {!! Form::open(['url' => 'api/v1/firstDroneApproval/'.$droneRequest->id, 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"firstApprovalForm" ]) !!}
                 {!! Form::hidden('user',Auth::user()->id)!!}
-                <div class="form-group">
+                <div class="form-group" >
                     <div class="col-md-6" style="margin-top:20px;">
                         <button type="submit" class="btn btn-primary"  onclick="getApproveToaster()" id="approveId">Approve</button>
+
+                        <button type="button" class="btn  btn-danger" id="rejectId">Reject</button>
+
 
                     </div>
                 </div>
@@ -81,12 +137,12 @@
                 {!! Form::open(['url' => 'api/v1/rejectDroneRequest/'.$droneRequest->id, 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"firstRejectionForm" ]) !!}
                 {!! Form::hidden('user',Auth::user()->id)!!}
 
-                <div class="form-group">
-                    <div class="col-md-6" style="margin-top:20px;">
-                        <button type="button" class="btn  btn-danger" id="rejectId">Reject</button>
+                {{--<div class="form-group">--}}
+                    {{--<div class="col-md-6">--}}
+                        {{--<button type="button" class="btn  btn-danger" id="rejectId">Reject</button>--}}
 
-                    </div>
-                </div>
+                    {{--</div>--}}
+                {{--</div>--}}
 
                 <div class="form-group reason hidden ">
                     <div class="col-md-6" >
@@ -105,7 +161,7 @@
 
                 <div class="form-group otherReason hidden" >
                     {!! Form::label('', '') !!}
-                    <div class="col-md-6">
+                    <div class="col-sm-4">
                         {!! Form::textarea('reject_other_reason',null,['class' => 'form-control input-sm','id' => 'reject_other_reason','placeholder'=>'other reason.','required']) !!}
                         @if ($errors->has('reject_other_reason')) <p class="help-block red">*{{ $errors->first('reject_other_reason') }}</p> @endif
                     </div>
@@ -123,53 +179,49 @@
 
             </div>
         </div>
-    </div>
+
 @endsection
 @section('footer')
 
     <script>
 
-        function getApproveToaster() {
-            if (typeof(Storage) !== "undefined") {
-                if (localStorage.clickcount) {
-                    localStorage.clickcount = Number(localStorage.clickcount) + 1;
+//        function getApproveToaster() {
+//            if (typeof(Storage) !== "undefined") {
+//                if (localStorage.clickcount) {
+//                    localStorage.clickcount = Number(localStorage.clickcount) + 1;
+//
+//                    var x = document.getElementById("snackbar");
+//                    x.className = "show";
+//                    setTimeout(function () {
+//                        x.className = x.className.replace("show", "");
+//                    }, 3000);
+//
+//                    event.preventDefault();
+//
+//                } else {
+//                    localStorage.clickcount = 1;
+//                }
+//            }
+//        }
 
-                    var x = document.getElementById("snackbar");
-                    x.className = "show";
-                    setTimeout(function () {
-                        x.className = x.className.replace("show", "");
-                    }, 3000);
-
-                    event.preventDefault();
-
-                } else {
-                    localStorage.clickcount = 1;
-                }
-            }
-        }
-
-        function getRejectToaster() {
-
-            if (typeof(Storage) !== "undefined") {
-                if (localStorage.rejectClickCount) {
-                    localStorage.rejectClickCount = Number(localStorage.rejectClickCount) + 1;
-
-                    var x = document.getElementById("rejectSnackbar");
-                    x.className = "show";
-                    setTimeout(function () {
-                        x.className = x.className.replace("show", "");
-                    }, 3000);
-
-                    event.preventDefault();
-
-                } else {
-                    localStorage.rejectClickCount = 1;
-                }
-            }
-        }
-
-
-
+//        function getRejectToaster() {
+//
+//            if (typeof(Storage) !== "undefined") {
+//                if (localStorage.rejectClickCount) {
+//                    localStorage.rejectClickCount = Number(localStorage.rejectClickCount) + 1;
+//
+//                    var x = document.getElementById("rejectSnackbar");
+//                    x.className = "show";
+//                    setTimeout(function () {
+//                        x.className = x.className.replace("show", "");
+//                    }, 3000);
+//
+//                    event.preventDefault();
+//
+//                } else {
+//                    localStorage.rejectClickCount = 1;
+//                }
+//            }
 
         $('#rejectId').on('click',function(){
 
