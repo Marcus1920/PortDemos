@@ -8,25 +8,89 @@
             <li><a href="{{ url('DroneList') }}">Drone LIST</a></li>
             <li class="active"></li>
         </ol>
-        <h4 class="page-title">First Approval</h4>
+        @if(Auth::user()->id == $droneRequest->created_by)
+        <a aria-hidden="true">
+        <h4 class="page-title">Drone Request Profile</h4>
+        </a>
+            @else
+            <a aria-hidden="true">
+                <h4 class="page-title">First Approval</h4>
+            </a>
+        @endif
         <br>
-        <div class="row justify-content-center">
-            {{--<div  class="col-md-4 ">--}}
-                {{--<h3 class="block-title">CASE DETAILS</h3>--}}
+        <center>
+        @if(Auth::user()->id != $droneRequest->created_by)
+                @if($droneRequest->drone_case_status==1)
+            <a aria-hidden="true">
+                {{--<h3 class="block-title">ACTION</h3>--}}
 
+                <div class="row" style="margin-left: 330px;">
+
+                    <div class="col">
+                        {!! Form::open(['url' => 'api/v1/firstDroneApproval/'.$droneRequest->id, 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"firstApprovalForm" ]) !!}
+                        {!! Form::hidden('user',Auth::user()->id)!!}
+                        <div class="form-group" >
+                            <div class="col-md-6" style="margin-top:20px;">
+                                <button type="submit" class="btn btn-primary"  onclick="getApproveToaster()" id="approveId"><i  id="acceptTaskBtn"  class="fa fa-check fa-4x" aria-hidden="true"></i>Approve</button>
+
+                                <button type="button" class="btn  btn-danger" id="rejectId"><i  id="declineTaskBtn" class="fa fa-times fa-4x" aria-hidden="true"></i>Reject</button>
+
+
+                            </div>
+                        </div>
+                        {!! Form::close() !!}
+                    </div>
+                    <div class="col">
+                        {!! Form::open(['url' => 'api/v1/rejectDroneRequest/'.$droneRequest->id, 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"firstRejectionForm" ]) !!}
+                        {!! Form::hidden('user',Auth::user()->id)!!}
+                        <div class="form-group reason hidden ">
+                            <div class="col-md-6 col-md-offset-3" >
+                                <div class="col-md-5 " style="margin-top:10px;">
+                                    <select name="reject_reason" id="reject_reason" class="form-control " required>
+                                        <option value="0"  selected disabled>-select reason-</option>
+                                        @foreach($droneRejectReasons as $reason)
+                                            <option value="{{$reason->id}}" name="reject_reason" id="{{$reason->id}}" required>{{$reason->reason}}</option>
+                                            @if ($errors->has('reject_reason')) <p class="help-block red">*{{ $errors->first('reject_reason') }}</p> @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+
+                        <div class="form-group otherReason hidden" >
+                            {!! Form::label('', '') !!}
+                            <div class="col-md-6">
+                                {!! Form::textarea('reject_other_reason',null,['class' => 'form-control input-sm','id' => 'reject_other_reason','placeholder'=>'other reason.','required']) !!}
+                                @if ($errors->has('reject_other_reason')) <p class="help-block red">*{{ $errors->first('reject_other_reason') }}</p> @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group submit hidden" style="margin-bottom: 35px">
+                            <div class=" col-md-6">
+                                <button type="submit" class="btn btn-lg" id="submitId" onclick="getRejectToaster()" disabled>Submit</button>
+                            </div>
+                        </div>
+                        {!! Form::close() !!}
+
+                        <div id="snackbar">The Request was already approved</div>
+                        <div id="rejectSnackbar">The Request was already rejected</div>
+
+                    </div>
+                </div>
+            </a>
+        @endif
+        @endif
+        </center>
+        <div class="row justify-content-center">
 
             <div  class="col-md-4">
+
                 <h3 class="block-title">CASE DETAILS</h3>
 
                 <table class="table">
                     <tbody>
                     <tr>
-                        {{--<td><h5 class="h3"><small style="color: white;" >Case  Number</small>   : {{$droneRequest->id}}</h5></td>--}}
-                        {{--<td> <h5 class="h3"><small style="color: white;">Case Status </small>     : {{$droneRequest->DroneCaseStatus->name}} </h5></td>--}}
-                        {{--<td> <h5 class="h3"><small style="color: white;">Case logged Date</small> : {{$droneRequest->created_at}} </h5></td>--}}
-                        {{--<td> <h5 class="h3"><small style="color: white;">Case Duration </small>   : {{$droneRequest->created_at->diffForHumans()}}</h5></td>--}}
-
-
                         <td>Case  Number</td>
                         <td> {{$droneRequest->id}}</td>
                     </tr>
@@ -70,10 +134,6 @@
                 </tr>
                 </tbody>
             </table>
-                {{--<h5 class="h3"><small style="color: white;">Requested by</small> : {{$droneRequest->User->name}} {{$droneRequest->User->surname}}</h5>--}}
-                {{--<h5 class="h3"><small style="color: white;">Drone Type</small>   : {{$droneRequest->DroneType->name}} </h5>--}}
-                {{--<h5 class="h3"><small style="color: white;">Drone Service Request</small>  :     {{$droneRequest->DroneSubType->name}} </h5>--}}
-                {{--<h5 class="h3"><small style="color: white;">Department Requested Service</small> :  {{$droneRequest->Department->name}}</h5>--}}
             </div>
 
 
@@ -99,133 +159,24 @@
                 </div>
 
             </div>
-            </div>
         </div>
-        <h3 class="block-title">COMMENTS</h3>
-        <div class="row " style="margin-left:200px">
-            {!! Form::open(['url' => '', 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"commentId" ]) !!}
-            <div class="form-group">
-                {!! Form::label('', '', array('class' => 'col-md-1 control-label')) !!}
-                <div class="col-sm-4">
-                    {!! Form::textarea('comment',$droneRequest->comments,['class' => 'form-control input-sm','id' => 'comment','disabled']) !!}
+        <h3 class="block-title" style="margin-left: 15px">COMMENTS</h3>
+        <div class="row " >
+            <div class="col-md-12 col-lg-12" style="padding-left: 15px">
 
-                </div>
-            </div>
-            {!! Form::close() !!}
-        </div>
-        <br/>
-    @if(Auth::user()->id != $droneRequest->created_by)
-        <a aria-hidden="true">
-        <h3 class="block-title">ACTION</h3>
+                <p style="text-align: justify;font-size: 150%; padding: 30px;">
+                    {{$droneRequest->comments}}
+                </p>
 
-        <div class="row" style="margin-left: 330px;">
-
-            <div class="col">
-                {!! Form::open(['url' => 'api/v1/firstDroneApproval/'.$droneRequest->id, 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"firstApprovalForm" ]) !!}
-                {!! Form::hidden('user',Auth::user()->id)!!}
-                <div class="form-group" >
-                    <div class="col-md-6" style="margin-top:20px;">
-                        <button type="submit" class="btn btn-primary"  onclick="getApproveToaster()" id="approveId">Approve</button>
-
-                        <button type="button" class="btn  btn-danger" id="rejectId">Reject</button>
-
-
-                    </div>
-                </div>
-                {!! Form::close() !!}
-            </div>
-            <div class="col">
-                {!! Form::open(['url' => 'api/v1/rejectDroneRequest/'.$droneRequest->id, 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"firstRejectionForm" ]) !!}
-                {!! Form::hidden('user',Auth::user()->id)!!}
-
-                {{--<div class="form-group">--}}
-                {{--<div class="col-md-6">--}}
-                {{--<button type="button" class="btn  btn-danger" id="rejectId">Reject</button>--}}
-
-                {{--</div>--}}
-                {{--</div>--}}
-
-                <div class="form-group reason hidden ">
-                    <div class="col-md-6" >
-                        <div class="col-md-3 " style="margin-top:10px;">
-                            <select name="reject_reason" id="reject_reason" class="form-control input-sm" required>
-                                <option value="0"  selected disabled>-select reason-</option>
-                                @foreach($droneRejectReasons as $reason)
-                                    <option value="{{$reason->id}}" name="reject_reason" id="{{$reason->id}}" required>{{$reason->reason}}</option>
-                                    @if ($errors->has('reject_reason')) <p class="help-block red">*{{ $errors->first('reject_reason') }}</p> @endif
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <br/>
-
-                <div class="form-group otherReason hidden" >
-                    {!! Form::label('', '') !!}
-                    <div class="col-sm-4">
-                        {!! Form::textarea('reject_other_reason',null,['class' => 'form-control input-sm','id' => 'reject_other_reason','placeholder'=>'other reason.','required']) !!}
-                        @if ($errors->has('reject_other_reason')) <p class="help-block red">*{{ $errors->first('reject_other_reason') }}</p> @endif
-                    </div>
-                </div>
-
-                <div class="form-group submit hidden">
-                    <div class="col-md-10">
-                        <button type="submit" type="button" class="btn btn-sm" id="submitId" onclick="getRejectToaster()" disabled>Submit</button>
-                    </div>
-                </div>
-                {!! Form::close() !!}
-
-                <div id="snackbar">The Request was already approved</div>
-                <div id="rejectSnackbar">The Request was already rejected</div>
 
             </div>
         </div>
-        </a>
-    @endif
-
+        <br/>
 
 @endsection
 @section('footer')
 
     <script>
-
-//        function getApproveToaster() {
-//            if (typeof(Storage) !== "undefined") {
-//                if (localStorage.clickcount) {
-//                    localStorage.clickcount = Number(localStorage.clickcount) + 1;
-//
-//                    var x = document.getElementById("snackbar");
-//                    x.className = "show";
-//                    setTimeout(function () {
-//                        x.className = x.className.replace("show", "");
-//                    }, 3000);
-//
-//                    event.preventDefault();
-//
-//                } else {
-//                    localStorage.clickcount = 1;
-//                }
-//            }
-//        }
-
-//        function getRejectToaster() {
-//
-//            if (typeof(Storage) !== "undefined") {
-//                if (localStorage.rejectClickCount) {
-//                    localStorage.rejectClickCount = Number(localStorage.rejectClickCount) + 1;
-//
-//                    var x = document.getElementById("rejectSnackbar");
-//                    x.className = "show";
-//                    setTimeout(function () {
-//                        x.className = x.className.replace("show", "");
-//                    }, 3000);
-//
-//                    event.preventDefault();
-//
-//                } else {
-//                    localStorage.rejectClickCount = 1;
-//                }
-//            }
 
         $('#rejectId').on('click',function(){
 
