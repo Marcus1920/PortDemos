@@ -109,7 +109,6 @@ class DroneRequestController extends Controller
             <div class="row">
             
             <div class="col-md-3">
-                 
                   <a class="btn btn-xs btn-alt"  href="api/v1/showDroneRequest/{{ $id }}" target="">View</a>
                   </div>
                   <div class="col-md-1"></div>
@@ -117,22 +116,11 @@ class DroneRequestController extends Controller
                       '
                 )
                 ->make(true);
-
-//        return $droneRequests;
         }
     }
 
     public function index()
     {
-        //Eloquent
-//        $droneRequests = DroneRequest::with('User')
-//            ->with('DroneType')
-//            ->with('DroneSubType')
-//            ->with('DroneCaseStatus')
-//            ->with('Department')
-//            ->with('RejectReason')
-//            ->get();
-
         $droneRequests = \DB::table('drone_requests')
             ->join('drone_types', 'drone_requests.drone_type_id', '=', 'drone_types.id')
             ->join('drone_sub_types', 'drone_requests.sub_drone_type_id', '=', 'drone_sub_types.id')
@@ -231,34 +219,103 @@ class DroneRequestController extends Controller
             $responderPosition = Position::where('name','Environmental Manager')->first();
             $droneRequestResponder = User::where('position',$responderPosition->id)->get();
 
-            $data = array(
-                'name'    => $droneRequestResponder[0]['name'],
-
-            );
-
-            \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
+            if($droneRequestResponder!=NULL)
             {
-                $email = $droneRequestResponder[0]['email'];
-                $message->from('info@siyaleader.net', 'Siyaleader');
-                $message->to($email)->subject('testing notification');
-            });
+                $data = array(
+                    'name'    => $droneRequestResponder[0]['name'],
 
+                );
 
+                \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
+                {
+                    $email = $droneRequestResponder[0]['email'];
+                    $message->from('info@siyaleader.net', 'Siyaleader');
+                    $message->to($email)->subject('New drone request');
+                });
+            }
+            else
+            {
+                \Session::flash('success', 'A drone request  has been sent, you will get a response soon!');
+                return Redirect::back();
+            }
         }
         else if($position->name == "Engineering officer")
         {
-            return "Engineering officer";
+            $responderPosition = Position::where('name','Senior Engineer')->first();
+            $droneRequestResponder = User::where('position',$responderPosition->id)->get();
+
+            if($droneRequestResponder!=NULL)
+            {
+                $data = array(
+                    'name'    => $droneRequestResponder[0]['name'],
+
+                );
+
+                \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
+                {
+                    $email = $droneRequestResponder[0]['email'];
+                    $message->from('info@siyaleader.net', 'Siyaleader');
+                    $message->to($email)->subject('New drone request');
+                });
+            }
+            else
+            {
+                \Session::flash('success', 'A drone request  has been sent, you will get a response soon!');
+                return Redirect::back();
+            }
         }
         else if($position->name == "Vessel Traffic Controller")
         {
-            return "vessel traffic controller";
+            $responderPosition = Position::where('name','Deputy Harbour Master')->first();
+            $droneRequestResponder = User::where('position',$responderPosition->id)->get();
+
+            if($droneRequestResponder!=NULL)
+            {
+                $data = array(
+                    'name'    => $droneRequestResponder[0]['name'],
+
+                );
+
+                \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
+                {
+                    $email = $droneRequestResponder[0]['email'];
+                    $message->from('info@siyaleader.net', 'Siyaleader');
+                    $message->to($email)->subject('New drone request');
+                });
+            }
+            else
+            {
+                \Session::flash('success', 'A drone request  has been sent, you will get a response soon!');
+                return Redirect::back();
+            }
         }
         else if($position->name == "Joint Operations Centre Monitor")
         {
-            return "joint operations centre monitor";
+            $responderPosition = Position::where('name','Deputy Harbour Master')->first();
+            $droneRequestResponder = User::where('position',$responderPosition->id)->get();
+
+            if($droneRequestResponder!=NULL)
+            {
+                $data = array(
+                    'name'    => $droneRequestResponder[0]['name'],
+
+                );
+
+                \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
+                {
+                    $email = $droneRequestResponder[0]['email'];
+                    $message->from('info@siyaleader.net', 'Siyaleader');
+                    $message->to($email)->subject('New drone request');
+                });
+            }
+            else
+            {
+                \Session::flash('success', 'A drone request  has been sent, you will get a response soon!');
+                return Redirect::back();
+            }
         }
 
-        \Session::flash('success', 'A drone request   has been sent, you will get a response soon!');
+        \Session::flash('success', 'A drone request  has been sent, you will get a response soon!');
         return Redirect::back();
     }
 
@@ -276,6 +333,20 @@ class DroneRequestController extends Controller
             ->with('RejectReason')
             ->where('id',$id)
             ->first();
+
+        $finalApproverPosition = Position::where('name','Harbour Master')->first();
+        $user = User::where('position',$finalApproverPosition->id)->first();
+
+        $data = array(
+            'name'    => $user->name,
+
+        );
+
+        \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($user)
+        {
+            $message->from('info@siyaleader.net', 'Siyaleader');
+            $message->to($user->email)->subject('First Approved drone request');
+        });
 
         $data = array(
             'name'    => $droneRequest->User->name,
@@ -312,9 +383,6 @@ class DroneRequestController extends Controller
             ->with('RejectReason')
             ->where('id',$id)
             ->first();
-
-//        $finalApproverPosition = Position::where('name','Harbour Master')->first();
-//        return $finalApproverPosition;
 
         $droneActivity = DroneRequestActivity::where('drone_request_id',$id)->get();
 
