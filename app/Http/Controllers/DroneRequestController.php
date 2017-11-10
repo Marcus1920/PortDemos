@@ -384,6 +384,12 @@ class DroneRequestController extends Controller
             ->where('id',$id)
             ->first();
 
+        $dronRequestActivity = new DroneRequestActivity();
+        $dronRequestActivity->drone_request_id = $id;
+        $dronRequestActivity->user = $request['user'];
+        $dronRequestActivity->activity = "final approved drone request";
+        $dronRequestActivity->save();
+
         $droneActivity = DroneRequestActivity::where('drone_request_id',$id)->get();
 
         $firstResponder = User::find($droneActivity[1]['user']);
@@ -410,14 +416,30 @@ class DroneRequestController extends Controller
             $message->to($droneRequest->User->email)->subject('Second approved drone request');
         });
 
-        $dronRequestActivity = new DroneRequestActivity();
-        $dronRequestActivity->drone_request_id = $id;
-        $dronRequestActivity->user = $request['user'];
-        $dronRequestActivity->activity = "final approved drone request";
-        $dronRequestActivity->save();
+        $diveMaster = Position::where('name','Dive Master')->first();
+        $user = User::where('position',$diveMaster->id)->first();
+
+        if($user!=NULL)
+        {
+            $data = array(
+                'name'    => $user->name,
+
+            );
+
+            \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($user)
+            {
+                $message->from('info@siyaleader.net', 'Siyaleader');
+                $message->to($user->email)->subject('Second approved drone request');
+            });
+        }
+        else
+        {
+            \Session::flash('success', 'Finally Approved');
+            return Redirect::back();
+        }
+
         \Session::flash('success', 'Finally Approved');
         return Redirect::back();
-        //return "Successfully Approved";
     }
 
     public function Reject($id, Request $request)
