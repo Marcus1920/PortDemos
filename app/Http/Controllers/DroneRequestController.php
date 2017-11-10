@@ -73,6 +73,48 @@ class DroneRequestController extends Controller
                 )
                 ->make(true);
         }
+        else if($position->name=="Dive Master")
+        {
+            $droneRequests = \DB::table('drone_requests')
+                ->join('drone_types', 'drone_requests.drone_type_id', '=', 'drone_types.id')
+                ->join('drone_sub_types', 'drone_requests.sub_drone_type_id', '=', 'drone_sub_types.id')
+                ->join('users', 'drone_requests.created_by', '=', 'users.id')
+                ->join('drone_approval_statuses', 'drone_requests.drone_case_status', '=', 'drone_approval_statuses.id')
+                ->join('departments', 'drone_requests.department', '=', 'departments.id')
+                ->join('drone_reject_reasons', 'drone_requests.reject_reason', '=', 'drone_reject_reasons.id')
+                ->select(\DB::raw
+                (
+                    "
+                    drone_requests.id,
+                    drone_requests.created_at,
+                    drone_types.name as DroneType,
+                    drone_sub_types.name as DroneSubType,
+                    drone_requests.comments,
+                    users.name as CreatedBy,
+                    drone_approval_statuses.name as CaseStatus,
+                    departments.name as Department,
+                    drone_requests.comments,
+                    drone_reject_reasons.reason as RejectReason,
+                    drone_requests.created_by,
+                    drone_requests.drone_case_status
+                "
+                )
+                )
+                ->where('drone_case_status',3)
+                ->groupBy('drone_requests.id');
+
+            return \Datatables::of($droneRequests)
+                ->addColumn('actions', '
+            <div class="row">
+                    <div class="col-md-3">
+                  <a class="btn btn-xs btn-alt" data-toggle="modal" href="api/v1/drone/{{ $id }}" target="">View</a>
+
+                  </div> 
+                  </div>
+                      '
+                )
+                ->make(true);
+        }
         else {
 
             $droneRequests = \DB::table('drone_requests')
