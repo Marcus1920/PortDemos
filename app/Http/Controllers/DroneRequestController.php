@@ -22,6 +22,7 @@ class DroneRequestController extends Controller
 {
     public function getList()
     {
+
         return view('drones.DroneRequestList');
     }
 
