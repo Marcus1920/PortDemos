@@ -176,6 +176,9 @@
                   <a href="#" class="list-group-item text-center" onclick="{shows(this,6);}">
                     <h4 class="glyphicon glyphicon-credit-card"></h4><br/>Add Case Task
                   </a>
+                  <a href="#" class="list-group-item text-center" onclick="{shows(this,9);}">
+                    <h5 class="glyphicon glyphicon-plane"></h5><br/>Request a Drone
+                  </a>
                   <a href="#" class="list-group-item text-center" id="acceptCase" onclick="{shows(this,7);acceptCase();}">
                     <h5 class="glyphicon glyphicon-ok-sign"></h5><br/>Accept Case
                   </a>
@@ -780,7 +783,6 @@
                             @if(isset($userAddPoiPermission) && $userAddPoiPermission->permission_id =='30')
 
 
-
                             @endif
                             <div class="rows">
                               <div class="col-md-2"><a class="btn btn-default" onClick="launchPersonOfInterestModal();">Add
@@ -893,6 +895,12 @@
                 <div class="bhoechie-tab-content">
                   <div id="side_contents8"></div>
                 </div>
+                <div class="bhoechie-tab-content">
+                  <div id="side_contents9">
+                    @include('cases.droneRequest')
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -918,10 +926,7 @@
         @endif
         <div class="modal-body">
           {!! Form::open(['url' => 'addCasePoi', 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"poi_CaseForm" ]) !!}
-
-
           @if($case)
-
             <input type="hidden" name="caseID" id="caseID" value="{{ $case->id }}">
           @endif
           <div class="form-group">
@@ -946,11 +951,12 @@
 
 
   <script>
-		$(document).ready(function () {
+              $(document).ready(function () {
 			$("#task_user_id").tokenInput("{!! url('/getUsers')!!}", {tokenLimit: 1});
 			$("#addresses").tokenInput("{!! url('/getUsers')!!}", {tokenLimit: 1});
 			$("#addresses1").tokenInput("{!! url('/getUsers')!!}", {tokenLimit: 1});
 			$("#Recepient").tokenInput("{!! url('/getAddressBookUsers')!!}", {tokenLimit: 1});
+            $("#dronesDepartment").tokenInput("{!! url('/api/v1/userDepartment')!!}",{tokenLimit:1});
 			$("#Cc").tokenInput("{!! url('/getAddressBookUsers')!!}", {tokenLimit: 50});
 			$("#POISearch").tokenInput("{{ url ('/getPoisContacts')   }}",
 				{
@@ -1093,7 +1099,8 @@
 				]
 			});
 // case  note
-			if ($.fn.dataTable.isDataTable('#caseResponders1')) {
+			if ($.fn.dataTable.isDataTable('#caseResponders1'))
+			{
 				oTableCaseResponders1.destroy();
 			}
 			oTableCaseResponders1 = $('#caseResponders1').DataTable({
@@ -1237,6 +1244,7 @@
 			document.getElementById('side_contents' + (index2)).style.display = "block";
 			document.getElementById('side_contents' + (index2)).style.display = "block";
 			document.getElementById('side_contents' + (index2)).style.display = "block";
+            document.getElementById('side_contents' + (index2)).style.display = "block";
 			document.getElementById("top_navs_action").className = "bhoechie-tab-content active";
 			//location.reload()
 			//   document.getElementById("side_navs").style.display="block";
@@ -1274,6 +1282,34 @@
 			// $('#modalCase').modal('hide');
 			$('#modalPoiCase').modal('toggle');
 		}
+              $('#drone_type_id').on('change',function()
+              {
+                  var id = this.value;
+                  $('#sub_drone_type_id').empty();
+                  // var DroneServices = [];
+                  $.get('api/v1/droneSubType/'+ id,function(response){
+                      $('#sub_drone_type_id').append("<option  selected disabled>Select Drone service</option>");
+                      $.each(response,function(key,value)
+                      {
+                          // DroneServices.push(value);
+                          $('#sub_drone_type_id').append("<option  value="+value.id+">"+value.name+"</option>");
+                      });
+
+
+//                    document.getElementById("sub_drone_type_id").innerHTML="<option selected disabled>Select Drone Service</option>";
+//                    for(var i= 0; i < DroneServices.length;i++)
+//                    {
+//                        document.getElementById("sub_drone_type_id").innerHTML+="<option  id='options' onchange='getId();' value = "+DroneServices[i].id+">"+DroneServices[i].name+"</option>";
+//                    }
+//                    function getId() {
+//                     var selectedval  = document.getElementById("options").value();
+//                     console.log(selectedval);
+//                    }
+//
+//                }
+                  });
+              });
+
 		$("#submitPoiForm").on("click", function () {
 			var pois = $("#poi_CaseForm #POISearch").val();
 			var token = $('input[name="_token"]').val();
@@ -1323,6 +1359,7 @@
 			document.getElementById('side_contents6').style.display = "none";
 			document.getElementById('side_contents7').style.display = "none";
 			document.getElementById('side_contents8').style.display = "none";
+            document.getElementById('side_contents9').style.display = "none";
 			document.getElementById("top_navs_action").className = "bhoechie-tab-content active";
 		}
   </script>
