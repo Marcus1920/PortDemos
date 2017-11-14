@@ -253,6 +253,15 @@ class DroneRequestController extends Controller
         $dronRequestActivity->activity = "requested a drone";
         $dronRequestActivity->save();
 
+        $droneRequest = DroneRequest::with('DroneType')
+            ->with('User')
+            ->with('DroneSubType')
+            ->with('DroneCaseStatus')
+            ->with('Department')
+            ->with('RejectReason')
+            ->where('id',$newDroneRequest->id)
+            ->first();
+
         $userRole = User::find($request['created_by']);
         $position = Position::find($userRole->position);
 
@@ -264,7 +273,17 @@ class DroneRequestController extends Controller
             if($droneRequestResponder!=NULL)
             {
                 $data = array(
-                    'name'    => $droneRequestResponder[0]['name'],
+                    'name'         => $droneRequestResponder[0]['name'].' '.$droneRequestResponder[0]['surname'],
+                    'text'         => "An {$droneRequest->DroneType->name} has been requested",
+                    'caseNumber'   => $droneRequest->id,
+                    'status'       => $droneRequest->DroneCaseStatus->name,
+                    'dateCreated'  => $droneRequest->created_at,
+                    'caseDuration' => $droneRequest->created_at->diffForHumans(),
+                    'creator'      => $droneRequest->User->name.' '.$droneRequest->User->surname,
+                    'droneType'    => $droneRequest->DroneType->name,
+                    'droneSubType' => $droneRequest->DroneSubType->name,
+                    'department'   => $droneRequest->Department->name,
+
 
                 );
 
@@ -289,7 +308,16 @@ class DroneRequestController extends Controller
             if($droneRequestResponder!=NULL)
             {
                 $data = array(
-                    'name'    => $droneRequestResponder[0]['name'],
+                    'name'         => $droneRequestResponder[0]['name'].' '.$droneRequestResponder[0]['surname'],
+                    'text'         => "An {$droneRequest->DroneType->name} has been requested",
+                    'caseNumber'   => $droneRequest->id,
+                    'status'       => $droneRequest->DroneCaseStatus->name,
+                    'dateCreated'  => $droneRequest->created_at,
+                    'caseDuration' => $droneRequest->created_at->diffForHumans(),
+                    'creator'      => $droneRequest->User->name.' '.$droneRequest->User->surname,
+                    'droneType'    => $droneRequest->DroneType->name,
+                    'droneSubType' => $droneRequest->DroneSubType->name,
+                    'department'   => $droneRequest->Department->name,
 
                 );
 
@@ -314,7 +342,16 @@ class DroneRequestController extends Controller
             if($droneRequestResponder!=NULL)
             {
                 $data = array(
-                    'name'    => $droneRequestResponder[0]['name'],
+                    'name'         => $droneRequestResponder[0]['name'].' '.$droneRequestResponder[0]['surname'],
+                    'text'         => "An {$droneRequest->DroneType->name} has been requested",
+                    'caseNumber'   => $droneRequest->id,
+                    'status'       => $droneRequest->DroneCaseStatus->name,
+                    'dateCreated'  => $droneRequest->created_at,
+                    'caseDuration' => $droneRequest->created_at->diffForHumans(),
+                    'creator'      => $droneRequest->User->name.' '.$droneRequest->User->surname,
+                    'droneType'    => $droneRequest->DroneType->name,
+                    'droneSubType' => $droneRequest->DroneSubType->name,
+                    'department'   => $droneRequest->Department->name,
 
                 );
 
@@ -339,7 +376,16 @@ class DroneRequestController extends Controller
             if($droneRequestResponder!=NULL)
             {
                 $data = array(
-                    'name'    => $droneRequestResponder[0]['name'],
+                    'name'         => $droneRequestResponder[0]['name'].' '.$droneRequestResponder[0]['surname'],
+                    'text'         => "An {$droneRequest->DroneType->name} has been requested",
+                    'caseNumber'   => $droneRequest->id,
+                    'status'       => $droneRequest->DroneCaseStatus->name,
+                    'dateCreated'  => $droneRequest->created_at,
+                    'caseDuration' => $droneRequest->created_at->diffForHumans(),
+                    'creator'      => $droneRequest->User->name.' '.$droneRequest->User->surname,
+                    'droneType'    => $droneRequest->DroneType->name,
+                    'droneSubType' => $droneRequest->DroneSubType->name,
+                    'department'   => $droneRequest->Department->name,
 
                 );
 
@@ -380,7 +426,16 @@ class DroneRequestController extends Controller
         $user = User::where('position',$finalApproverPosition->id)->first();
 
         $data = array(
-            'name'    => $user->name,
+            'name'         => $user->name.' '.$user->surname,
+            'text'         => "An {$droneRequest->DroneType->name} has been first approved",
+            'caseNumber'   => $droneRequest->id,
+            'status'       => $droneRequest->DroneCaseStatus->name,
+            'dateCreated'  => $droneRequest->created_at,
+            'caseDuration' => $droneRequest->created_at->diffForHumans(),
+            'creator'      => $droneRequest->User->name.' '.$droneRequest->User->surname,
+            'droneType'    => $droneRequest->DroneType->name,
+            'droneSubType' => $droneRequest->DroneSubType->name,
+            'department'   => $droneRequest->Department->name,
 
         );
 
@@ -391,7 +446,16 @@ class DroneRequestController extends Controller
         });
 
         $data = array(
-            'name'    => $droneRequest->User->name,
+            'name'    => $droneRequest->User->name.' '.$droneRequest->User->surname,
+            'text'         => "An {$droneRequest->DroneType->name} has been first approved",
+            'caseNumber'   => $droneRequest->id,
+            'status'       => $droneRequest->DroneCaseStatus->name,
+            'dateCreated'  => $droneRequest->created_at,
+            'caseDuration' => $droneRequest->created_at->diffForHumans(),
+            'creator'      => $droneRequest->User->name.' '.$droneRequest->User->surname,
+            'droneType'    => $droneRequest->DroneType->name,
+            'droneSubType' => $droneRequest->DroneSubType->name,
+            'department'   => $droneRequest->Department->name,
 
         );
 
@@ -437,7 +501,16 @@ class DroneRequestController extends Controller
         $firstResponder = User::find($droneActivity[1]['user']);
 
         $data1 = array(
-            'name'    => $firstResponder->name,
+            'name'    => $firstResponder->name.' '.$firstResponder->surname,
+            'text'         => "An {$droneRequest->DroneType->name} has been finally approved",
+            'caseNumber'   => $droneRequest->id,
+            'status'       => $droneRequest->DroneCaseStatus->name,
+            'dateCreated'  => $droneRequest->created_at,
+            'caseDuration' => $droneRequest->created_at->diffForHumans(),
+            'creator'      => $droneRequest->User->name.' '.$droneRequest->User->surname,
+            'droneType'    => $droneRequest->DroneType->name,
+            'droneSubType' => $droneRequest->DroneSubType->name,
+            'department'   => $droneRequest->Department->name,
 
         );
 
@@ -448,7 +521,16 @@ class DroneRequestController extends Controller
         });
 
         $data = array(
-            'name'    => $droneRequest->User->name,
+            'name'    => $droneRequest->User->name.' '.$droneRequest->User->surname,
+            'text'         => "An {$droneRequest->DroneType->name} has been finally approved",
+            'caseNumber'   => $droneRequest->id,
+            'status'       => $droneRequest->DroneCaseStatus->name,
+            'dateCreated'  => $droneRequest->created_at,
+            'caseDuration' => $droneRequest->created_at->diffForHumans(),
+            'creator'      => $droneRequest->User->name.' '.$droneRequest->User->surname,
+            'droneType'    => $droneRequest->DroneType->name,
+            'droneSubType' => $droneRequest->DroneSubType->name,
+            'department'   => $droneRequest->Department->name,
 
         );
 
@@ -464,7 +546,16 @@ class DroneRequestController extends Controller
         if($user!=NULL)
         {
             $data = array(
-                'name'    => $user->name,
+                'name'    => $user->name.' '.$user->surname,
+                'text'         => "An {$droneRequest->DroneType->name} has been requested",
+                'caseNumber'   => $droneRequest->id,
+                'status'       => $droneRequest->DroneCaseStatus->name,
+                'dateCreated'  => $droneRequest->created_at,
+                'caseDuration' => $droneRequest->created_at->diffForHumans(),
+                'creator'      => $droneRequest->User->name.' '.$droneRequest->User->surname,
+                'droneType'    => $droneRequest->DroneType->name,
+                'droneSubType' => $droneRequest->DroneSubType->name,
+                'department'   => $droneRequest->Department->name,
 
             );
 
@@ -512,7 +603,16 @@ class DroneRequestController extends Controller
             ->first();
 
         $data = array(
-            'name'    => $droneRequest->User->name,
+            'name'         => $droneRequest->User->name.' '.$droneRequest->User->surname,
+            'text'         => "An {$droneRequest->DroneType->name} has been rejected",
+            'caseNumber'   => $droneRequest->id,
+            'status'       => $droneRequest->DroneCaseStatus->name,
+            'dateCreated'  => $droneRequest->created_at,
+            'caseDuration' => $droneRequest->created_at->diffForHumans(),
+            'creator'      => $droneRequest->User->name.' '.$droneRequest->User->surname,
+            'droneType'    => $droneRequest->DroneType->name,
+            'droneSubType' => $droneRequest->DroneSubType->name,
+            'department'   => $droneRequest->Department->name,
 
         );
 
