@@ -188,9 +188,6 @@
                   <a href="#" class="list-group-item text-center" onclick="{shows(this,9);}">
                     <h5 class="glyphicon glyphicon-plane"></h5><br/>Request a Drone
                   </a>
-                  <a href="#" class="list-group-item text-center" onclick="{shows(this,10);}">
-                    <h5 class="glyphicon glyphicon-plane"></h5><br/>Request a Drone
-                  </a>
                   <a href="#" class="list-group-item text-center" id="acceptCase" onclick="{return false;}">
                     <h5 class="sa-side-page" style="width: initial; margin: 0; padding: 0"></h5>Form Wizard
                   </a>
@@ -885,6 +882,7 @@
                 </div>
                 <div class="bhoechie-tab-content">
                   <div id="side_contents6">
+                    {{--@include('cases.droneRequest')--}}
                     @include('tasks.createCaseTask')
                   </div>
                 </div>
@@ -900,18 +898,16 @@
                   </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                  <div id="side_contents10"></div>
+                  <div id="side_contents10">
+                  </div>
+                  </div>
                 </div>
-
-              </div>
+            </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-
   <!-- Modal Default -->
   <div class="modal modalPoiCase" id="modalPoiCase" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
@@ -1225,37 +1221,54 @@
 				$("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
 				$("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
 			});
+
+			hides();
 		});
-		function shows(ev, index) {
-			console.log("shows(ev) index - ", index, ", ev - ", ev);
-			var index2 = index - 1;
-//                        document.getElementById("side_navs").style.display="block";
-//                        document.getElementById("top_navs_action").className="bhoechie-tab-content";
-//                        document.getElementById('side_contents1').style.display="block";
-//                        document.getElementById('side_contents2').style.display="block";
-//                        document.getElementById('side_contents3').style.display="block";
-//                        document.getElementById('side_contents4').style.display="block";
-//                        document.getElementById('side_contents5').style.display="block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-            document.getElementById('side_contents' + (index2)).style.display = "block";
-            document.getElementById('side_contents' + (index2)).style.display = "block";
-            document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById("top_navs_action").className = "bhoechie-tab-content active";
-			//location.reload()
-			  document.getElementById("side_navs").style.display="block";
-			//document.getElementById('case').className="list-group-item text-center active";
-			//  document.getElementById("top_navs_action").className="bhoechie-tab-content ";
-			//  document.getElementById('side_contents').style.display="block";
-			//  document.getElementById('side_contents2').style.display="block";
-			//   document.getElementById('side_contents3').style.display="block";
-		}
+
+              function shows(ev, index) {
+                  console.log("shows(ev) index - ", index, ", ev - ", ev);
+                  var index2 = index;
+                  var elShow = document.getElementById('side_contents' + (index2));
+                  var elTab = $(elShow).parents(".bhoechie-tab-content");
+                  console.log("elShow - ",elShow);
+                  console.log("elTab", elTab);
+                  hides(ev);
+
+                  $(elShow).show();
+                  $(elTab[0]).show();
+                  return;
+              }
+
+//              function shows(ev, index) {
+//			console.log("shows(ev) index - ", index, ", ev - ", ev);
+//			var index2 = index - 2;
+////                        document.getElementById("side_navs").style.display="block";
+////                        document.getElementById("top_navs_action").className="bhoechie-tab-content";
+////                        document.getElementById('side_contents1').style.display="block";
+////                        document.getElementById('side_contents2').style.display="block";
+////                        document.getElementById('side_contents3').style.display="block";
+////                        document.getElementById('side_contents4').style.display="block";
+////                        document.getElementById('side_contents5').style.display="block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//            document.getElementById('side_contents' + (index2)).style.display = "block";
+//            document.getElementById('side_contents' + (index2)).style.display = "block";
+//            document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById("top_navs_action").className = "bhoechie-tab-content active";
+//			//location.reload()
+//			  //document.getElementById("side_navs").style.display="block";
+//			//document.getElementById('case').className="list-group-item text-center active";
+//			//  document.getElementById("top_navs_action").className="bhoechie-tab-content ";
+//			//  document.getElementById('side_contents').style.display="block";
+//			//  document.getElementById('side_contents2').style.display="block";
+//			//   document.getElementById('side_contents3').style.display="block";
+//		}
 		function launchPersonOfInterestModal(id) {
 			var sub_category = 1
 			var formData = {sub_category: sub_category};
@@ -1364,8 +1377,7 @@
 			document.getElementById('side_contents7').style.display = "none";
 			document.getElementById('side_contents8').style.display = "none";
             document.getElementById('side_contents9').style.display = "none";
-            document.getElementById('side_contents10').style.display ="none";
-            document.getElementById('side_contents10').style.display ="none";
+           // document.getElementById('side_contents10').style.display ="none";
 			document.getElementById("top_navs_action").className = "bhoechie-tab-content active";
 		}
   </script>

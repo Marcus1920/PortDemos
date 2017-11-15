@@ -1,7 +1,8 @@
 
             {!! Form::open(['url' => '/api/v1/drone', 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"requestDroneForm" ]) !!}
             {!! Form::hidden('created_by',Auth::user()->id)!!}
-            {!! Form::hidden('caseNumber',Auth::user()->id)!!}
+            {!! Form::hidden('caseNumber',$case->id )!!}
+            {{ $case->id }}
             <div class="form-group">
                 {!! Form::label('Search Department', 'Search Department', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
@@ -9,6 +10,8 @@
                     @if ($errors->has('department')) <p class="help-block red">*{{ $errors->first('department') }}</p> @endif
                 </div>
             </div>
+
+
 
             <div class="form-group">
                 {!! Form::label('Select Drone', 'Select Drone', array('class' => 'col-md-3 control-label')) !!}
