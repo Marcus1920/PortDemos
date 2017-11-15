@@ -156,8 +156,7 @@
               </div>
               <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 bhoechie-tab-menu" id="side_navs">
                 <div class="list-group">
-                  <a id="case" disabled style="border: none;cursor: hand" class="list-group-item text-center active">
-                  </a>
+                  <a id="case" disabled style="border: none;cursor: hand" class="list-group-item text-center active"></a>
                   <a href="#" class="list-group-item text-center" onclick="{shows(this,1);}">
                     <h5 class="glyphicon glyphicon-folder-open"></h5><br/>Allocate Case
                   </a>
@@ -176,17 +175,21 @@
                   <a href="#" class="list-group-item text-center" onclick="{shows(this,6);}">
                     <h4 class="glyphicon glyphicon-credit-card"></h4><br/>Add Case Task
                   </a>
-                  <a href="#" class="list-group-item text-center" onclick="{shows(this,9);}">
-                    <h5 class="glyphicon glyphicon-plane"></h5><br/>Request a Drone
-                  </a>
+
                   <a href="#" class="list-group-item text-center" id="acceptCase" onclick="{shows(this,7);acceptCase();}">
                     <h5 class="glyphicon glyphicon-ok-sign"></h5><br/>Accept Case
                   </a>
-                  <button class="list-group-item text-center" id="acceptedCase" disabled style="width: 100%; display: none">
+                  <button class="list-group-item text-center" id="acceptedCase" disabled style="width:100%; display:none">
                     <h5 class="glyphicon glyphicon-remove-sign"></h5><br/>Case accepted
                   </button>
                   <a href="#" class="list-group-item text-center" onclick="{ shows(this,8); closeCase();}">
                     <h4 class="glyphicon glyphicon-off"></h4><br/>Close Case
+                  </a>
+                  <a href="#" class="list-group-item text-center" onclick="{shows(this,9);}">
+                    <h5 class="glyphicon glyphicon-plane"></h5><br/>Request a Drone
+                  </a>
+                  <a href="#" class="list-group-item text-center" onclick="{shows(this,10);}">
+                    <h5 class="glyphicon glyphicon-plane"></h5><br/>Request a Drone
                   </a>
                   <a href="#" class="list-group-item text-center" id="acceptCase" onclick="{return false;}">
                     <h5 class="sa-side-page" style="width: initial; margin: 0; padding: 0"></h5>Form Wizard
@@ -482,10 +485,6 @@
                       {{--<div class="col-md-10" style="border-left: 1px solid white; margin-top: 2%; max-height: calc(100vh - 10px); overflow-y: auto;">--}}
 
                       @foreach($case as $case)
-
-
-
-
                         <div class="tab-content clearfix">
                           <div class="tab-pane active" id="1a">
                             <div id="caseNotesNotification"></div>
@@ -900,6 +899,9 @@
                     @include('cases.droneRequest')
                   </div>
                 </div>
+                <div class="bhoechie-tab-content">
+                  <div id="side_contents10"></div>
+                </div>
 
               </div>
             </div>
@@ -948,8 +950,6 @@
       </div>
     </div>
   </div>
-
-
   <script>
               $(document).ready(function () {
 			$("#task_user_id").tokenInput("{!! url('/getUsers')!!}", {tokenLimit: 1});
@@ -1245,10 +1245,12 @@
 			document.getElementById('side_contents' + (index2)).style.display = "block";
 			document.getElementById('side_contents' + (index2)).style.display = "block";
             document.getElementById('side_contents' + (index2)).style.display = "block";
+            document.getElementById('side_contents' + (index2)).style.display = "block";
+            document.getElementById('side_contents' + (index2)).style.display = "block";
 			document.getElementById("top_navs_action").className = "bhoechie-tab-content active";
 			//location.reload()
-			//   document.getElementById("side_navs").style.display="block";
-			// document.getElementById('case').className="list-group-item text-center active";
+			  document.getElementById("side_navs").style.display="block";
+			//document.getElementById('case').className="list-group-item text-center active";
 			//  document.getElementById("top_navs_action").className="bhoechie-tab-content ";
 			//  document.getElementById('side_contents').style.display="block";
 			//  document.getElementById('side_contents2').style.display="block";
@@ -1282,16 +1284,17 @@
 			// $('#modalCase').modal('hide');
 			$('#modalPoiCase').modal('toggle');
 		}
+
+
               $('#drone_type_id').on('change',function()
               {
                   var id = this.value;
                   $('#sub_drone_type_id').empty();
                   // var DroneServices = [];
-                  $.get('api/v1/droneSubType/'+ id,function(response){
+                  $.get('droneSubType/'+ id,function(response){
                       $('#sub_drone_type_id').append("<option  selected disabled>Select Drone service</option>");
                       $.each(response,function(key,value)
                       {
-                          // DroneServices.push(value);
                           $('#sub_drone_type_id').append("<option  value="+value.id+">"+value.name+"</option>");
                       });
 
@@ -1351,6 +1354,7 @@
 		function hides(ev) {
 			console.log("hides(ev) ev - ", ev);
 			//document.getElementById("side_navs").style.display="none";
+            // document.getElementById('side_contents1').style.display = "none";
 			document.getElementById('side_contents1').style.display = "none";
 			document.getElementById('side_contents2').style.display = "none";
 			document.getElementById('side_contents3').style.display = "none";
@@ -1360,6 +1364,8 @@
 			document.getElementById('side_contents7').style.display = "none";
 			document.getElementById('side_contents8').style.display = "none";
             document.getElementById('side_contents9').style.display = "none";
+            document.getElementById('side_contents10').style.display ="none";
+            document.getElementById('side_contents10').style.display ="none";
 			document.getElementById("top_navs_action").className = "bhoechie-tab-content active";
 		}
   </script>

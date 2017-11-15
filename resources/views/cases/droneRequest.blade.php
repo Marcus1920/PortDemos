@@ -1,5 +1,4 @@
-<hr class="whiter m-t-20">
-<hr class="whiter m-b-20">
+
             {!! Form::open(['url' => '/api/v1/drone', 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"requestDroneForm" ]) !!}
             {!! Form::hidden('created_by',Auth::user()->id)!!}
             {!! Form::hidden('caseNumber',Auth::user()->id)!!}
@@ -48,36 +47,37 @@
                     </div>
                 </div>
             </div>
-@section('footer')
-    <script>
-        $('#drone_type_id').on('change',function()
-        {
-            var id = this.value;
-            $('#sub_drone_type_id').empty();
-            // var DroneServices = [];
-            $.get('api/v1/droneSubType/'+ id,function(response){
-                $('#sub_drone_type_id').append("<option  selected disabled>Select Drone service</option>");
-                $.each(response,function(key,value)
-                {
-                    // DroneServices.push(value);
-                    $('#sub_drone_type_id').append("<option  value="+value.id+">"+value.name+"</option>");
-                });
+       {!! Form::close() !!}
+{{--@section('footer')--}}
+    {{--<script>--}}
+        {{--$('#drone_type_id').on('change',function()--}}
+        {{--{--}}
+            {{--var id = this.value;--}}
+            {{--$('#sub_drone_type_id').empty();--}}
+            {{--// var DroneServices = [];--}}
+            {{--$.get('api/v1/droneSubType/'+ id,function(response){--}}
+                {{--$('#sub_drone_type_id').append("<option  selected disabled>Select Drone service</option>");--}}
+                {{--$.each(response,function(key,value)--}}
+                {{--{--}}
+                    {{--// DroneServices.push(value);--}}
+                    {{--$('#sub_drone_type_id').append("<option  value="+value.id+">"+value.name+"</option>");--}}
+                {{--});--}}
 
 
-//                    document.getElementById("sub_drone_type_id").innerHTML="<option selected disabled>Select Drone Service</option>";
-//                    for(var i= 0; i < DroneServices.length;i++)
-//                    {
-//                        document.getElementById("sub_drone_type_id").innerHTML+="<option  id='options' onchange='getId();' value = "+DroneServices[i].id+">"+DroneServices[i].name+"</option>";
-//                    }
-//                    function getId() {
-//                     var selectedval  = document.getElementById("options").value();
-//                     console.log(selectedval);
-//                    }
-//
-//                }
-            });
-        });
+{{--//                    document.getElementById("sub_drone_type_id").innerHTML="<option selected disabled>Select Drone Service</option>";--}}
+{{--//                    for(var i= 0; i < DroneServices.length;i++)--}}
+{{--//                    {--}}
+{{--//                        document.getElementById("sub_drone_type_id").innerHTML+="<option  id='options' onchange='getId();' value = "+DroneServices[i].id+">"+DroneServices[i].name+"</option>";--}}
+{{--//                    }--}}
+{{--//                    function getId() {--}}
+{{--//                     var selectedval  = document.getElementById("options").value();--}}
+{{--//                     console.log(selectedval);--}}
+{{--//                    }--}}
+{{--//--}}
+{{--//                }--}}
+            {{--});--}}
+        {{--});--}}
 
-        $("#department").tokenInput("{!! url('/api/v1/userDepartment')!!}",{tokenLimit:1});
-    </script>
-@endsection
+        {{--$("#department").tokenInput("{!! url('/api/v1/userDepartment')!!}",{tokenLimit:1});--}}
+    {{--</script>--}}
+{{--@endsection--}}

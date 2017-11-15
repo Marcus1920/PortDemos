@@ -1272,3 +1272,4 @@ Route::get('DroneList','DroneRequestController@getList');
 Route::get('requestForm','DroneTypesController@index');
 Route::get('test/{id}','DroneRequestController@test');
 Route::get('getDroneRequests/{id}','DroneRequestController@getPerUser');
+ Route::get('casetest/droneSubType/{id}','DroneSubTypesController@droneSubTypes');
