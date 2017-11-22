@@ -17,6 +17,7 @@ use App\CaseSubType;
 use App\AffiliationPositions;
 use App\Position;
 
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -1233,16 +1234,14 @@ Route::group(array('prefix' => 'api/v1'), function()
     |--------------------------------------------------------------------------|*/
 
     Route::get('userDepartment','DroneRequestController@userDepartment');
-
-
     Route::get('showDroneRequest/{id}','DroneRequestController@showFirst');
-
     Route::resource('drone', 'DroneRequestController');
-
     Route::post('firstDroneApproval/{id}', 'DroneRequestController@FirstApprove');
     Route::post('finalDroneApproval/{id}', 'DroneRequestController@Approve');
     Route::post('rejectDroneRequest/{id}', 'DroneRequestController@Reject');
     Route::get('droneSubType/{id}','DroneSubTypesController@droneSubTypes');
+    Route::get('droneServiceType/{id}','DroneSubTypesController@droneServiceType');
+    Route::get('droneSubServiceType/{id}','DroneSubTypesController@droneSubServiceType');
     Route::resource('drone', 'DroneRequestController');
 
     /*|--------------------------------------------------------------------------|

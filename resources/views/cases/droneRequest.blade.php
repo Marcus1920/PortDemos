@@ -2,16 +2,13 @@
             {!! Form::open(['url' => '/api/v1/drone', 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"requestDroneForm" ]) !!}
             {!! Form::hidden('created_by',Auth::user()->id)!!}
             {!! Form::hidden('caseNumber',$case->id )!!}
-            {{ $case->id }}
             <div class="form-group">
                 {!! Form::label('Search Department', 'Search Department', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
                     {!! Form::text('dronesDepartment',null,['class' => 'form-control validate[required]' ,'id' => 'dronesDepartment', old('department')]) !!}
-                    @if ($errors->has('department')) <p class="help-block red">*{{ $errors->first('department') }}</p> @endif
+                    @if ($errors->has('dronesDepartment')) <p class="help-block red">*{{ $errors->first('dronesDepartment') }}</p> @endif
                 </div>
             </div>
-
-
 
             <div class="form-group">
                 {!! Form::label('Select Drone', 'Select Drone', array('class' => 'col-md-3 control-label')) !!}

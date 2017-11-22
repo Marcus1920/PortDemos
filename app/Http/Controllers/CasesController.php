@@ -1408,7 +1408,11 @@ die("<pre>{$txtDebug}</pre>");
 $txtDebug .= "\n  \$co - ".print_r($co,1);
 $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 		//die("<pre>{$txtDebug}</pre>");
-		return view('cases.test')->with(compact('case', 'reporter', 'capturer', 'investigator', 'co'));
+
+        $checkPosition    = User::where('id',Auth::user()->id)->first();
+        $positionId       =$checkPosition->position;
+
+		return view('cases.test')->with(compact('case', 'reporter', 'capturer', 'investigator', 'co','positionId'));
 		$cases    = CaseReport::where('id', $id)->first();
 		$accepted = $cases->accepted;
 

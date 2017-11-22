@@ -894,7 +894,17 @@
                 </div>
                 <div class="bhoechie-tab-content">
                   <div id="side_contents9">
-                    @include('cases.droneRequest')
+
+                    {{--@if(App\Authorize::granted())--}}
+                    @if($positionId == 9 || $positionId == 10 || $positionId == 11 || $positionId == 12)
+                      @include('cases.droneRequest')
+                    @else
+                      @include('cases.401')
+                    @endif
+                      {{--@include('cases.droneRequest')--}}
+                      {{--@else--}}
+                      {{--@include('cases.401')--}}
+                      {{--@endif--}}
                   </div>
                 </div>
                 <div class="bhoechie-tab-content">

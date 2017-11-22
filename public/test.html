@@ -1,0 +1,359 @@
+<%@ Page Title="GateTrack | Location edit" Language="C#" MasterPageFile="~/MasterDefault.Master" AutoEventWireup="true" CodeBehind="LocationEdit.aspx.cs" Inherits="GateTrackWeb.LocationEdit" %>
+
+<%@ Register Src="LabelWithTimedMsg.ascx" TagName="LabelWithTimedMsg" TagPrefix="uc1" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <asp:ScriptManager runat="server" ID="ScriptManager1" EnablePartialRendering="true">
+        <Services>
+            <asp:ServiceReference Path="AutoComplete.asmx" />
+        </Services>
+    </asp:ScriptManager>
+    <clib:UpdatePanelExtender runat="server" ID="UpdatePanelExtender1" UpdateMode="Conditional">
+        <ContentTemplate>
+            <asp:TextBox runat="server" ID="txtShowAddForm" ClientIDMode="Static" CssClass="" Style="display: none;" />
+            <div class="row">
+                <div class="small-12 medium-6 large-6 columns">
+                    <h3><i class="fa fa-1x fa-map-marker Yellow"></i>&nbsp;Location edit
+                    </h3>
+                </div>
+
+                <div class="toolbardiv">
+                    <%-- <div class="row">
+                    <div class="small-1 medium-1 large-1 columns">
+                        <a id="lnkAdd" title="Add"><i class="fa fa-1x fa-plus Green bigicon"></i></a>
+                    </div>
+                    <div class="small-1 medium-1 large-1 end columns">
+                        <a id="lnkSearch" title="Search"><i class="fa fa-1x fa-search Green bigicon"></i></a>
+                    </div>
+                </div>--%>
+                </div>
+
+                <div style="clear: both"></div>
+
+                <fieldset runat="server" id="fldAdd" clientidmode="static">
+                    <legend>Edit location</legend>
+                    <asp:Panel runat="server" ID="pnlAdd" DefaultButton="btnAdd">
+                        <div class="row" runat="server" id="tbladd">
+                            <div class="column small-6 medium-6 large-6">
+                                <div class="row" style="display: none;">
+                                    <div class="small-12 medium-2 large-4 columns">Id</div>
+                                    <div class="small-12  medium-10 large-8  columns flex">
+
+                                    <span class="hide">
+                                        <asp:Label ID="lblId" runat="server"></asp:Label></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="small-12 medium-2 large-4 columns">Description</div>
+                                    <div class="small-12  medium-10 large-8  columns flex">
+                                        <asp:TextBox ID="txtDescription" runat="server" Width="300px" MaxLength="100" onChange="javascript:copyCompanyName();"></asp:TextBox>&nbsp;
+                                        <asp:RequiredFieldValidator ID="reqValCompanyNameRegistered" runat="server" Display="Dynamic" ErrorMessage="* Required" ValidationGroup="form1" ControlToValidate="txtDescription" CssClass="errorText"></asp:RequiredFieldValidator>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="small-12 medium-2 large-4 columns">Short Name</div>
+                                    <div class="small-12  medium-10 large-8  columns flex">
+                                        <asp:TextBox ID="txtCode" runat="server" Width="300px" MaxLength="100"></asp:TextBox>&nbsp;
+                                        <asp:RequiredFieldValidator ID="reqValCompanyNameTradingAs" runat="server" Display="Dynamic" ErrorMessage="* Required" ValidationGroup="form1" ControlToValidate="txtCode" CssClass="errorText"></asp:RequiredFieldValidator>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="small-12 medium-2 large-4 columns">Minutes Allowed</div>
+                                    <div class="small-12  medium-10 large-8  columns flex">
+                                        <asp:TextBox ID="txtMinutesAllowed" runat="server" TextMode="Number" Width="300px" MaxLength="100"></asp:TextBox>&nbsp;
+                                    </div>
+                                </div>
+
+
+                                <div class="row" style="display: none;">
+                                    <div class="small-12 medium-2 large-4 columns">Latitude</div>
+                                    <div class="small-12  medium-10 large-8  columns flex">
+                                        <asp:TextBox ID="txtLatitude" runat="server" Width="300px" MaxLength="100"></asp:TextBox>&nbsp;
+                                    </div>
+                                    <%--<div class="small-3 medium-3 large-4 columns">
+                                    <asp:LinkButton runat="server" ID="LinkButton4" Text="Add" OnClick="lnkAddGeoFance_Click"></asp:LinkButton>
+                                </div>--%>
+                                </div>
+                                <div class="row" style="display: none;">
+                                    <div class="small-12 medium-2 large-4 columns">Longitude</div>
+                                    <div class="small-12  medium-10 large-8  columns flex">
+                                        <asp:TextBox ID="txtLongitude" runat="server" Width="300px" MaxLength="100"></asp:TextBox>&nbsp;
+                                    </div>
+                                    <%--<div class="small-3 medium-3 large-4 columns">
+                                    <asp:LinkButton runat="server" ID="LinkButton3" Text="Add" OnClick="lnkAddGeoFance_Click"></asp:LinkButton>
+                                </div>--%>
+                                </div>
+                                <div class="row" style="display: none;">
+                                    <div class="small-12 medium-2 large-4 columns">Geo location</div>
+                                    <div class="small-12  medium-10 large-7  columns flex">
+                                        <asp:TextBox ID="txtGeoLocation" runat="server" Width="300px" MaxLength="100"></asp:TextBox>&nbsp;&nbsp;
+                                    </div>
+                                    <div class="small-12 medium-2 large-1 columns">
+                                        <a data-tooltip aria-haspopup="true" class="has-tip [tip-top tip-bottom tip-left tip-right] [radius round]" title="Tooltips are awesome, you should totally use them!"><i class="fa-align-left fa fa-info-circle"></i></a>
+
+                                    </div>
+                                    <%-- <div class="small-3 medium-3 large-4 columns">
+                                    <asp:LinkButton runat="server" ID="LinkButton2" Text="Add" OnClick="lnkAddGeoFance_Click"></asp:LinkButton>
+                                </div>--%>
+                                </div>
+                                <div class="row" style="display: none;">
+                                    <div class="small-12 medium-2 large-4 columns">Geo point</div>
+                                    <div class="small-12  medium-10 large-7  columns flex">
+                                        <asp:TextBox ID="txtGeoPoint" runat="server" Width="300px" MaxLength="100"></asp:TextBox>&nbsp;&nbsp;
+                                    </div>
+                                    <div class="small-12 medium-2 large-1 columns">
+                                        <a data-tooltip aria-haspopup="true" class="has-tip [tip-top tip-bottom tip-left tip-right] [radius round]" title="Tooltips are awesome, you should totally use them!"><i class="fa-align-left fa-20px fa fa-info-circle"></i></a>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="columns small-6 medium-6 large-6">
+                                    </div>
+                                    <div class="columns small-6 medium-6 large-4">
+                                        <div class="columns small-6 medium-6 large-6">
+                                            <asp:Button ID="btnAdd" runat="server" Text="Save" CausesValidation="True" ValidationGroup="form1"
+                                                        OnClick="btnSave_Click" CssClass="button small secondary"></asp:Button>
+                                            <uc1:LabelWithTimedMsg ID="lblSaveMessage" runat="server" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column small-6 medium-6 large-6">
+                                <fieldset>
+                                    <legend>Geo Fence</legend>
+                                    <div class="row">
+                                        <div class="small-11 medium-11 large-11 columns">
+                                            <div class="row">
+                                                <div class="small-12 medium-2 large-4 columns">Geo fence</div>
+                                                <div class="small-12  medium-10 large-7  columns flex">
+                                                    <asp:TextBox ID="txtGeoFence" runat="server" Width="300px" MaxLength="100"></asp:TextBox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="small-1 medium-1 large-1 columns">
+                                            <a><i class="fa-align-left fa fa-info-circle"></i></a><%--class="tooltip"--%>
+                                            <%-- <span class="tooltiptext">Tooltip text</span>--%>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="column small-12 medium-12 large-12">
+                                <fieldset>
+                                    <legend>Click the points
+                                    </legend>
+                                    <div id="dvMap" style="width: 100%; height: 800px">
+                                    </div>
+                                    <div class="row">
+                                        <div class="columns small-6 medium-6 large-9">
+                                            <asp:Button ID="btnClearLocation" runat="server" OnClientClick="return false;" Text="Clear" CssClass="button small secondary"></asp:Button>
+
+                                        </div>
+                                        <div class="columns small-6 medium-6 large-3" style="display: none;">
+                                            <asp:Button ID="btnConfirmLocation" runat="server" OnClientClick="return false;" Text="Confirm location"
+                                                        CssClass="button small secondary"></asp:Button>
+                                            <uc1:LabelWithTimedMsg ID="LabelWithTimedMsg1" runat="server" />
+                                        </div>
+
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </asp:Panel>
+                </fieldset>
+            </div>
+        </ContentTemplate>
+    </clib:UpdatePanelExtender>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW_0NqvB0ScC1nZiPzjx5BFXI4szifh84&libraries=drawing"></script>
+    <%-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW_0NqvB0ScC1nZiPzjx5BFXI4szifh84&callback=initMap" type="text/javascript"></script>--%>
+
+    <script type="text/javascript">
+
+        var prm = window.Sys.WebForms.PageRequestManager.getInstance();
+        prm.add_endRequest(endRequestHandler);
+
+        function endRequestHandler() {
+            // Initialize the map again
+            initMap();
+
+        }
+        var map, infoWindow, drawingManager, poly1;
+        function initialize() {
+            var mapOptions = {
+                center: new google.maps.LatLng(-29.905124916728326, 31.009697914560093),
+                zoom: 18,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            map = new google.maps.Map(document.getElementById('dvMap'),
+                mapOptions);
+            doAllPolygons();
+            infoWindow = new google.maps.InfoWindow();
+
+            var p = document.getElementById('ctl00_ContentPlaceHolder1_txtGeoFence').value.replace(/%20/g, '');
+            var point = p.substr(10, p.length - 2);
+            var gFance = point.substr(0, point.indexOf(')'));
+            var points = gFance.split(", ");
+            var CoordsPath = points.map(function (points) {
+                var latlon = points.split(' ');
+                //alert(latlon[0] + " " + latlon[1]);
+                return new google.maps.LatLng(latlon[0], latlon[1]);
+            });
+
+            if (CoordsPath != "(0, NaN)") {
+                drawingManager = new google.maps.drawing.DrawingManager({
+                    drawingMode: google.maps.drawing.OverlayType.POLYGON,
+                    drawingControl: true,
+                    drawingControlOptions: {
+                        position: google.maps.ControlPosition.TOP_CENTER,
+                        drawingModes: [
+                            google.maps.drawing.OverlayType.POLYGON
+                        ]
+                    },
+
+                    polygonOptions: doPolygon(map)
+                    //{
+                    //        geodesic: true,
+                    //        strokeColor: '#FF0000',
+                    //        strokeOpacity: 1.0,
+                    //        strokeWeight: 2,
+                    //        clickable: true,
+                    //        editable: true,
+                    //        zIndex: 1
+                    //    }
+
+                });
+            }
+            else
+            {
+                drawingManager = new google.maps.drawing.DrawingManager({
+                    drawingMode: google.maps.drawing.OverlayType.POLYGON,
+                    drawingControl: true,
+                    drawingControlOptions: {
+                        position: google.maps.ControlPosition.TOP_CENTER,
+                        drawingModes: [
+                            google.maps.drawing.OverlayType.POLYGON
+                        ]
+                    },
+                    polygonOptions: {
+                        geodesic: true,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2,
+                        clickable: true,
+                        editable: true,
+                        zIndex: 1,
+
+                    }
+                });
+            }
+            drawingManager.setMap(map);
+
+            google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
+
+                openInfoWindowPolygon(polygon);
+
+            });
+
+        }
+        function getPolygonCoords() {
+            var len = flightPath.getPath().getLength();
+            var htmlStr = "";
+            var firstPos = "";
+            var result = "POLYGON((";
+            for (var i = 0; i < len; i++) {
+                htmlStr += flightPath.getPath().getAt(i).toUrlValue(5) + " ";
+                var arr = flightPath.getPath().getAt(i).toUrlValue(5).split(',');
+
+                if (i == 0) {
+
+                    result += arr[0] + " " + arr[1];
+                    //firstPos = ","+arr[0] + " " + arr[1];
+                }
+                else {
+                    result += "," + arr[0] + " " + arr[1];
+                }
+            }
+            result += "))";
+            document.getElementById('ctl00_ContentPlaceHolder1_txtGeoFence').value = result;
+        }
+        function openInfoWindowPolygon(polygon) {
+
+            poly1 = polygon;
+            //alert(poly1);
+            var vertices = polygon.getPath();
+            //foreach(xy in vertices)
+            //{
+            document.getElementById('ctl00_ContentPlaceHolder1_txtGeoFence').value = polygon.getPath();
+            //}
+            var contents = 'Loaction name';
+            var bounds = new google.maps.LatLngBounds();
+            vertices.forEach(function (xy, i) {
+                bounds.extend(xy);
+                document.getElementById('ctl00_ContentPlaceHolder1_txtGeoFence').value += xy;
+            });
+            vertices.forEach(function (xy, i) {
+                bounds.extend(xy);
+
+            });
+            //infoWindow.setContent(contents);
+            //infoWindow.setPosition(bounds.getCenter());
+            drawingManager.setDrawingMode(null);
+            infoWindow.open(map);
+        }
+        function doPolygon(map) {
+
+            //document.getElementById('txtCoordinates').value = getParameterByName('GeoFence');
+            var p = document.getElementById('ctl00_ContentPlaceHolder1_txtGeoFence').value.replace(/%20/g, '');
+            var point = p.substr(10, p.length - 2);
+            var gFance = point.substr(0, point.indexOf(')'));
+            var points = gFance.split(", ");
+            var CoordsPath = points.map(function (points) {
+                var latlon = points.split(' ');
+                //alert(latlon[0] + " " + latlon[1]);
+                return new google.maps.LatLng(latlon[0], latlon[1]);
+            });
+
+
+
+            flightPath = new google.maps.Polygon({
+                path: CoordsPath,
+                geodesic: true,
+                strokeColor: '#FF0000',
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+                editable: true
+            });
+
+
+            flightPath.setMap(map);
+            google.maps.event.addListener(flightPath, "dragend", getPolygonCoords);
+            google.maps.event.addListener(flightPath.getPath(), "insert_at", getPolygonCoords);
+            google.maps.event.addListener(flightPath.getPath(), "remove_at", getPolygonCoords);
+            google.maps.event.addListener(flightPath.getPath(), "set_at", getPolygonCoords);
+
+
+
+
+            var latlngbounds = new google.maps.LatLngBounds();
+            for (var i = 0; i < CoordsPath.length; i++) {
+                latlngbounds.extend(CoordsPath[i]);
+            }
+            map.fitBounds(latlngbounds);
+
+        }
+
+        document.getElementById("ctl00_ContentPlaceHolder1_btnClearLocation").addEventListener("click", clearMap);
+        function clearMap() {
+            drawingManager.setDrawingMode(null);
+            flightPath.setMap(null);
+            document.getElementById('ctl00_ContentPlaceHolder1_txtGeoFence').value = null;
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+        //avoiding the disappearence of a map on postback
+        var prm = window.Sys.WebForms.PageRequestManager.getInstance();
+        prm.add_endRequest(endRequestHandler);
+    </script>
+</asp:Content>

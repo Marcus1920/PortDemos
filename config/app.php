@@ -222,7 +222,6 @@ return [
         'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
         'Form'=>Collective\Html\FormFacade::class,
         'Html'=>Collective\Html\FormFacade::class,
-
         //conford
         'Mapper'         => Cornford\Googlmapper\Facades\MapperFacade::class,
 

@@ -24,11 +24,10 @@ class DroneRequestForm extends Request
     public function rules()
     {
         return [
-            'department' => 'required',
+            'dronesDepartment' => 'required',
             'drone_type_id' => 'required',
             'sub_drone_type_id' => 'required',
             'comment' => 'required'
-
         ];
     }
 
