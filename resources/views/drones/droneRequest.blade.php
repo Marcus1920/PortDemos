@@ -71,9 +71,6 @@
             <div class="form-group droneService hidden">
                 {!! Form::label('Select Drone Services', 'Select Drone Services', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
-                    {{--{!! Form::select('sub_drone_type_id',Null,['class' => 'form-control validate[required]' ,'id' => 'sub_drone_type_id']) !!}--}}
-                    {{--@if ($errors->has('sub_drone_type_id')) <p class="help-block red">*{{ $errors->first('sub_drone_type_id') }}</p> @endif--}}
-
                     <select class="form-control" id="drone_service_type_id" name="drone_service_type_id"  value ="old('sub_drone_type_id')">
                         <option selected disabled>Nothing selected</option>
                     </select>
@@ -81,12 +78,10 @@
                 </div>
             </div>
 
+
             <div class="form-group droneSubService hidden">
                 {!! Form::label('Select Drone Sub Services', 'Select Drone Sub Services', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
-                    {{--{!! Form::select('sub_drone_type_id',Null,['class' => 'form-control validate[required]' ,'id' => 'sub_drone_type_id']) !!}--}}
-                    {{--@if ($errors->has('sub_drone_type_id')) <p class="help-block red">*{{ $errors->first('sub_drone_type_id') }}</p> @endif--}}
-
                     <select class="form-control" id="drone_sub_service_type_id" name="drone_sub_service_type_id"  value ="old('sub_drone_type_id')">
                         <option selected disabled>Nothing selected</option>
                     </select>
@@ -122,8 +117,6 @@
                     {!! Form::textarea('notes',NULL,['class' => 'form-control input-sm','id' => 'notes','rows'=>8]) !!}
                 </div>
             </div>
-
-
             <div class="form-group surveys hidden">
                 {!! Form::label('Geo Fence Clipboard', 'clip Board', array('class' => 'col-md-3 control-label  ')) !!}
                 <div class="col-md-6">
@@ -133,8 +126,6 @@
                     @if ($errors->has('geoFenceCoords')) <p class="help-block red">*{{ $errors->first('geoFenceCoords') }}</p> @endif
                 </div>
             </div>
-
-
             <div class="form-group " style="margin-top: 10px;">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="col-sm-6 col-sm-offset-5">
@@ -170,9 +161,7 @@
                     });
 
                 });
-
                 var selectText = $(this).find("option:selected").text();
-
                 if (selectText == 'Real Time') {
 
                     $('.realTime').removeClass('hidden');
@@ -208,41 +197,48 @@
                         $('#drone_sub_service_type_id').append("<option  value=" + value.id + ">" + value.name + "</option>");
                     });
                 });
-
+                var selectId   =$(this).find("option:selected").val();
                 var selectText = $(this).find("option:selected").text();
 
-                if (selectText == 'Auxiliary Services') {
+
+                if(selectId == 6 && selectText == 'Inspection'){
 
                     $('.droneSubService').removeClass('hidden');
-                    $('.auxiliaryServices').removeClass('hidden');
-                    $('.realTimeScopeOfWork').removeClass('hidden');
-                    $('.realTimeNotes').removeClass('hidden');
-                    $("#drone_sub_service_type_id").removeAttr('disabled');
-                    $("#interest").removeAttr('disabled');
-                    $("#scope_of_work").removeAttr('disabled');
-                    $("#notes").removeAttr('disabled');
-                    $('.surveys').addClass('hidden');
-//                $('.surveys').add('.hidden');
-//                $('#map').append(map)
-
-                } elseif(selectText =='') {
-                    $('.realTimeScopeOfWork').removeClass('hidden');
-                    $('.realTimeNotes').removeClass('hidden');
-                    $('.droneSubService').addClass('hidden');
-                    $('.auxiliaryServices').addClass('hidden');
-                    $("#drone_sub_service_type_id").attr('disabled', 'disabled');
-                    $("#interest").attr('disabled', 'disabled');
-                    $("#scope_of_work").removeAttr('disabled');
-                    $("#notes").removeAttr('disabled');
-                    $('.surveys').removeClass('hidden');
-                    setInterval(function () {
-                        $('#map').reload();
-                    }, 1000);
-                    //  document.getElementById('#map').prepend(" ");
-
+                    $("#drone_service_type_id").removeAttr('disabled', 'disabled');
 
                 }
+
+
+//                if (selectText == 'Auxiliary Services') {
+//
+//                    $('.droneSubService').removeClass('hidden');
+//                    $('.auxiliaryServices').removeClass('hidden');
+//                    $('.realTimeScopeOfWork').removeClass('hidden');
+//                    $('.realTimeNotes').removeClass('hidden');
+//                    $("#drone_sub_service_type_id").removeAttr('disabled');
+//                    $("#interest").removeAttr('disabled');
+//                    $("#scope_of_work").removeAttr('disabled');
+//                    $("#notes").removeAttr('disabled');
+//                    $('.surveys').addClass('hidden');
+////                $('.surveys').add('.hidden');
+////                $('#map').append(map)
+//
+//                }else{
+//
+//                        $('.realTimeScopeOfWork').removeClass('hidden');
+//                        $('.realTimeNotes').removeClass('hidden');
+//                        $('.droneSubService').addClass('hidden');
+//                        $('.auxiliaryServices').addClass('hidden');
+//                        $("#drone_sub_service_type_id").attr('disabled', 'disabled');
+//                        $("#interest").attr('disabled', 'disabled');
+//                        $("#scope_of_work").removeAttr('disabled');
+//                        $("#notes").removeAttr('disabled');
+//                        $('.surveys').removeClass('hidden');
+//                }
+//
+
             });
+
             $("#dronesDepartment").tokenInput("{!! url('/api/v1/userDepartment')!!}", {tokenLimit: 1});
 
             var map, infoWindow ,drawingManager,poly1;
