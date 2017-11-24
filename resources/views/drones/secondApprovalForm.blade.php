@@ -156,12 +156,13 @@
 
             </div>
         </div>
-        <h3 class="block-title" style="margin-left: 15px">COMMENTS</h3>
+        <h3 class="block-title" style="margin-left: 15px">NOTES</h3>
         <div class="row " >
             <div class="col-md-12 col-lg-12" style="padding-left: 15px">
 
                 <p style="text-align: justify;font-size: 150%; padding: 30px;">
-                    {{$droneRequest->comments}}
+                    {{$droneRequest->notes}}
+                    lorem*30
                 </p>
 
 

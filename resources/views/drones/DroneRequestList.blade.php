@@ -1,7 +1,5 @@
 @extends('master')
-
 @section('content')
-
     <div class="block-area" id="alternative-buttons">
         <h3 class="block-title">Manage Drones</h3>
         <a href="{{ url('requestForm') }}" class="btn btn-sm">
@@ -59,7 +57,7 @@ var oTable     = $('#DroneRequestTable').DataTable({
                 {data: 'CreatedBy', name: 'CreatedBy'},
                 {data: 'CaseStatus', name: 'CaseStatus'},
                 {data: 'Department', name: 'Department'},
-                {data: 'comments', name: 'comments'},
+                {data: 'notes', name: 'notes'},
                     {data: 'actions', name: 'actions'}
                      {{--{data: function(b)--}}
                      {{--{--}}

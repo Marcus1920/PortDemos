@@ -13,11 +13,11 @@ use App\DroneRejectReason;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Auth;
+use function MongoDB\BSON\toJSON;
 use Redirect;
+use Mapper;
 
 use App\Http\Requests\DroneRequestForm;
-
-
 
 class DroneRequestController extends Controller
 {
@@ -47,17 +47,22 @@ class DroneRequestController extends Controller
                     drone_requests.created_at,
                     drone_types.name as DroneType,
                     drone_sub_types.name as DroneSubType,
-                    drone_requests.comments,
+                    drone_requests.notes,
                     users.name as CreatedBy,
                     drone_approval_statuses.name as CaseStatus,
                     departments.name as Department,
-                    drone_requests.comments,
+                    drone_requests.notes,
                     drone_reject_reasons.reason as RejectReason,
                     drone_requests.created_by,
-                    drone_requests.drone_case_status
+                    drone_requests.drone_case_status,
+                    drone_requests.caseNumber,
+                    drone_requests.serviceRequired,
+                    drone_requests.drone_sub_service_type_id,
+                    drone_requests.purposeOfSurvey,
+                    drone_requests.numberOfStockpiles,
+                    drone_requests.vertical_accuracy
                 "
-                )
-                )
+                ))
                 ->where('drone_case_status',2)
                 ->groupBy('drone_requests.id');
 
@@ -65,9 +70,7 @@ class DroneRequestController extends Controller
                 ->addColumn('actions', '
             <div class="row">
                     <div class="col-md-3">
-                  <a class="btn btn-xs btn-alt" data-toggle="modal" href="api/v1/drone/{{ $id }}" target="">View</a>
-
-                  </div> 
+                  <a class="btn btn-xs btn-alt" data-toggle="modal" href="api/v1/drone/{{ $id }}" target="">View</a></div> 
                   </div>
                       '
                 )
@@ -89,14 +92,21 @@ class DroneRequestController extends Controller
                     drone_requests.created_at,
                     drone_types.name as DroneType,
                     drone_sub_types.name as DroneSubType,
-                    drone_requests.comments,
+                    drone_requests.notes,
                     users.name as CreatedBy,
                     drone_approval_statuses.name as CaseStatus,
                     departments.name as Department,
-                    drone_requests.comments,
+                    drone_requests.notes,
                     drone_reject_reasons.reason as RejectReason,
                     drone_requests.created_by,
-                    drone_requests.drone_case_status
+                    drone_requests.drone_case_status,
+                    drone_requests.caseNumber,
+                    drone_requests.serviceRequired,
+                    drone_requests.drone_sub_service_type_id,
+                    drone_requests.purposeOfSurvey,
+                    drone_requests.numberOfStockpiles,
+                    drone_requests.vertical_accuracy
+                    
                 "
                 )
                 )
@@ -131,14 +141,20 @@ class DroneRequestController extends Controller
                     drone_requests.created_at,
                     drone_types.name as DroneType,
                     drone_sub_types.name as DroneSubType,
-                    drone_requests.comments,
+                    drone_requests.notes,
                     users.name as CreatedBy,
                     drone_approval_statuses.name as CaseStatus,
                     departments.name as Department,
-                    drone_requests.comments,
+                    drone_requests.notes,
                     drone_reject_reasons.reason as RejectReason,
                     drone_requests.created_by,
-                    drone_requests.drone_case_status
+                    drone_requests.drone_case_status,
+                    drone_requests.caseNumber,
+                    drone_requests.serviceRequired,
+                    drone_requests.drone_sub_service_type_id,
+                    drone_requests.purposeOfSurvey,
+                    drone_requests.numberOfStockpiles,
+                    drone_requests.vertical_accuracy
                 "
                 )
                 )
@@ -176,11 +192,11 @@ class DroneRequestController extends Controller
                     drone_requests.created_at,
                     drone_types.name as DroneType,
                     drone_sub_types.name as DroneSubType,
-                    drone_requests.comments,
+                    drone_requests.notes,
                     users.name as CreatedBy,
                     drone_approval_statuses.name as CaseStatus,
                     departments.name as Department,
-                    drone_requests.comments,
+                    drone_requests.notes,
                     drone_reject_reasons.reason as RejectReason
                 "
             )
@@ -249,7 +265,7 @@ class DroneRequestController extends Controller
             $newDroneRequest->scope_of_work = $request['scope_of_work'];
             $newDroneRequest->serviceRequired = $request['service'];
             $newDroneRequest->save();
-              return "saved";
+             // return "saved";
         }
         elseif($drone_sub_types->name =="Ad Hoc") {
 
@@ -265,22 +281,23 @@ class DroneRequestController extends Controller
             $newDroneRequest->reject_reason = 4;
             $newDroneRequest->reject_other_reason = "None";
             $newDroneRequest->geoFence = $request['geoFenceCoords'];
+            $newDroneRequest->purposeOfSurvey = $request['purpose_of_survey'];
+            $newDroneRequest->numberOfStockpiles = $request['number_of_stockpiles'];
+            $newDroneRequest->vertical_accuracy = $request['vertical_accuracy'];
             $newDroneRequest->save();
-            return "saved";
+            //return "saved";
         }
 
-
-
-        $newDroneRequest->created_by = $request['created_by'];
-        $newDroneRequest->drone_type_id = $request['drone_type_id'];
-        $newDroneRequest->sub_drone_type_id = $request['sub_drone_type_id'];
-        $newDroneRequest->drone_case_status = 1;
-        $newDroneRequest->caseNumber  = $request['caseNumber'];;
-        $newDroneRequest->comments = $request['comment'];
-        $newDroneRequest->department = $request['dronesDepartment'];
-        $newDroneRequest->reject_reason = 4;
-        $newDroneRequest->reject_other_reason = "None";
-        $newDroneRequest->save();
+//        $newDroneRequest->created_by = $request['created_by'];
+//        $newDroneRequest->drone_type_id = $request['drone_type_id'];
+//        $newDroneRequest->sub_drone_type_id = $request['sub_drone_type_id'];
+//        $newDroneRequest->drone_case_status = 1;
+//        $newDroneRequest->caseNumber  = $request['caseNumber'];;
+//        $newDroneRequest->notes = $request['comment'];
+//        $newDroneRequest->department = $request['dronesDepartment'];
+//        $newDroneRequest->reject_reason = 4;
+//        $newDroneRequest->reject_other_reason = "None";
+//        $newDroneRequest->save();
 
         $dronRequestActivity = new DroneRequestActivity();
         $dronRequestActivity->drone_request_id = $newDroneRequest->id;
@@ -291,106 +308,106 @@ class DroneRequestController extends Controller
         $userRole = User::find($request['created_by']);
         $position = Position::find($userRole->position);
 
-        if($position->name == "SHE Representative")
-        {
-            $responderPosition = Position::where('name','Environmental Manager')->first();
-            $droneRequestResponder = User::where('position',$responderPosition->id)->get();
-
-            if($droneRequestResponder!=NULL)
-            {
-                $data = array(
-                    'name'    => $droneRequestResponder[0]['name'],
-
-                );
-
-                \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
-                {
-                    $email = $droneRequestResponder[0]['email'];
-                    $message->from('info@siyaleader.net', 'Siyaleader');
-                    $message->to($email)->subject('New drone request');
-                });
-            }
-            else
-            {
-                \Session::flash('success', 'A drone request  has been sent, you will get a response soon!');
-                return Redirect::back();
-            }
-        }
-        else if($position->name == "Engineering officer")
-        {
-            $responderPosition = Position::where('name','Senior Engineer')->first();
-            $droneRequestResponder = User::where('position',$responderPosition->id)->get();
-
-            if($droneRequestResponder!=NULL)
-            {
-                $data = array(
-                    'name'    => $droneRequestResponder[0]['name'],
-
-                );
-
-                \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
-                {
-                    $email = $droneRequestResponder[0]['email'];
-                    $message->from('info@siyaleader.net', 'Siyaleader');
-                    $message->to($email)->subject('New drone request');
-                });
-            }
-            else
-            {
-                \Session::flash('success', 'A drone request  has been sent, you will get a response soon!');
-                return Redirect::back();
-            }
-        }
-        else if($position->name == "Vessel Traffic Controller")
-        {
-            $responderPosition = Position::where('name','Deputy Harbour Master')->first();
-            $droneRequestResponder = User::where('position',$responderPosition->id)->get();
-
-            if($droneRequestResponder!=NULL)
-            {
-                $data = array(
-                    'name'    => $droneRequestResponder[0]['name'],
-
-                );
-
-                \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
-                {
-                    $email = $droneRequestResponder[0]['email'];
-                    $message->from('info@siyaleader.net', 'Siyaleader');
-                    $message->to($email)->subject('New drone request');
-                });
-            }
-            else
-            {
-                \Session::flash('success', 'A drone request  has been sent, you will get a response soon!');
-                return Redirect::back();
-            }
-        }
-        else if($position->name == "Joint Operations Centre Monitor")
-        {
-            $responderPosition = Position::where('name','Deputy Harbour Master')->first();
-            $droneRequestResponder = User::where('position',$responderPosition->id)->get();
-
-            if($droneRequestResponder!=NULL)
-            {
-                $data = array(
-                    'name'    => $droneRequestResponder[0]['name'],
-
-                );
-
-                \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
-                {
-                    $email = $droneRequestResponder[0]['email'];
-                    $message->from('info@siyaleader.net', 'Siyaleader');
-                    $message->to($email)->subject('New drone request');
-                });
-            }
-            else
-            {
-                \Session::flash('success', 'A drone request  has been sent, you will get a response soon!');
-                return Redirect::back();
-            }
-        }
+//        if($position->name == "SHE Representative")
+//        {
+//            $responderPosition = Position::where('name','Environmental Manager')->first();
+//            $droneRequestResponder = User::where('position',$responderPosition->id)->get();
+//
+//            if($droneRequestResponder!=NULL)
+//            {
+//                $data = array(
+//                    'name'    => $droneRequestResponder[0]['name'],
+//
+//                );
+//
+//                \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
+//                {
+//                    $email = $droneRequestResponder[0]['email'];
+//                    $message->from('info@siyaleader.net', 'Siyaleader');
+//                    $message->to($email)->subject('New drone request');
+//                });
+//            }
+//            else
+//            {
+//                \Session::flash('success', 'A drone request  has been sent, you will get a response soon!');
+//                return Redirect::back();
+//            }
+//        }
+//        else if($position->name == "Engineering officer")
+//        {
+//            $responderPosition = Position::where('name','Senior Engineer')->first();
+//            $droneRequestResponder = User::where('position',$responderPosition->id)->get();
+//
+//            if($droneRequestResponder!=NULL)
+//            {
+//                $data = array(
+//                    'name'    => $droneRequestResponder[0]['name'],
+//
+//                );
+//
+//                \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
+//                {
+//                    $email = $droneRequestResponder[0]['email'];
+//                    $message->from('info@siyaleader.net', 'Siyaleader');
+//                    $message->to($email)->subject('New drone request');
+//                });
+//            }
+//            else
+//            {
+//                \Session::flash('success', 'A drone request  has been sent, you will get a response soon!');
+//                return Redirect::back();
+//            }
+//        }
+//        else if($position->name == "Vessel Traffic Controller")
+//        {
+//            $responderPosition = Position::where('name','Deputy Harbour Master')->first();
+//            $droneRequestResponder = User::where('position',$responderPosition->id)->get();
+//
+//            if($droneRequestResponder!=NULL)
+//            {
+//                $data = array(
+//                    'name'    => $droneRequestResponder[0]['name'],
+//
+//                );
+//
+//                \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
+//                {
+//                    $email = $droneRequestResponder[0]['email'];
+//                    $message->from('info@siyaleader.net', 'Siyaleader');
+//                    $message->to($email)->subject('New drone request');
+//                });
+//            }
+//            else
+//            {
+//                \Session::flash('success', 'A drone request  has been sent, you will get a response soon!');
+//                return Redirect::back();
+//            }
+//        }
+//        else if($position->name == "Joint Operations Centre Monitor")
+//        {
+//            $responderPosition = Position::where('name','Deputy Harbour Master')->first();
+//            $droneRequestResponder = User::where('position',$responderPosition->id)->get();
+//
+//            if($droneRequestResponder!=NULL)
+//            {
+//                $data = array(
+//                    'name'    => $droneRequestResponder[0]['name'],
+//
+//                );
+//
+//                \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
+//                {
+//                    $email = $droneRequestResponder[0]['email'];
+//                    $message->from('info@siyaleader.net', 'Siyaleader');
+//                    $message->to($email)->subject('New drone request');
+//                });
+//            }
+//            else
+//            {
+//                \Session::flash('success', 'A drone request  has been sent, you will get a response soon!');
+//                return Redirect::back();
+//            }
+//        }
 
         \Session::flash('success', 'A drone request  has been sent, you will get a response soon!');
         return Redirect::back();
@@ -423,12 +440,10 @@ class DroneRequestController extends Controller
             $message->from('info@siyaleader.net', 'Siyaleader');
             $message->to($user->email)->subject('First Approved drone request');
         });
-
         $data = array(
             'name'    => $droneRequest->User->name,
 
         );
-
         \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequest)
         {
             $message->from('info@siyaleader.net', 'Siyaleader');
@@ -583,10 +598,18 @@ class DroneRequestController extends Controller
             ->orderBy('id','DESC')
             ->get();
 
-       // return compact('droneRequest','droneRequestActivity');
+        $new_str                   = str_replace(str_split('()[object Object]'), '', $droneRequest->geoFence);
+        $ccordsInArray             =explode('_',$new_str);
+
+        $choppedCoords    = array_pop($ccordsInArray);
+
+        foreach($ccordsInArray as $item)
+        {
+            return $item;
+        }
+        Mapper::map($item);
+
         return view('drones.droneApprove',compact('droneRequest','droneRequestActivity','droneRejectReasons'));
-
-
         \Session::flash('success', 'Finally Rejected');
         return Redirect::back();
 

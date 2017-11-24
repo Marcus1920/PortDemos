@@ -5,8 +5,8 @@
 
     <div class="block-area container" id="droneApproval">
         <ol class="breadcrumb hidden-xs">
-            <li><a href="{{ url('DroneList') }}">Drone LIST</a></li>
-            <li class="active"></li>
+            <li><a href="{{ url('DroneList') }}">Drone List</a></li>
+            <li class="active">First Approval</li>
         </ol>
         @if(Auth::user()->id == $droneRequest->created_by)
         <a aria-hidden="true">
@@ -91,8 +91,12 @@
                 <table class="table">
                     <tbody>
                     <tr>
-                        <td>Case  Number</td>
+                        <td>Drone Request Number</td>
                         <td> {{$droneRequest->id}}</td>
+                    </tr>
+                    <tr>
+                        <td>Case  Number</td>
+                        <td> {{$droneRequest->caseNumber}}</td>
                     </tr>
                     <tr>
                         <td>Case Status</td>
@@ -106,15 +110,17 @@
                         <td>Case Duration</td>
                         <td>{{$droneRequest->created_at->diffForHumans()}}</td>
                     </tr>
+                    <tr>
+                        <td>dronesub</td>
+                        <td>drone type</td>
+                    </tr>
 
                     </tbody>
                 </table>
             </div>
             <div  class="col-md-4">
-
                 <h3 class="block-title">DRONES DETAILS</h3>
-
-            <table class="table">
+                <table class="table">
                 <tbody>
                 <tr>
                     <td>Requested by</td>
@@ -132,6 +138,42 @@
                     <td>Department Requested Service</td>
                     <td>{{$droneRequest->Department->name}}</td>
                 </tr>
+                <tr>
+                    <td>Purpose Of Survey</td>
+                    <td>{{$droneRequest->purposeOfSurvey}}</td>
+                </tr>
+                <tr>
+                    <td>Service Required</td>
+                    <td>{{$droneRequest->serviceRequired}}</td>
+                </tr>
+
+                <tr>
+                    <td>Scope of Work</td>
+                    <td>{{$droneRequest->scope_of_work}}</td>
+                </tr>
+
+                <tr>
+                    <td>Object of Interest</td>
+                    <td>{{$droneRequest->interest}}</td>
+                </tr>
+                <tr>
+                    <td>Drone Sub Service</td>
+                    <td>{{$droneRequest->drone_sub_service_type_id}}</td>
+                </tr>
+                <tr>
+                    <td>Number Of Stockpiles</td>
+                    <td>{{$droneRequest->numberOfStockpiles}}</td>
+                </tr>
+                <tr>
+                    <td>Vertical Accuracy</td>
+                    <td>{{$droneRequest->vertical_accuracy}}</td>
+                </tr>
+
+
+
+
+
+
                 </tbody>
             </table>
             </div>
@@ -160,16 +202,28 @@
 
             </div>
         </div>
-        <h3 class="block-title" style="margin-left: 15px">COMMENTS</h3>
-        <div class="row " >
-            <div class="col-md-12 col-lg-12" style="padding-left: 15px">
 
+        <div class="row " >
+
+            <div class="col-md-6 col-lg-4" style="padding-left: 15px">
+                <h3 class="block-title" style="margin-left: 15px">NOTES</h3>
                 <p style="text-align: justify;font-size: 150%; padding: 30px;">
-                    {{$droneRequest->comments}}
+                    {{$droneRequest->notes}}
                 </p>
 
+            </div>
+            <div class="col-md-6 col-lg-8 ">
+                <h3 class="block-title" style="margin-left: 15px">Map</h3>
+
+                <p style="text-align: justify;font-size: 150%; padding: 20px;">Map</p>
+
+
+                <div style="width: 100%; height: 500px">
+                    {!! Mapper::Render() !!}
+                </div>
 
             </div>
+
         </div>
         <br/>
 

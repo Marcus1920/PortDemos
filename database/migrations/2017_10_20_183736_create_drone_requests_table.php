@@ -21,7 +21,9 @@ class CreateDroneRequestsTable extends Migration
             $table->text('notes')->nullable();
             $table->string('serviceRequired')->nullable();
             $table->string('interest')->nullable();
-            $table->geometry('geoFence')->nullable();
+            $table->string('purposeOfSurvey')->nullable();
+            $table->string('numberOfStockpiles')->nullable();
+            $table->longText('geoFence')->nullable();
             $table->string('scope_of_work')->nullable();
             $table->integer('department')->unsigned();
             $table->integer('drone_sub_service_type_id')->unsigned()->nullable();

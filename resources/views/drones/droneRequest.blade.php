@@ -77,8 +77,6 @@
                     @if ($errors->has('drone_service_type_id')) <p class="help-block red">*{{ $errors->first('drone_service_type_id') }}</p> @endif
                 </div>
             </div>
-
-
             <div class="form-group droneSubService hidden">
                 {!! Form::label('Select Drone Sub Services', 'Select Drone Sub Services', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
@@ -88,7 +86,6 @@
                     @if ($errors->has('drone_sub_service_type_id')) <p class="help-block red">*{{ $errors->first('drone_sub_service_type_id') }}</p> @endif
                 </div>
             </div>
-
             <div class="form-group surveys hidden">
                 {!! Form::label('Area of Interest', 'Area of Interest', array('class' => 'col-md-3 control-label  ')) !!}
                 <div class="col-md-6 col-offfset-3">
@@ -97,24 +94,40 @@
                     @if ($errors->has('area_of_interest')) <p class="help-block red">*{{ $errors->first('area_of_interest') }}</p> @endif
                 </div>
             </div>
-
-
+            <div class="form-group purposeOfSurvey hidden">
+                {!! Form::label('Purpose Of Survey ', 'Purpose Of Survey', array('class' => 'col-md-3 control-label')) !!}
+                <div class="col-md-6">
+                    {!! Form::text('purpose_of_survey',NULL,['class' => 'form-control input-sm','id' => 'purpose_of_survey','disabled']) !!}
+                </div>
+            </div>
+            <div class="form-group numberOfStockPile hidden">
+                {!! Form::label('Number of Stockpiles', 'Number of Stockpiles', array('class' => 'col-md-3 control-label')) !!}
+                <div class="col-md-6">
+                    {!! Form::text('number_of_stockpiles',NULL,['class' => 'form-control input-sm','id' => 'number_of_stockpiles','disabled','rows'=>'7']) !!}
+                </div>
+            </div>
+            <div class="form-group verticalAccuracy hidden">
+                {!! Form::label('Vertical Accuracy', 'Vertical Accuracy', array('class' => 'col-md-3 control-label')) !!}
+                <div class="col-md-6">
+                    {!! Form::text('vertical_accuracy',NULL,['class' => 'form-control input-sm','id' => 'vertical_accuracy','disabled','rows'=>'7']) !!}
+                </div>
+            </div>
             <div class="form-group auxiliaryServices hidden">
                 {!! Form::label('Object of Interest ', 'Object of Interest ', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
                     {!! Form::text('interest',NULL,['class' => 'form-control input-sm','id' => 'interest','disabled','rows'=>'7']) !!}
                 </div>
             </div>
-            <div class="form-group realTimeScopeOfWork hidden">
+            <div class="form-group scopeOfWOrk hidden">
                 {!! Form::label('Scope of Work ', 'Scope of Work  ', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
                     {!! Form::text('scope_of_work',NULL,['class' => 'form-control input-sm','id' => 'scope_of_work']) !!}
                 </div>
             </div>
-            <div class="form-group realTimeNotes hidden">
+            <div class="form-group Notes hidden">
                 {!! Form::label('Notes', 'Notes ', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
-                    {!! Form::textarea('notes',NULL,['class' => 'form-control input-sm','id' => 'notes','rows'=>8]) !!}
+                    {!! Form::textarea('notes',NULL,['class' => 'form-control input-sm','id' => 'notes']) !!}
                 </div>
             </div>
             <div class="form-group surveys hidden">
@@ -165,8 +178,8 @@
                 if (selectText == 'Real Time') {
 
                     $('.realTime').removeClass('hidden');
-                    $('.realTimeScopeOfWork').removeClass('hidden');
-                    $('.realTimeNotes').removeClass('hidden');
+                    $('.scopeOfWOrk').removeClass('hidden');
+                    $('.Notes').removeClass('hidden');
                     $("#service").removeAttr('disabled');
                     $("#scope_of_work").removeAttr('disabled');
                     $("#notes").removeAttr('disabled');
@@ -177,8 +190,8 @@
                 } else {
 
                     $('.realTime').addClass('hidden');
-                    $('.realTimeScopeOfWork').addClass('hidden');
-                    $('.realTimeNotes').addClass('hidden');
+                    $('.scopeOfWOrk').addClass('hidden');
+                    $('.Notes').addClass('hidden');
                     $("#service").attr('disabled', 'disabled');
                     $("#scope_of_work").attr('disabled', 'disabled');
                     $("#notes").attr('disabled', 'disabled');
@@ -197,48 +210,117 @@
                         $('#drone_sub_service_type_id').append("<option  value=" + value.id + ">" + value.name + "</option>");
                     });
                 });
+
                 var selectId   =$(this).find("option:selected").val();
                 var selectText = $(this).find("option:selected").text();
-
-
-                if(selectId == 6 && selectText == 'Inspection'){
-
+              //Aquatic -> ad Hoc
+                if (selectText == 'Auxiliary Services') {
                     $('.droneSubService').removeClass('hidden');
+                    $('.auxiliaryServices').removeClass('hidden');
+                    $('.scopeOfWOrk').removeClass('hidden');
+                    $('.Notes').removeClass('hidden');
+                    $("#drone_sub_service_type_id").removeAttr('disabled');
+                    $("#interest").removeAttr('disabled');
+                    $("#scope_of_work").removeAttr('disabled');
+                    $("#notes").removeAttr('disabled');
+                }
+                // Aerial ->ad Hoc
+                else if(selectId == 6 && selectText == 'Inspection'){
+                    $('.droneSubService').removeClass('hidden');
+                    $('.auxiliaryServices').removeClass('hidden');
+                    $('.scopeOfWOrk').removeClass('hidden');
+                    $('.Notes').removeClass('hidden');
                     $("#drone_service_type_id").removeAttr('disabled', 'disabled');
+                    $("#interest").removeAttr('disabled', 'disabled');
+                    $("#scope_of_work").removeAttr('disabled', 'disabled');
+                    $("#notes").removeAttr('disabled', 'disabled');
+                    $('.purposeOfSurvey').addClass('hidden');
+                    $('.verticalAccuracy').addClass('hidden');
+                    $('.numberOfStockPile').addClass('hidden');
+                    $('.surveys').addClass('hidden');
+                }
+                else if(selectText =='Surveys'){
+                    $('.droneSubService').removeClass('hidden');
+                    $('.scopeOfWOrk').addClass('hidden');
+                    $('.Notes').addClass('hidden');
+                    $('.auxiliaryServices').addClass('hidden');
 
                 }
+                //Aquatic -> ad Hoc
+                else if(selectText =='Hydrographic Survey' && selectText=='Hydrographic Solar Scanning'){
+                    $('.scopeOfWOrk').removeClass('hidden');
+                    $('.surveys').removeClass('hidden');
+                    $('.Notes').removeClass('hidden');
+                    $('.purposeOfSurvey').addClass('hidden');
+                }
+                else if(selectId == 4 && selectText=='Inspection'){
+                    $('.auxiliaryServices').removeClass('hidden');
+                    $('.scopeOfWOrk').removeClass('hidden');
+                    $('.Notes').removeClass('hidden');
+                    $('.purposeOfSurvey').addClass('hidden');
+                    $('.surveys').addClass('hidden');
+                    $("#interest").removeAttr('disabled', 'disabled');
+                    $("#scope_of_work").removeAttr('disabled');
+                    $("#notes").removeAttr('disabled');
+                }
+                else if(selectText == 'Film and Photography' || selectText == 'Infrastructure Assessment')
+                {
+                    $('.auxiliaryServices').removeClass('hidden');
+                    $('.scopeOfWOrk').removeClass('hidden');
+                    $('.Notes').removeClass('hidden');
+                    $("#interest").removeAttr('disabled', 'disabled');
+                    $("#scope_of_work").removeAttr('disabled', 'disabled');
+                    $("#notes").removeAttr('disabled', 'disabled');
+                    $('.purposeOfSurvey').addClass('hidden');
+                    $('.surveys').addClass('hidden');
+                    $('.verticalAccuracy').addClass('hidden');
+                    $('.droneSubService').addClass('hidden');
+                }
+                else{
+                    $('.surveys').removeClass('hidden');
+                    $('.purposeOfSurvey').removeClass('hidden');
+                    $('.Notes').removeClass('hidden');
+                    $("#notes").removeAttr('disabled', 'disabled');
+                    $("#purpose_of_survey").removeAttr('disabled', 'disabled');
+                    $('.auxiliaryServices').addClass('hidden');
+                    $('.scopeOfWOrk').addClass('hidden');
+                    $('.droneSubService').addClass('hidden');
+                }
+            });
+            $('#drone_sub_service_type_id').on('change', function () {
 
+                var selectText = $(this).find("option:selected").text();
+                //Aerial ->ad Hoc ->Surveys
+                if(selectText == 'Stockpile Surveys'){
+                    $('.surveys').removeClass('hidden');
+                    $('.purposeOfSurvey').removeClass('hidden');
+                    $('.verticalAccuracy').addClass('hidden');
+                    $('.scopeOfWOrk').addClass('hidden');
+                    $('.auxiliaryServices').addClass('hidden');
+                    $('.numberOfStockPile').removeClass('hidden');
+                    $('.Notes').removeClass('hidden');
+                    $("#purpose_of_survey").removeAttr('disabled', 'disabled');
+                    $("#number_of_stockpiles").removeAttr('disabled', 'disabled');
+                    $("#notes").removeAttr('disabled', 'disabled');
 
-//                if (selectText == 'Auxiliary Services') {
-//
-//                    $('.droneSubService').removeClass('hidden');
-//                    $('.auxiliaryServices').removeClass('hidden');
-//                    $('.realTimeScopeOfWork').removeClass('hidden');
-//                    $('.realTimeNotes').removeClass('hidden');
-//                    $("#drone_sub_service_type_id").removeAttr('disabled');
-//                    $("#interest").removeAttr('disabled');
-//                    $("#scope_of_work").removeAttr('disabled');
-//                    $("#notes").removeAttr('disabled');
-//                    $('.surveys').addClass('hidden');
-////                $('.surveys').add('.hidden');
-////                $('#map').append(map)
-//
-//                }else{
-//
-//                        $('.realTimeScopeOfWork').removeClass('hidden');
-//                        $('.realTimeNotes').removeClass('hidden');
-//                        $('.droneSubService').addClass('hidden');
-//                        $('.auxiliaryServices').addClass('hidden');
-//                        $("#drone_sub_service_type_id").attr('disabled', 'disabled');
-//                        $("#interest").attr('disabled', 'disabled');
-//                        $("#scope_of_work").removeAttr('disabled');
-//                        $("#notes").removeAttr('disabled');
-//                        $('.surveys').removeClass('hidden');
-//                }
-//
+                }else if(selectText =='Water Sampler' ||selectText =='Sediment Sampler' ||selectText =='Net Repairer' ||selectText =='Cut Attachment'||selectText =='Thermal Inspection'||selectText =='Industrial Inspection')
+                {
+                    $('.verticalAccuracy').addClass('hidden');
+                }
+                else{
+
+                    $('.surveys').removeClass('hidden');
+                    $('.purposeOfSurvey').removeClass('hidden');
+                    $('.Notes').removeClass('hidden');
+                    $('.numberOfStockPile').addClass('hidden');
+                    $('.verticalAccuracy').removeClass('hidden');
+                    $("#vertical_accuracy").removeAttr('disabled', 'disabled');
+                    $("#purpose_of_survey").removeAttr('disabled', 'disabled');
+                    $("#number_of_stockpiles").removeAttr('disabled', 'disabled');
+                    $("#notes").removeAttr('disabled', 'disabled');
+                }
 
             });
-
             $("#dronesDepartment").tokenInput("{!! url('/api/v1/userDepartment')!!}", {tokenLimit: 1});
 
             var map, infoWindow ,drawingManager,poly1;
@@ -271,9 +353,9 @@
                     handleLocationError(false, infoWindow, map.getCenter());
                 }
 
-                var p = document.getElementById('geoFenceCoords').value.replace(/%20/g, '');
-                var point = p.substr(10, p.length - 2);
-                var gFance = point.substr(0, point.indexOf(')'));
+                var p = document.getElementById('geoFenceCoords').value.replace(/%20/g, ',');
+                var point = p.substr(10, p.length - 1);
+                var gFance = point.substr(0, point.indexOf('),'));
                 var points = gFance.split(", ");
                 var CoordsPath = points.map(function (points) {
                     var latlon = points.split(' ');
@@ -378,27 +460,27 @@
 //
 //                });
 
-                function getPolygonCoords() {
-                    var len = flightPath.getPath().getLength();
-                    var htmlStr = "";
-                    var firstPos = "";
-                    var result = "POLYGON((";
-                    for (var i = 0; i < len; i++) {
-                        htmlStr += flightPath.getPath().getAt(i).toUrlValue(5) + " ";
-                        var arr = flightPath.getPath().getAt(i).toUrlValue(5).split(',');
-
-                        if (i == 0) {
-
-                            result += arr[0] + " " + arr[1];
-                            //firstPos = ","+arr[0] + " " + arr[1];
-                        }
-                        else {
-                            result += "," + arr[0] + " " + arr[1];
-                        }
-                    }
-                    result += "))";
-                    document.getElementById('geoFenceCoords').value = result;
-                }
+//                function getPolygonCoords() {
+//                    var len = flightPath.getPath().getLength();
+//                    var htmlStr = "";
+//                    var firstPos = "";
+//                    var result = "";
+//                    for (var i = 0; i < len; i++) {
+//                        htmlStr += flightPath.getPath().getAt(i).toUrlValue(5) + " ";
+//                        var arr = flightPath.getPath().getAt(i).toUrlValue(5).split(',');
+//
+//                        if (i == 0) {
+//
+//                            result += arr[0] + " " + arr[1];
+//                            //firstPos = ","+arr[0] + " " + arr[1];
+//                        }
+//                        else {
+//                            result += "," + arr[0] + ", " + arr[1];
+//                        }
+//                    }
+//                    result += "))";
+//                    document.getElementById('geoFenceCoords').value = result;
+//                }
 
                 function openInfoWindowPolygon(polygon) {
 
@@ -413,7 +495,7 @@
                     var bounds = new google.maps.LatLngBounds();
                     vertices.forEach(function (xy, i) {
                         bounds.extend(xy);
-                        document.getElementById('geoFenceCoords').value += xy;
+                        document.getElementById('geoFenceCoords').value += xy+"_";
                     });
                     vertices.forEach(function (xy, i)
                     {
@@ -428,13 +510,13 @@
                 function doPolygon(map) {
 
                     //document.getElementById('txtCoordinates').value = getParameterByName('GeoFence');
-                    var p = document.getElementById('geoFenceCoords').value.replace(/%20/g, '');
+                    var p = document.getElementById('geoFenceCoords').value.replace(/%20/g, ',');
                     var point = p.substr(10, p.length - 2);
-                    var gFance = point.substr(0, point.indexOf(')'));
-                    var points = gFance.split(", ");
+                    var gFance = point.substr(0, point.indexOf(',),'));
+                    var points = gFance.split(" ");
                     var CoordsPath = points.map(function (points) {
                         var latlon = points.split(' ');
-                        //alert(latlon[0] + " " + latlon[1]);
+                        alert(latlon[0] + " " + latlon[1]);
                         return new google.maps.LatLng(latlon[0], latlon[1]);
                     });
 
@@ -464,7 +546,7 @@
                 function clearMap() {
                     drawingManager.setDrawingMode(null);
                     flightPath.setMap(null);
-                    document.getElementById('geoFenceCoords').value = null;
+                    document.getElementById('geoFenceCoords,').value = null;
                 }
 
                 google.maps.event.addDomListener(window, 'load', initMap);
