@@ -23,7 +23,7 @@ class DroneSubTypesController extends Controller
             ->where('drone_type_id',$id)
             ->get();
 
-        return $droneSubTypes;
+       return $droneSubTypes;
     }
 
     public function create()

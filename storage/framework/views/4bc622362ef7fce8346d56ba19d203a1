@@ -1,0 +1,134 @@
+<?php $__env->startSection('content'); ?>
+
+
+    <?php /*<header>*/ ?>
+        <?php /*<a class="logo pull-left" href="#">*/ ?>
+            <?php /*<img class="" src="<?php echo e(asset('/images/dashboard_logo.png')); ?>" width="60%" alt="">*/ ?>
+        <?php /*</a>*/ ?>
+    <?php /*</header>*/ ?>
+    <body>
+
+
+
+    <?php /*<div class="topnav" id="myTopnav">*/ ?>
+        <?php /*<a href="#home">Home</a>*/ ?>
+        <?php /*<a href="#news">News</a>*/ ?>
+        <?php /*<a href="#contact">Contact</a>*/ ?>
+        <?php /*<a href="#about">About</a>*/ ?>
+    <?php /*</div>*/ ?>
+
+    <?php echo Charts::assets(); ?>
+
+
+
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row" >
+            <div class="col-md-1" >
+            </div>
+            <div class="col-md-5" >
+                <!-- AREA CHART -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Bar Chart</h3>
+                        <hr class="whiter m-b-20">
+                    </div>
+                    <div class="box-body chart-responsive">
+                      <?php echo $chart->render(); ?>
+
+                        <?php /*<div class="chart" id="revenue-chart" style="height: 300px;"></div>*/ ?>
+
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+				<strong>Export </strong><a href="#">CSV</a> <a href="#">Excel</a> <a href="#">PDF</a>
+                <!-- DONUT CHART -->
+
+
+            </div><!-- /.col (LEFT) -->
+            <div class="col-md-5">
+                <!-- LINE CHART -->
+                <div class="box box-info">
+                    <div class="box-header">
+                        <h3 class="box-title">Pie Chart</h3>
+                        <hr class="whiter m-b-20">
+                    </div>
+                    <div class="box-body chart-responsive">
+                       <?php echo $charts->render(); ?>
+
+                        <?php /*<div class="chart" id="line-chart" style="height: 300px;"></div>*/ ?>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+				<strong>Export </strong><a href="#">CSV</a> <a href="#">Excel</a> <a href="#">PDF</a>
+                <!-- BAR CHART -->
+
+
+            </div><!-- /.col (RIGHT) -->
+            <div class="col-md-1" >
+            </div>
+        </div><!-- /.row -->
+        <div class="row" >
+            <div class="col-md-1" >
+            </div>
+            <div class="col-md-5" >
+                <!-- AREA CHART -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Bar Chart</h3>
+                        <hr class="whiter m-b-20">
+                    </div>
+                    <div class="box-body chart-responsive">
+                        <?php echo $chartssz->render(); ?>
+
+                        <?php /*<div class="chart" id="revenue-chart" style="height: 300px;"></div>*/ ?>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+				<strong>Export </strong><a href="#">CSV</a> <a href="#">Excel</a> <a href="#">PDF</a>
+                <!-- DONUT CHART -->
+
+
+            </div><!-- /.col (LEFT) -->
+            <div class="col-md-5">
+                <!-- LINE CHART -->
+                <div class="box box-info">
+                    <div class="box-header">
+                        <h3 class="box-title">Line Chart</h3>
+                        <hr class="whiter m-b-20">
+                    </div>
+                    <div class="box-body chart-responsive">
+                        <?php echo $chartss->render(); ?>
+
+                        <?php /*<div class="chart" id="line-chart" style="height: 300px;"></div>*/ ?>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+				<strong>Export </strong><a href="#">CSV</a> <a href="#">Excel</a> <a href="#">PDF</a>
+                <!-- BAR CHART -->
+
+
+            </div><!-- /.col (RIGHT) -->
+            <div class="col-md-1" >
+            </div>
+        </div><!-- /.row -->
+
+
+    </section><!-- /.content -->
+
+
+
+        <center>
+
+        </center>
+
+        <center>
+
+        </center>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
+    </body>
+
+
+
+
+
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

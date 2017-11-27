@@ -42,24 +42,20 @@ use App\Position;
 
 Route::group(['middleware' => 'adminmiddlewar'], function () {
 
-    Route::get('admin',  'SeniorHomeController@index');
-   // Route::get('admin', 'SeniorHomeController@index');
+    Route::get('admin', 'SeniorHomeController@index');
+    // Route::get('admin', 'SeniorHomeController@index');
 
 });
 
 Route::group(['middleware' => 'adminmiddlewar'], function () {
-	Route::get('/', function () {
-		if (!\Auth::check()) return view('auth.login');
-		else return redirect("/home");
-	});
 
+    Route::get('/', function () {
+        if (!\Auth::check()) return view('auth.login');
+        else return redirect("/home");
+    });
     Route::get('home', ['uses' => 'HomeController@index']);
-	Route::get('home', ['uses' => 'HomeController@index']);
-	Route::get('generatecharts', ['uses' => 'HomeController@getcharts']);
-
-
-
-
+    Route::get('home', ['uses' => 'HomeController@index']);
+    Route::get('generatecharts', ['uses' => 'HomeController@getcharts']);
 
 });
 
@@ -67,49 +63,47 @@ $this->post('dologin', 'Auth\LoginController@doLogin');
 
 $this->post('dosignup', 'Auth\LoginController@dosignup');
 
-Route::group(array('prefix' => 'api/v1'), function() {
-
-  Route::post('logi', 'UserController@login');
-  Route::post('pedingcases', 'ReportController@Pendingcases');
-  Route::post('allocatecase','ReportController@Allocatercase');
-  Route::post('referecases', 'ReportController@Referecases');
-  Route::get('getallusers', 'ReportController@Getallusers');
-  Route::post('acceptedcases','ReportController@Acceptedcases');
-  Route::post('declinsecase','ReportController@Declinsecase');
-  Route::get('categoriess', 'DepartController@index');
-  Route::get('myreport', 'ReportCController@myReport');
-  Route::post('report', 'ReportController@store');
-  Route::get('messagenofication','CaseNotesController@messagenofication');
-  Route::post('mobilecaeCreate','MobliCasesController@mobilecaeCreate');
-  Route::post('newmessagenofication','CaseNotesController@newmessagenofication');
-  Route::get('showcontactmobile','AddressBookController@showcontactmobile');
-  Route::post('requestcloser','ReportCController@requestcloser');
-  Route::post('updatecasemobile','ReportCController@updatecasemobile');
-  Route::get('statuss', 'ReportCController@statuss');
-  Route::post('mobilerallocate', 'MobliCasesController@store');
-  Route::post('actionteken', 'DepartController@action');
-  Route::post('Casetype', 'DepartController@castype');
-  Route::get('mobiledepartement', 'DepartController@mobiledepartement');
-  Route::get('subcategories', 'DepartController@mobilesubcategories');
-  Route::get('subsubcategories', 'DepartController@mobilesusubbcategories');
-  Route::get('categories', 'DepartController@index');
-  Route::get('mobilecalendarListPerUser', 'CasesController@mobilecalendarListPerUser');
-  Route::post('reportImage','ReportCController@saveReportImage');
-  Route::post('createincident','ReportCController@creatReport');
-  Route::post('closeIncidentmobile', 'ReportCController@closeIncidentmobile');
-  Route::post('login', 'UserCController@login');
-  Route::post('forgot', 'UserCController@forgot');
+Route::group(array('prefix' => 'api/v1'), function () {
+    Route::post('logi', 'UserController@login');
+    Route::post('pedingcases', 'ReportController@Pendingcases');
+    Route::post('allocatecase', 'ReportController@Allocatercase');
+    Route::post('referecases', 'ReportController@Referecases');
+    Route::get('getallusers', 'ReportController@Getallusers');
+    Route::post('acceptedcases', 'ReportController@Acceptedcases');
+    Route::post('declinsecase', 'ReportController@Declinsecase');
+    Route::get('categoriess', 'DepartController@index');
+    Route::get('myreport', 'ReportCController@myReport');
+    Route::post('report', 'ReportController@store');
+    Route::get('messagenofication', 'CaseNotesController@messagenofication');
+    Route::post('mobilecaeCreate', 'MobliCasesController@mobilecaeCreate');
+    Route::post('newmessagenofication', 'CaseNotesController@newmessagenofication');
+    Route::get('showcontactmobile', 'AddressBookController@showcontactmobile');
+    Route::post('requestcloser', 'ReportCController@requestcloser');
+    Route::post('updatecasemobile', 'ReportCController@updatecasemobile');
+    Route::get('statuss', 'ReportCController@statuss');
+    Route::post('mobilerallocate', 'MobliCasesController@store');
+    Route::post('actionteken', 'DepartController@action');
+    Route::post('Casetype', 'DepartController@castype');
+    Route::get('mobiledepartement', 'DepartController@mobiledepartement');
+    Route::get('subcategories', 'DepartController@mobilesubcategories');
+    Route::get('subsubcategories', 'DepartController@mobilesusubbcategories');
+    Route::get('categories', 'DepartController@index');
+    Route::get('mobilecalendarListPerUser', 'CasesController@mobilecalendarListPerUser');
+    Route::post('reportImage', 'ReportCController@saveReportImage');
+    Route::post('createincident', 'ReportCController@creatReport');
+    Route::post('closeIncidentmobile', 'ReportCController@closeIncidentmobile');
+    Route::post('login', 'UserCController@login');
+    Route::post('forgot', 'UserCController@forgot');
 
 });
 
 Route::get('reports', 'MainreportController@index');
 
+Route::get('creatCase', function () {
+    $user = \App\User::findOrNew(\Auth::id());
 
+    return view('cases.createFor')->with("user", $user);
 
-Route::get('creatCase' , function () {
-
-
-    return  view ('cases.createFor');
 });
 
 /*
@@ -174,24 +168,26 @@ Route::get('getCaseSearch', ['middleware' => 'resetLastActive', 'uses' => 'UserC
 Route::get('getUsers', ['middleware' => 'auth', 'uses' => 'UserController@getUsers']);
 Route::get('getAddressBookUsers', ['middleware' => 'auth', 'uses' => 'AddressBookController@getAddressBookUsers']);
 
-
-Route::get('add-user',  function () {
+Route::get('add-user', function () {
     return view('users.registration');
 });
+Route::get('user-profile', function () {
 
-Route::get('user-profile',  function () {
     return view('users.profile');
 });
 
 Route::post('editProfilePic', ['middleware' => 'resetLastActive', 'uses' => 'UserController@UpdateUserProfile']);
 
-Route::get('edit-profile',  function () {
+Route::get('edit-profile', function () {
+
     return view('users.editProfile');
 });
 
 
 Route::controllers([
-    'auth' => 'Auth\AuthController',
+
+    'auth'     => 'Auth\AuthController',
+
     'password' => 'Auth\PasswordController',
 ]);
 
@@ -243,7 +239,49 @@ Route::post('edit_poi', ['middleware' => 'resetLastActive', 'uses' => 'UserContr
 
 Route::get('getOfficer/{id}', ['middleware' => 'resetLastActive', 'uses' => 'InvestigationOfficerController@show']);
 
+Route::get('getReporter/{id}', function ($id) {
+    $officer = \App\Reporter::select('id', 'name', 'cellphone', 'email')
+        ->where('id', '=', $id)
+        ->get();
 
+    return $officer;
+});
+/*
+|--------------------------------------------------------------------------
+| DOCUMENTS ROUTING
+|--------------------------------------------------------------------------
+|
+*/
+Route::get('documents-list', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@index']);
+Route::get('list-documents', ['middleware' => 'auth', function () {
+    return view('documents.list');
+}]);
+Route::get('list-filemanager', ['middleware' => 'auth', function () {
+    return view('documents.file-manager');
+}]);
+Route::get('documentLog-list', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@documentLogIndex']);
+Route::get('list-documentLog', ['middleware' => 'auth', function () {
+    return view('documents.list-document-log');
+}]);
+Route::get('list-folder/{id}', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@folder_document']);
+Route::get('show_repository', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@show_repository']);
+Route::get('addfolder/{id?}', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@addFolder']);
+Route::get('addSubFolder/{id}/{lavel?}', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@addSubFolder']);
+Route::get('folder-documents/{id}/{type?}', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@folder_document']);
+Route::get('addDocumentfile/{id}/{lavel?}', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@addDocumentfile']);
+Route::post('addDocument', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@store']);
+Route::post('saveEditFolder', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@saveEditFolder']);
+Route::post('saveDocumentfile', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@saveDocumentfile']);
+Route::post('updateDocument', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@update']);
+Route::get('documents/{id}', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@edit']);
+Route::get('documentDelete/{id}', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@documentDelete']);
+Route::get('downloadsDoc/{id}', ['middleware' => 'auth', 'uses' => 'DocumentRepositoryController@downloadsDoc']);
+/*
+|--------------------------------------------------------------------------
+| END DOCUMENTS ROUTING
+|--------------------------------------------------------------------------
+|
+*/
 
 /*
 |--------------------------------------------------------------------------
@@ -255,10 +293,10 @@ Route::get('getOfficer/{id}', ['middleware' => 'resetLastActive', 'uses' => 'Inv
 Route::get('erro', function () {
 
     return view('messages.erro');
-
 });
-Route::get('list-departments', ['middleware' => 'UsersMilldware', function () {
-    return view('departments.list');
+Route::get('list-departments/{id_company?}', ['middleware' => 'UsersMilldware', function ($id_company = null) {
+    return view('departments.list')->with(compact("id_company"));
+
 }]);
 
 Route::get('departments-list', ['middleware' => 'UsersMilldware', 'uses' => 'DepartmentController@index']);
@@ -446,6 +484,7 @@ Route::post('addDistrict', ['middleware' => 'resetLastActive', 'uses' => 'Distri
 Route::get('list-municipalities/{district}', ['middleware' => 'resetLastActive', function ($district) {
     $districtObj = District::find($district);
     $provinceObj = Province::find($districtObj->province);
+
     return view('municipalities.list', compact('districtObj', 'provinceObj'));
 }]);
 
@@ -472,8 +511,11 @@ Route::post('addMunicipality', ['middleware' => 'resetLastActive', 'uses' => 'Mu
 */
 Route::get('list-wards/{municipality}', ['middleware' => 'resetLastActive', function ($municipality) {
     $municipalityObj = Municipality::find($municipality);
-    $districtObj = District::find($municipalityObj->district);
-    $provinceObj = Province::find($districtObj->province);
+
+    $districtObj     = District::find($municipalityObj->district);
+    $provinceObj     = Province::find($districtObj->province);
+
+
     return view('wards.list', compact('districtObj', 'municipalityObj', 'provinceObj'));
 }]);
 
@@ -501,6 +543,8 @@ Route::post('addWard', ['middleware' => 'resetLastActive', 'uses' => 'WardsContr
 
 Route::get('list-categories/{department}', ['middleware' => 'resetLastActive', function ($department) {
     $deptObj = Department::find($department);
+
+
     return view('categories.list', compact('deptObj'));
 }]);
 
@@ -526,8 +570,11 @@ Route::post('addCategory', ['middleware' => 'resetLastActive', 'uses' => 'Catego
 |
 */
 Route::get('list-sub-categories/{category}', ['middleware' => 'auth', function ($category) {
-    $catObj = CaseType::find($category);
+
+    $catObj   = CaseType::find($category);
     $deptName = Department::find($catObj->department);
+
+
     return view('subcategories.list', compact('catObj', 'deptName'));
 }]);
 
@@ -552,8 +599,10 @@ Route::post('addSubCategory', ['middleware' => 'resetLastActive', 'uses' => 'Sub
 
 Route::get('list-sub-sub-categories/{sub_category}', ['middleware' => 'resetLastActive', function ($sub_category) {
     $subCatObj = CaseSubType::find($sub_category);
-    $catObj = CaseType::find($subCatObj->case_type);
-    $deptObj = Department::find($catObj->department);
+    $catObj    = CaseType::find($subCatObj->case_type);
+    $deptObj   = Department::find($catObj->department);
+
+
     return view('subsubcategories.list', compact('subCatObj', 'deptObj', 'catObj'));
 }]);
 
@@ -613,32 +662,22 @@ Route::get('getCases', ['middleware' => 'auth', 'uses' => 'CasesController@getCa
 //Route::get('pendingCases', ['middleware' => 'auth', 'uses' => 'CasesController@pendingCases']);
 ///Route::get('pendingClosureCases', ['middleware' => 'auth', 'uses' => 'CasesController@pendingClosureCases']);
 
-
-Route::get('pendingClosureCases' , function() {
-
-
+Route::post('updateCase', ['middleware' => 'resetLastActive', 'uses' => 'CasesController@updateCase']);
+Route::get('allCases', ['middleware' => 'auth', 'uses' => 'CasesController@allCases']);
+Route::get('pendingClosureCases', function () {
     return view('cases.pendingClosureCases');
-}) ;
-
-
-Route::get('pendingCases' , function() {
-
-
+});
+Route::get('users', function () {
+    return view('users.editusers');
+});
+Route::get('pendingCases', function () {
     return view('cases.pendingCases');
-}) ;
-
-
-Route::get('closedCases' , function() {
-
-
+});
+Route::get('closedCases', function () {
     return view('cases.closedCases');
-}) ;
-
+});
 //Route::get('allocatedCases', ['middleware' => 'auth', 'uses' => 'CasesController@allocatedCases']);
-
-
-Route::get('allocatedCases' , function(){
-
+Route::get('allocatedCases', function () {
     return view('cases.allocatedCases');
 
 });
@@ -994,14 +1033,12 @@ Route::get('/api/dropdown/{to}/{from}', function ($to, $from) {
     }
 
     if ($from == 'municipality') {
-        $object = Municipality::where('slug', '=', $name)->first();
+        $object  = Municipality::where('slug', '=', $name)->first();
         $listing = DB::table($to)->where($from, $object->id)->lists('name', 'slug');
-
-    } else {
-
+    }
+    else {
         $listing = DB::table($to)->where($from, $object->id)->orderBy('name', 'ASC')->lists('name', 'slug');
     }
-
 
     return $listing;
 
@@ -1010,9 +1047,9 @@ Route::get('/api/dropdown/{to}/{from}', function ($to, $from) {
 Route::get('/api/dropdownDepartment/{to}/{from}', function ($to, $from) {
 
     $name = Input::get('option');
-
     if ($from == 'department') {
-        $object = Department::where('slug', '=', $name)->first();
+        $object  = Department::where('slug', '=', $name)->first();
+
         $listing = DB::table('categories')
             ->where('department', '=', $object->id)
             ->orderBy('name', 'ASC')
@@ -1020,7 +1057,8 @@ Route::get('/api/dropdownDepartment/{to}/{from}', function ($to, $from) {
     }
 
     if ($from == 'category') {
-        $object = Category::where('slug', '=', $name)->first();
+        $object  = Category::where('slug', '=', $name)->first();
+
         $listing = DB::table('sub_categories')
             ->where('category', '=', $object->id)
             ->orderBy('name', 'ASC')
@@ -1028,7 +1066,7 @@ Route::get('/api/dropdownDepartment/{to}/{from}', function ($to, $from) {
     }
 
     if ($from == 'sub_category') {
-        $object = SubCategory::where('slug', '=', $name)->first();
+        $object  = SubCategory::where('slug', '=', $name)->first();
         $listing = DB::table('sub_sub_categories')
             ->where('sub_category', '=', $object->id)
             ->orderBy('name', 'ASC')
@@ -1041,9 +1079,9 @@ Route::get('/api/dropdownDepartment/{to}/{from}', function ($to, $from) {
 Route::get('/api/dropdownCaseType/{to}/{from}', function ($to, $from) {
 
     $id = Input::get('option');
-
     if ($from == 'case_type') {
-        $object = CaseType::where('id', '=', $id)->first();
+        $object  = CaseType::where('id', '=', $id)->first();
+
         $listing = DB::table('cases_sub_types')
             ->where('case_type', '=', $object->id)
             ->orderBy('name', 'ASC')
@@ -1056,13 +1094,11 @@ Route::get('/api/dropdownCaseType/{to}/{from}', function ($to, $from) {
 Route::get('/api/dropdownCategory/{to}/{from}', function ($to, $from) {
 
     $name = Input::get('option');
-
     if ($from == 'category') {
         $object = Category::where('slug', '=', $name)->first();
-    } else {
-
+    }
+    else {
         $object = SubCategory::where('slug', '=', $name)->first();
-
     }
 
     if ($from == 'category') {
@@ -1071,7 +1107,8 @@ Route::get('/api/dropdownCategory/{to}/{from}', function ($to, $from) {
             ->orderBy('name', 'ASC')
             ->lists('name', 'slug');
 
-    } else {
+    }
+    else {
 
         $listing = DB::table('sub-sub-categories')
             ->where('sub_category', '=', $object->id)
@@ -1085,9 +1122,25 @@ Route::get('/api/dropdownCategory/{to}/{from}', function ($to, $from) {
 
 Route::get('/api/dropdown/{table}', function ($table) {
 
-    $listing = DB::table($table)->orderBy('name', 'ASC')->lists('name', 'id');
+    $txtDebug = __CLASS__."->".__FUNCTION__."(\$table) \$table - {$table}";
+    $thing = array_key_exists("thing", $_REQUEST) ? $_REQUEST['thing'] : 0;;
+    $listing = \DB::table($table);//->orderBy('name', 'ASC');
+    if ($table == "cases_types") {
+        //if ($parent)
+        $listing->where("department",$thing);
+    } else if ($table == "departments") {
+        //if ($parent)
+        $listing->where("company",$thing);
+    } else if ($table == "cases_sub_types") {
+        //if ($parent)
+        $listing->where("case_type",$thing);
+    }
+    $txtDebug .= "\n  \$parent - {$thing}";
+    $txtDebug .= "\n  \$listing SQL - ".print_r($listing->toSql(),1).", bindings - ".print_r($listing->getBindings(),1);
+    $txtDebug .= "\n  \$listing - ".print_r($listing->get(),1);
 
-    return $listing;
+    //die("<pre>{$txtDebug}</pre>");
+    return $listing->lists('name', 'id');
 
 });
 
@@ -1096,16 +1149,20 @@ Route::post('postChat', ['middleware' => 'auth', 'uses' => 'ChatController@postC
 
 
 Event::listen('auth.login', function () {
-    $user = User::find(\Auth::user()->id);
+
+    $user               = User::find(\Auth::user()->id);
     $user->availability = 1;
-    $user->last_login = new DateTime;
+    $user->last_login   = new DateTime;
+
     $user->save();
 });
 
 Event::listen('auth.logout', function () {
-    $user = User::find(\Auth::user()->id);
+
+    $user               = User::find(\Auth::user()->id);
     $user->availability = 0;
-    $user->last_logout = new DateTime;
+    $user->last_logout  = new DateTime;
+
     $user->save();
 });
 
@@ -1113,10 +1170,8 @@ Event::listen('auth.logout', function () {
 Route::get('getLoggedInUsers', function () {
 
     $allUsers = User::where('id', '<>', \Auth::user()->id)->orderBy('availability', 'desc')->get();
-    $html = "";
-
+    $html     = "";
     foreach ($allUsers as $user) {
-
         $availability = ($user->availability == 1) ? "<i class='fa fa-circle-o status m-r-5'></i>" : "<i class='fa fa-circle-o offline m-r-5'></i>";
         $html .= "<div class='media'>";
         $html .= "<a href='#' onClick='chatStart(this)' class='chatWith' data-userid = '$user->id' data-names = '$user->name $user->surname'> <img class='pull-left' src='img/profile-pics/7.png' width='30' alt=''></a>";
@@ -1126,6 +1181,7 @@ Route::get('getLoggedInUsers', function () {
         $html .= "</div>";
 
     }
+
     return $html;
 
 });
@@ -1151,9 +1207,7 @@ Route::get('/getOfflineMessage', function () {
         ->get();
 
     $html = "";
-
     foreach ($offlineMessages as $message) {
-
         $user = User::where('id', '=', $message->from)->first();
         $read = ($message->read == 0) ? "<span class='label label-danger'>New</span>" : "";
         $html .= "<div class='media'>";
@@ -1167,6 +1221,7 @@ Route::get('/getOfflineMessage', function () {
         $html .= "</div>";
 
     }
+
     return $html;
 
 });
@@ -1190,9 +1245,8 @@ Route::get('all-messages', 'MessageController@index');
 |
 */
 
-Route::get('middle', function(){
-
-    echo  "hello";
+Route::get('middle', function () {
+    echo "hello";
 
 })->middleware('adminmiddlewar');
 Route::get('list-affiliations', ['middleware' => 'UsersMilldware', function () {
@@ -1201,17 +1255,18 @@ Route::get('list-affiliations', ['middleware' => 'UsersMilldware', function () {
 
 Route::get('list-affiliation-positions/{affiliation}', ['middleware' => 'UsersMilldware', function ($affiliation) {
 
-    $affiliationObj = Affiliation::find($affiliation);
-    $afflpos= AffiliationPositions::where('affiliation',$affiliation)->first();
-    $id=$affiliation;
-    $created=$afflpos->created_at;
-    $users=User::where('id',$afflpos->created_by)->first();
-    $created_by_name = $users->name;
+    $affiliationObj     = Affiliation::find($affiliation);
+    $afflpos            = AffiliationPositions::where('affiliation', $affiliation)->first();
+    $id                 = $affiliation;
+    $created            = $afflpos->created_at;
+    $users              = User::where('id', $afflpos->created_by)->first();
+    $created_by_name    = $users->name;
     $created_by_surname = $users->surname;
+    $position      = Position::where('id', $afflpos->positions)->first();
+    $position_name = $position->name;
 
-    $position= Position::where('id',$afflpos->positions)->first();
-    $position_name=$position->name;
-    return view('affiliations.positions', compact('affiliationObj','id','created','created_by_name','created_by_surname','position_name'));
+    return view('affiliations.positions', compact('affiliationObj', 'id', 'created', 'created_by_name', 'created_by_surname', 'position_name'));
+
 }]);
 
 Route::get('affiliations-list', ['middleware' => 'resetLastActive', 'uses' => 'AffiliationsController@index']);
@@ -1256,7 +1311,6 @@ Route::post('updateGroupPermissions', ['middleware' => 'resetLastActive', 'uses'
 
 Route::get('list-permissions-per-group/{group}', ['middleware' => 'resetLastActive', function ($group) {
     //$deptObj = Department::find($department);
-
 
     return view('permissions.group', compact('group', $group));
 }]);
@@ -1427,9 +1481,10 @@ Route::post('task-reminders','TaskRemindersController@store');
 |--------------------------------------------------------------------------
 |
 */
-Route::get('maps'  , 'MapsController@Getmaps') ;
 
-Route::get('map2'  ,function (){
+//Route::get('map', function() { return view('map.map'); } );
+Route::get('maps', 'MapsController@Getmaps');
+Route::get('map2', function () {
 
     return view('cornford.map2');
 });
@@ -1445,28 +1500,111 @@ Route::post('createMapCase'  ,'MapsController@storeCase');
 |
 */
 
+// VD BEGIN: Companies
+Route::get('list-companies', ['middleware' => 'resetLastActive', function () {
+    return view('companies.list');
+}]);
+Route::get('companies-list', ['middleware' => 'resetLastActive', 'uses' => 'CompanyController@index']);
+Route::get('companies/{id}', ['middleware' => 'resetLastActive', 'uses' => 'CompanyController@edit']);
+Route::post('updateCompany', ['middleware' => 'resetLastActive', 'uses' => 'CompanyController@update']);
+// VD END: Companies
+Route::any("logPIR", function () {
+    $txtDebug = "logPIR";
+    $idPIR    = (array_key_exists("id", $_REQUEST) && $_REQUEST['id']) ? $_REQUEST['id'] : -1;
+    //$idPIR = rand(63800, 63810);
+    //$idPIR = 63808;
+    if ($idPIR == -1) return Response::json(array('status' => 0, 'message' => "Event ID not specified"));
+    $msg  = array_key_exists("msg", $_REQUEST) ? $_REQUEST['msg'] : "";
+    $msg  = "PIR: Event ID - {$idPIR}\n{$msg}";
+    $attr = array('user' => 0, 'status' => 1, 'source' => 5, 'description' => $msg, 'gps_lat' => 0, 'gps_lng' => 0);
+    //$attr['id'] = 63807;
+    //$case = CaseReport::where("id",54);
+    $exists = CaseReport::where("description", "like", "%PIR: Event ID - {$idPIR}%")->count() == 0 ? false : true;
+    $txtDebug .= "\n  exists - {$exists}";//.print_r($case->toArray(),1);
+    $resp = array('status' => 0, 'message' => "Trying to create case for PIR");
+    if ($exists) {
+        $resp = array('status' => 0, 'message' => "Exists");
+    }
+    else {
+        $newCase = New CaseReport($attr);
+        $newCase->setAttribute("department", 1);
+        $newCase->setAttribute("case_type", 5);
+        $newCase->setAttribute("case_sub_type", 22001);
+        $txtDebug .= "\n  newCase - " . print_r($newCase->toArray(), 1);
+        try {
+            $newCase->save();
+            $attrOwner            = array('case_id' => -1, 'user' => 10, 'type' => 5);
+            $attrOwner['case_id'] = $newCase->id;
+            \DB::table('cases_owners')->insert($attrOwner);
+            $txtDebug .= "\n  Success saving";
+            $resp = array('status' => 1, 'message' => "Created case for PIR");
+        }
+        catch (Exception $ex) {
+            $txtDebug .= "\n  Error saving";
+            $txtDebug .= "\n  " . $ex->getMessage();
+            $resp = array('status' => 0, 'message' => $ex->getMessage());
+        }
+    }
 
-                 // MyRoute
-// 
+    //$txtDebug .= "\n  case - {$case->count()}";//.print_r($case->toArray(),1);
+    return Response::json($resp);
+    die("<pre>{$txtDebug}</pre>");
+});
+Route::group(['prefix' => "api"], function () {
+    Route::any("switchseen", "CasesSeenController@switchSeen");
+});
+
+/*-------------------------------------------------------------------
+DRONES ROUTING
+---------------------------------------------------------------------
+*/
+
+
+Route::group(array('prefix' => 'api/v1'), function()
+{    /*|--------------------------------------------------------------------------|
+    DRONE ROUTING
+    |--------------------------------------------------------------------------|*/
+
+    Route::get('userDepartment','DroneRequestController@userDepartment');
+   Route::get('report' ,['uses'=> 'AMyController@index']);
+   Route::get('mylists',['uses'=> 'AMyController@depart']);
+   Route::post('/store', ['uses' => 'AMyController@store']);
+
+    Route::get('showDroneRequest/{id}','DroneRequestController@showFirst');
+
+    Route::resource('drone', 'DroneRequestController');
+
+    Route::post('firstDroneApproval/{id}', 'DroneRequestController@FirstApprove');
+    Route::post('finalDroneApproval/{id}', 'DroneRequestController@Approve');
+    Route::post('rejectDroneRequest/{id}', 'DroneRequestController@Reject');
+    Route::get('droneSubType/{id}','DroneSubTypesController@droneSubTypes');
+    Route::resource('drone', 'DroneRequestController');
+});
+
 
 Route::get('tesingroute' , function(){
 
-  return view('reports.List');
+
+    /*|--------------------------------------------------------------------------|
+     DRONE TYPES AND SUB TYPES ROUTING
+    |--------------------------------------------------
+    ------------------------|*/
+    Route::resource('drone-type','DroneTypesController');
+    Route::resource('drone-sub-type','DroneSubTypesController');
+
+
+  // Route::get('report' ,['uses'=> 'AMyController@index']);
+
+
+  
+
+    /*|--------------------------------------------------------------------------|
+    END DRONE TYPES AND SUB TYPES ROUTING
+    |--------------------------------------------------------------------------|*/
+
+    //Route::get('userDepartment','DronesController@userDepartment');
+   Route::get('DroneList','DroneRequestController@getList');
+   Route::get('requestForm','DroneTypesController@index');
+   Route::get('test/{id}','DroneRequestController@test');
+   Route::get('getDroneRequests/{id}','DroneRequestController@getPerUser');
 });
-
-Route::get('report' ,['uses'=> 'AMyController@index']);
-Route::get('mylists',['uses'=> 'AMyController@depart']);
-Route::post('/store', ['uses' => 'AMyController@store']);
-
-
-//These routes are for javascript
-Route::get('departments','AMyController@departments');
-Route::get('municipalities','AMyController@municipality');
-Route::post('trying','AMyController@trying');
-Route::get('name/{name}/minetrying','AMyController@trying');
-Route::get('newView',function(){
-  return view('amyView.newView');
-});
-
-// Testing Route
-Route::get('query',['uses' => 'AMyController@create']);

@@ -29,7 +29,7 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
   <link href="{{ asset('/css/token-input.css') }}" rel="stylesheet">
   <link href="{{ asset('/css/icons.css') }}" rel="stylesheet">
   <link href="{{ asset('/css/lightbox.css') }}" rel="stylesheet">
-<!-- <link href="{{ asset('/css/media-player.css') }}" rel="stylesheet"> -->
+ <!-- <link href="{{ asset('/css/media-player.css') }}" rel="stylesheet"> -->
   <link href="{{ asset('/css/file-manager.css') }}" rel="stylesheet">
   <link href="{{ asset('/css/buttons.dataTables.min.css') }}" rel="stylesheet">
   <link href="{{ asset('/css/HoldOn.min.css') }}" rel="stylesheet">
@@ -37,7 +37,7 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
   <link href="{{ asset('/incl/animate.css') }}" rel="stylesheet">
   <link href="{{ asset('/css/Treant.css') }}" rel="stylesheet">
   <link href="{{ asset('/css/collapsable.css') }}" rel="stylesheet">
-<!-- <link href="{{ asset('/css/perfect-scrollbar.css') }}" rel="stylesheet"> -->
+  <!-- <link href="{{ asset('/css/perfect-scrollbar.css') }}" rel="stylesheet"> -->
   <link href="{{ asset('/css/form-builder.css') }}" rel="stylesheet">
   <link href="{{ asset('/css/awesome.css') }}" rel="stylesheet">
   <link href="{{ asset('/css/table.css') }}" rel="stylesheet">
@@ -46,8 +46,8 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
   <!-- DataTables CSS -->
   <link href="{{ asset('/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css') }}" rel="stylesheet">
   <!-- DataTables Responsive CSS -->
-{{--<link href="{{ asset('/bower_components/datatables-responsive/css/responsive.dataTables.scss') }}" rel="stylesheet">--}}
-<!-- jQuery Library -->
+  {{--<link href="{{ asset('/bower_components/datatables-responsive/css/responsive.dataTables.scss') }}" rel="stylesheet">--}}
+  <!-- jQuery Library -->
   <script src="{{ asset('/js/jquery.min.js') }}"></script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=geometry,places"></script>
   {{--<script>--}}
@@ -63,9 +63,9 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
   {{--});--}}
 
   {{--</script>--}}
-  <script>
-    var placeSearch, autocomplete;
-    var componentForm = {
+    <script>
+      var placeSearch, autocomplete;
+      var componentForm = {
       street_number: 'short_name',
       route: 'long_name',
       locality: 'long_name',
@@ -73,27 +73,27 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
       country: 'long_name',
       postal_code: 'short_name'
     };
-  </script>
+   </script>
    
-  <style>
-    body {
+   <style>
+     body {
         background-color: #5c788f;
-    }
+     }
       .eerross {
           background-image: url("{{ asset('public/img/01_fix_background.png') }}");
       width: 100%;
       height: 100%;
-    }
-    .has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline {
+      }
+     .has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline {
           color:#FE1B1B;
       }
       [ v-cloak]{
           display:none;
       }
-  </style>
+    </style>
 
-  <!-- report css -->
-  <style>
+    <!-- report css -->
+    <style>
          .date-div
          {
             width: 50% ; float: left;
@@ -179,7 +179,7 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
              background: rgba(0,0,0,0);
              background-color: grey;
          }
-        #department-selected::-webkit-scrollbar-thumb, #predict-selected::-webkit-scrollbar-thumb
+         #department-selected::-webkit-scrollbar-thumb, #predict-selected::-webkit-scrollbar-thumb
          {
              background-color:white;
          }
@@ -191,9 +191,7 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
              margin-top: 0px;
              padding-top: 0px;
              margin-bottom: 0px;
-         }
-         
-         
+         } 
         .municipality , .btAdds
          {
             width:100%;
@@ -396,7 +394,7 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
 
           @if(isset($userViewReportsPermission) && $userViewReportsPermission->permission_id =='16')
             <li {{ (Request::is('reports') ? "class=active" : '') }}>
-              <a class="sa-side-chart" href="{{ url('report') }}">
+              <a class="sa-side-chart" href="{{ url('api/v1/report') }}">
                 <span class="menu-item">Reports</span>
               </a>
             </li>
@@ -678,7 +676,7 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
     </script>
 
     <!-- zoomchart -->
-    <script src="{{ asset('/js/zoomcharts.js') }}"></script>
+    <script src="{{ asset('public/js/zoomcharts.js') }}"></script>
 
     <script>
       $(document).ready(function () {
