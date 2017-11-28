@@ -254,21 +254,22 @@
 
 
 
-            var last ={lat: -30.774, lng: 29.190};
+            //var last ={lat: -30.774, lng: 29.190};
             var long={lat: -30.774, lng: 29.190};
 
             for(var i=0; i < codes.length  ; i++){
 
-                last = {lat: parseInt(codes[i]), lng: parseInt(codes[i+1])}
+                last = {lat: parseFloat(codes[i]), lng: parseFloat(codes[i+1])}
             }
 
 
             var triangleCoords =[
+                last
 
-                {lat: -30.774, lng: 29.190},
-                {lat: -30.466, lng: 29.118},
-                {lat: -30.321, lng: 29.757},
-                {lat: -30.774, lng: 29.190}
+//                {lat: -30.774, lng: 29.190},
+//                {lat: -30.466, lng: 29.118},
+//                {lat: -30.321, lng: 29.757},
+//                {lat: -30.774, lng: 29.190}
 
 ]
         ;
