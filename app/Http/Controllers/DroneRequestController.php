@@ -229,7 +229,8 @@ class DroneRequestController extends Controller
     }
     public function store(Request $request)
     {
-
+            //var_dump($request->geoFenceCoords);
+            //die();
         $newDroneRequest = new DroneRequest();
         $userRole = User::find(\Auth::user()->id);
         $position = Position::find($userRole->position);
@@ -598,18 +599,72 @@ class DroneRequestController extends Controller
             ->orderBy('id','DESC')
             ->get();
 
-        $new_str                   = str_replace(str_split('()[object Object]'), '', $droneRequest->geoFence);
-        $ccordsInArray             =explode('_',$new_str);
+      $new_str                        =str_replace(str_split('()[object Object]'), '', $droneRequest->geoFence);
+      $staff                          =chop(str_replace("_",",",$new_str),',');
 
-        $choppedCoords    = array_pop($ccordsInArray);
+//      $ax=explode(',',$staff);
+//        $remove=[];
+//        $latitude="lat:";
+//        $longitude="lng:";
+//        $D[]='';
+//      //return $ax;
+//        $newArray=[];
+//        foreach($ax as $item)
+//        {
+//            $newDta = (float)$item;
+//            array_push($newArray,$newDta);
+//        }
+//
+//
+//       for ($i=0; $i <  sizeof($newArray)-1 ; $i++){
+//       $lat=$newArray[$i]; $long=$newArray[$i+1];
+//
+//    $newCoordinates   = object_get($latitude, $longitude);
+//         return $new_str ;
+//
+//  //  array_push($remove,[$lat,$long]);
+//
+////  $remove[].=['latitude' => $lat ,  'longitude' => $long];
+//
+//    $i+=1;
+//}
 
-        foreach($ccordsInArray as $item)
-        {
-            return $item;
-        }
-        Mapper::map($item);
 
-        return view('drones.droneApprove',compact('droneRequest','droneRequestActivity','droneRejectReasons'));
+//return $map= implode(" ",$remove[0]);
+//
+//    for($i=0 ; $i < sizeof($remove); $i++){
+//     $map.=$remove[$i];
+//
+//    }
+//
+//
+
+
+//
+//    return $staff ;
+//        $all=null;
+
+
+
+//            print_r([$i]);
+
+        //      Mapper::polygon([['latitude' => 53.381128999999990000, 'longitude' => -1.470085000000040000], ['latitude' => 52.381128999999990000, 'longitude' => 0.470085000000040000]]);
+//           Mapper::polygon([['latitude' => 53.381128999999990000, 'longitude' => -1.470085000000040000], ['latitude' => 52.381128999999990000, 'longitude' => 0.470085000000040000]], ['editable' => 'true']);
+//            Mapper::map(52.381128999999990000, 0.470085000000040000)->polygon([['latitude' => 53.381128999999990000, 'longitude' => -1.470085000000040000], ['latitude' => 52.381128999999990000, 'longitude' => 0.470085000000040000]], ['strokeColor' => '#000000', 'strokeOpacity' => 0.1, 'strokeWeight' => 2, 'fillColor' => '#FFFFFF']);
+
+        //Mapper::map(-29.381128999999990000, 31.470085000000040000)->polygon([$remove[$i]], ['editable' => 'true'], ['strokeColor' => '#000000', 'strokeOpacity' => 0.1, 'strokeWeight' => 2, 'fillColor' => '#FFFFFF']);
+
+        //$choppedCoords    = array_pop($ccordsInArray);
+        //var_dump($newStr);
+//        die();
+
+//        foreach($ccordsInArray as $item)
+//        {
+//            return (float)$item;
+//        }
+        //Mapper::map($item);php
+
+        return view('drones.droneApprove',compact('droneRequest','droneRequestActivity','droneRejectReasons','staff'));
         \Session::flash('success', 'Finally Rejected');
         return Redirect::back();
 
@@ -665,4 +720,5 @@ class DroneRequestController extends Controller
         return $data;
 
     }
+
 }

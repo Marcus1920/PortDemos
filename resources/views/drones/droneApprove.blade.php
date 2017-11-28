@@ -42,7 +42,7 @@
                     </div>
                     <div class="col">
                         {!! Form::open(['url' => 'api/v1/rejectDroneRequest/'.$droneRequest->id, 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"firstRejectionForm" ]) !!}
-                        {!! Form::hidden('user',Auth::user()->id)!!}
+                        {{--{!! Form::hidden('user',Auth::user()->id)!!}--}}
                         <div class="form-group reason hidden ">
                             <div class="col-md-6 col-md-offset-3" >
                                 <div class="col-md-5 " style="margin-top:10px;">
@@ -168,12 +168,6 @@
                     <td>Vertical Accuracy</td>
                     <td>{{$droneRequest->vertical_accuracy}}</td>
                 </tr>
-
-
-
-
-
-
                 </tbody>
             </table>
             </div>
@@ -182,10 +176,7 @@
             <div  class="col-md-4">
                 <h3 class="block-title">DRONES REQUEST ACTIVITIES</h3>
                 <div class="tile">
-                    <h2 class="tile-title">
-                        <div class="pull-right">
-                        </div>
-                    </h2>
+                    <h2 class="tile-title"></h2>
                     <div class="listview narrow">
                         @foreach($droneRequestActivity as $item)
                             <div class="media p-l-5">
@@ -215,22 +206,89 @@
             <div class="col-md-6 col-lg-8 ">
                 <h3 class="block-title" style="margin-left: 15px">Map</h3>
 
-                <p style="text-align: justify;font-size: 150%; padding: 20px;">Map</p>
+                <p  style="text-align: justify;font-size: 150%; padding: 20px;">Map</p>
 
 
-                <div style="width: 100%; height: 500px">
-                    {!! Mapper::Render() !!}
+                <div id="map" style="width: 100%; height: 500px">
+                {{--//    {!! Mapper::Render() !!}--}}
                 </div>
+
+
+                <input type="text" name="" id="cod" value="{{$staff}}" class="form-control">
+
+                <div id="show"></div>
+
+                {{--@foreach($staff as $cod)--}}
+
+                    {{--{{$cod}}--}}
+
+                {{--@endforeach--}}
+
 
             </div>
 
         </div>
         <br/>
-
-@endsection
+    </div>
+    @endsection
 @section('footer')
-
     <script>
+
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: {lat: -30.886, lng: 29.268},
+                mapTypeId: 'terrain'
+            });
+
+//        var triangleCoords=document.getElementById("")
+            {{--var  triangleCoords= Json.parse({{json_encode($remove)}});--}}
+//            var triangleCoords = [
+//                {lat: -30.774, lng: 29.190},
+//                {lat: -30.466, lng: 29.118},
+//                {lat: -30.321, lng: 29.757},
+//                {lat: -30.774, lng: 29.190}
+//            ];
+
+            var codes=document.getElementById("cod").value.split(',');
+
+
+
+            var last ={lat: -30.774, lng: 29.190};
+            var long={lat: -30.774, lng: 29.190};
+
+            for(var i=0; i < codes.length  ; i++){
+
+                last = {lat: parseInt(codes[i]), lng: parseInt(codes[i+1])}
+            }
+
+
+            var triangleCoords =[
+
+                {lat: -30.774, lng: 29.190},
+                {lat: -30.466, lng: 29.118},
+                {lat: -30.321, lng: 29.757},
+                {lat: -30.774, lng: 29.190}
+
+]
+        ;
+            // Construct the polygon.
+           {{--// var coordinates   = JSON.parse("{!!json_encode($remove)!!}");--}}
+            var bermudaTriangle = new google.maps.Polygon({
+                paths: triangleCoords,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35
+            });
+            bermudaTriangle.setMap(map);
+        }
+
+    </script>
+    <script>
+
+
 
         $('#rejectId').on('click',function(){
 
@@ -238,7 +296,7 @@
             $('.submit').removeClass('hidden');
             $("#submitId").removeAttr('disabled');
             $("#approveId").attr('disabled','disabled');
-        })
+        });
 
         $('#reject_reason').on('change',function(){
             var selectedval  = $(this).find("option:selected").val();
@@ -253,5 +311,7 @@
         });
         $("#firstRejectionForm").validate();
     </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=drawing&callback=initMap"></script>
+
 @endsection
 

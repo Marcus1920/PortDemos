@@ -672,7 +672,7 @@
 //////
 //////                        $('#lat').val(lat);
 //////                        $('#lng').val(lng);
-////                        });
+////                            });
 ////
 ////                        //to get the address of the current location
 //////                    var geocoder = new google.maps.Geocoder;
@@ -691,7 +691,7 @@
 //////                        } else {
 //////                            window.alert('Geocoder failed due to: ' + status);
 //////                        }
-//////                    });
+//////                                 });
 ////
 ////                        infoWindow.setPosition(pos);
 ////                        map.setCenter(pos);
