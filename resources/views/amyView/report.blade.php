@@ -20,7 +20,7 @@
         });
     });
     // Dealing with the date calender
-    $(function() 
+    $(function()
     {
             $( "#datepicker-8" ).datepicker({
                prevText:"click for previous months",
@@ -102,13 +102,33 @@
           selectedoptions.appendChild(btnRemove);
           selectedoptions.setAttribute("id", "id_"+count);
           document.getElementById("department-selected").appendChild(selectedoptions);
-          
+          $('.btnAdded').prop('readonly', true);
 
           
        	});
+
+      //dealing with checkboxes
+$(document).ready(function() {
+    $('#submitFilters').click(function () {
+        var result = $('input[type="checkbox"]:checked');
+        if (result.length > 0) {
+            var resultString=result.length + "checkboxes checked<br/>";
+            result.each(function(){
+                resultString +=$(this).val() + "<br/>";
+            });
+            $('#divResult').html(resultString);
+        }
+        else {
+            $('#divResult').html("no chekboxes selected");
+        }
+    });
+});
+
       //Add All
+      
       $('#addAll').click(function()
         {
+         
               $.get(base_url,function(data){
                 $.each(data,function(jack,subjectB){
                     var selectedoptions= document.createElement('span');
@@ -141,10 +161,19 @@
                     selectedoptions.appendChild(btnRemove);
                     selectedoptions.setAttribute("id", "id_"+count);
                     document.getElementById("department-selected").appendChild(selectedoptions);
+
+                        // $('#addAll').attr("disabled", true);
+                       $('.btnAdded').prop('readonly', true);
+
                 });
               });
               
               $('.btAdds').attr("disabled", true);
+
+            $('.btAdds').on('click',function() {
+                $(this).prop("disabled",true);
+            });
+
               
         });
 
@@ -153,6 +182,8 @@
       {
         $('#department-selected').empty();
         $('.btAdds').attr("disabled", false);
+
+         $('#addAll').attr("disabled", false);
 
       });
 
@@ -177,7 +208,7 @@
 <br/>
 <h4 class="block-title">Data  Range</h4>
 <!-- <form action="/store" method="POST"> -->
-{!! Form::open(['url' => '/store', 'method' => 'POST', 'class' => 'form-horizontal', 'id'=>"filterReportsForm" ]) !!}
+{!! Form::open(['url' => '/storings', 'method' => 'POST', 'class' => 'form-horizontal', 'id'=>"filterReportsForm" ]) !!}
 {!! csrf_field() !!}
    	
 <div class="col col-md-6" style="height:100%; border-right: 2px solid white;">         
@@ -284,7 +315,7 @@
                       <option name="category[]" value="{{$key->name}}" style="color: white"">{{$key->name}}</option>
                    @endforeach
                 </select>
-                 {!! $errors->first('categories', '<span class="help-block" style="background-color: linen; width:60%;"><b>:message</b></span>') !!}
+                 {!! $errors->first('categories', '<span class="help-block" style=" width:60%;"><b>:message</b></span>') !!}
               </div>
 
               <!-- <select name="categories" class="p-relative">
@@ -304,7 +335,7 @@
         
           <div class="bar-graph">
                   <div id="label-f">
-                        Bar Graph 
+                        Bar Graph
                   </div>
                   <div id="check-box">
                      <input type="checkbox" id="case-type" name="graph[]" value="bar" style="width: 100px">
@@ -326,7 +357,7 @@
                      <input type="checkbox" id="case-type" name="graph[]" value="pie" style="width: 100px">
                    </div>
           </div>
-          <div class="lin-graph">
+          <div class="line-graph">
                   <div id="label-f">
                         Line Graph 
                   </div>
@@ -334,7 +365,7 @@
                      <input type="checkbox" id="case-type" name="graph[]" value="line" style="width: 100px">
                    </div>
           </div>
-          {!! $errors->first('graph', '<span class="help-block" style="background-color: linen; width:60%;"><b>:message</b></span>') !!}
+          {!! $errors->first('graph', '<span class="help-block" style=" width:60%;"><b>:message</b></span>') !!}
         </div>      
       </div>          
       
@@ -382,7 +413,7 @@
                      <input type="checkbox" name="rep_ov[]" value="avg-case" style="width: 100px">
                    </div>
           </div>
-          {!! $errors->first('rep_ov', '<span class="help-block" style="background-color: linen; width:60%;"><b>:message</b></span>') !!}         
+          {!! $errors->first('rep_ov', '<span class="help-block" style=" width:60%;"><b>:message</b></span>') !!}
         </div>          
       </div>      
      </div>    
@@ -405,7 +436,7 @@
                    </div>
                 @endforeach
           </div>
-           {!! $errors->first('case_repost', '<span class="help-block" style="background-color: linen; width:60%;"><b>:message</b></span>') !!} 
+           {!! $errors->first('case_repost', '<span class="help-block" style=" width:60%;"><b>:message</b></span>') !!}
         </div>          
       </div>
       <!-- Resonders -->
@@ -436,7 +467,7 @@
                      <input type="checkbox" name="responder[]" value="solved" style="width: 100px">
                   </div>
           </div>
-          {!! $errors->first('responder', '<span class="help-block" style="background-color: linen; width:60%;"><b>:message</b></span>') !!}       
+          {!! $errors->first('responder', '<span class="help-block" style=" width:60%;"><b>:message</b></span>') !!}
         </div>          
       </div>
       <!-- //button -->
@@ -764,7 +795,8 @@
           selectedoptions.appendChild(btnAdded);
           selectedoptions.appendChild(btnRemove);
           selectedoptions.setAttribute("id", "id_"+count);
-          document.getElementById("predict-selected").appendChild(selectedoptions); 
+          document.getElementById("predict-selected").appendChild(selectedoptions);
+          $('.btnAdded').prop('readonly', true); 
         });
       //Add All
       $('#predictaddAll').click(function()
@@ -798,7 +830,8 @@
                     selectedoptions.appendChild(btnRemove);
                     selectedoptions.setAttribute("id", "id_"+count);
                     document.getElementById("predict-selected").appendChild(selectedoptions);
-                    
+                     // $('#predictaddAll').attr("disabled", true);
+                      $('.btnAdded').prop('readonly', true);
                 });
               });
         });
@@ -807,6 +840,7 @@
       {
         $('#predict-selected').empty();
         $('.municipality').attr("disabled", false);
+          $('#predictaddAll').attr("disabled", false);
       });
     });
     //end dealing
@@ -827,4 +861,4 @@
 
 
 </script>
-@endsection
+    @endsection

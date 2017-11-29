@@ -23,7 +23,7 @@ class AMyController extends Controller
          $department_list  = DB::table('departments')->orderBy('name','ASC')->get();
          $cases_statuses   = DB::table('cases_statuses')->orderBy('name','ASC')->get();
          $municipalit_list = DB::table('municipalities')->orderBy('name','ASC')->get();
-         $categories       = DB::table('categories')->orderBy('name','ASC')->get();               
+         $categories       = DB::table('sub_categories')->orderBy('name','ASC')->get();               
          return view('amyView.report', compact('cases_statuses','department_list','municipalit_list','categories'));
     }
     //Retrieving data from database to java script
