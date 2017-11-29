@@ -210,7 +210,7 @@
 
                 <div id="map" style="width: 100%; height: 500px">
                 </div>
-                <input type="hidden" name="" id="cod" value="{{$staff}}" class="form-control" disabled>
+                <input type="hidden" name="" id="cod" value="{{$coordinates}}" class="form-control" disabled>
 
                 <div id="show"></div>
             </div>
@@ -223,7 +223,7 @@
     <script>
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 7,
+                zoom: 5,
                 center: {lat: -30.886, lng: 29.268},
                 mapTypeId: 'terrain'
             });
@@ -243,7 +243,7 @@
 
             });
             bermudaTriangle.setMap(map);
-            bermudaTriangle.setZoom(1);
+
         }
     </script>
     <script>

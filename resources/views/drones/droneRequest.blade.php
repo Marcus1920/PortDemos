@@ -86,11 +86,12 @@
                     @if ($errors->has('drone_sub_service_type_id')) <p class="help-block red">*{{ $errors->first('drone_sub_service_type_id') }}</p> @endif
                 </div>
             </div>
-            <div class="form-group surveys hidden">
+            <div class="form-group surveys hidden" id="reloadMap">
                 {!! Form::label('Area of Interest', 'Area of Interest', array('class' => 'col-md-3 control-label  ')) !!}
-                <div class="col-md-6 col-offfset-3">
-                    <div style="width: 100% ; min-height: 500px"; id="map">
-                    </div>
+                <div class="col-md-6 col-offset-3">
+
+                    <div style="width: 100% ; min-height: 500px"; id="map"></div>
+
                     @if ($errors->has('area_of_interest')) <p class="help-block red">*{{ $errors->first('area_of_interest') }}</p> @endif
                 </div>
             </div>
@@ -248,6 +249,8 @@
                 }
                 //Aquatic -> ad Hoc
                 else if(selectText =='Hydrographic Survey' && selectText=='Hydrographic Solar Scanning'){
+
+                    initMap();
                     $('.scopeOfWOrk').removeClass('hidden');
                     $('.surveys').removeClass('hidden');
                     $('.Notes').removeClass('hidden');
@@ -321,37 +324,48 @@
                 }
 
             });
+
+            function showMap()
+            {
+                var mapContainer     = document.getElementById("map");
+                var content          = mapContainer.innerHTML;
+                 mapContainer.innerHTML =content;
+            }
+
             $("#dronesDepartment").tokenInput("{!! url('/api/v1/userDepartment')!!}", {tokenLimit: 1});
 
-            var map, infoWindow ,drawingManager,poly1;
 
+
+            var map, infoWindow ,drawingManager,poly1;
             function initMap() {
                 map = new google.maps.Map(document.getElementById('map'),
                     {
-                        center: {lat: -30.559482, lng: 22.937505999999985},
+                        center: {lat:-14.668625907385902, lng: 12.513427734375},
                         zoom: 5,
+
                         mapTypeId: google.maps.MapTypeId.RoadMap
                     });
-                //doAllPolygons();
 
-                infoWindow = new google.maps.InfoWindow;
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function (position) {
-                        var pos = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
-                        infoWindow.setPosition(pos);
-                        infoWindow.setContent('Location found.');
-                        infoWindow.open(map);
-                        map.setCenter(pos);
+//                infoWindow = new google.maps.InfoWindow;
+//                if (navigator.geolocation) {
+//                    navigator.geolocation.getCurrentPosition(function (position) {
+//                        var pos = {
+//                            lat: position.coords.latitude,
+//                            lng: position.coords.longitude
+//                        };
+//                        infoWindow.setPosition(pos);
+//                        infoWindow.setContent('Location found.');
+//                        infoWindow.open(map);
+//                        map.setCenter(pos);
+//
+//                    }, function () {
+//                        handleLocationError(true, infoWindow, map.getCenter());
+//                    });
+//                } else {
+//                    handleLocationError(false, infoWindow, map.getCenter());
+//                }
 
-                    }, function () {
-                        handleLocationError(true, infoWindow, map.getCenter());
-                    });
-                } else {
-                    handleLocationError(false, infoWindow, map.getCenter());
-                }
+
 
                 var p = document.getElementById('geoFenceCoords').value.replace(/%20/g, ',');
                 var point = p.substr(10, p.length - 1);
@@ -419,69 +433,6 @@
                 }
             }
 
-//                var triangleCoords = [
-//                    new google.maps.LatLng(33.5362475, -111.9267386),
-//                    new google.maps.LatLng(33.5104882, -111.9627875),
-//                    new google.maps.LatLng(33.5004686, -111.9027061)
-//                ];
-//
-//
-////                var paht=arraySet(pos);
-////  alert(paht);
-//                myPolygon = new google.maps.Polygon({
-//                    paths: triangleCoords,
-//                    draggable: true, // turn off if it gets annoying
-//                    editable: true,
-//                    strokeColor: '#FF0000',
-//                    strokeOpacity: 0.8,
-//                    strokeWeight: 2,
-//                    fillColor: '#FF0000',
-//                    fillOpacity: 0.35
-//                });
-//
-//                myPolygon.setMap(map);
-//
-//                var drawingManager = new google.maps.drawing.DrawingManager({
-//                    drawingMode: google.maps.drawing.OverlayType.POLYGON,
-//                    drawingControl: true,
-//                    drawingControlOptions: {
-//                        position: google.maps.ControlPosition.TOP_CENTER,
-//                        drawingModes: ['marker', 'polygon']
-//                    },
-//                    markerOptions: {icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'},
-//                    circleOptions: {
-//                        fillColor: '#ffff00',
-//                        fillOpacity: 1,
-//                        strokeWeight: 5,
-//                        clickable: false,
-//                        editable: true,
-//                        zIndex: 1
-//                    }
-//
-//                });
-
-//                function getPolygonCoords() {
-//                    var len = flightPath.getPath().getLength();
-//                    var htmlStr = "";
-//                    var firstPos = "";
-//                    var result = "";
-//                    for (var i = 0; i < len; i++) {
-//                        htmlStr += flightPath.getPath().getAt(i).toUrlValue(5) + " ";
-//                        var arr = flightPath.getPath().getAt(i).toUrlValue(5).split(',');
-//
-//                        if (i == 0) {
-//
-//                            result += arr[0] + " " + arr[1];
-//                            //firstPos = ","+arr[0] + " " + arr[1];
-//                        }
-//                        else {
-//                            result += "," + arr[0] + ", " + arr[1];
-//                        }
-//                    }
-//                    result += "))";
-//                    document.getElementById('geoFenceCoords').value = result;
-//                }
-
                 function openInfoWindowPolygon(polygon) {
 
                     poly1 = polygon;
@@ -543,205 +494,22 @@
                     map.fitBounds(latlngbounds);
 
                 }
-                function clearMap() {
-                    drawingManager.setDrawingMode(null);
-                    flightPath.setMap(null);
-                    document.getElementById('geoFenceCoords,').value = null;
-                }
-
-                google.maps.event.addDomListener(window, 'load', initMap);
-
-                //myPolygon.setMap(map);
-//                google.maps.event.addListener(myPolygon, "dragend", getPolygonCoords);
-//                google.maps.event.addListener(drawingManager.ge, "insert_at", getCoords);
-//                google.maps.event.addListener(myPolygon.getPath(), "remove_at", getPolygonCoords);
-//                 google.maps.event.addListener(drawingManager.getPath(), "set_at", getCoords);
-//                google.maps.event.addListener(drawingManager, 'polygoncomplete', function(polygon)
-//                {
-//                    var coordinates =(polygon.getPath().getArray());
-//                   console.log(coordinates);
-//
-//                   // var len = (polygon.getPath().getLength());
-//                   // var htmlStr = "";
-//                   // console.log(len);
-////                    for (var i = 0; i < len; i++) {
-////                        htmlStr += "new google.maps.LatLng(" + polygon.getPath().getArray(i).toUrlValue(5) + "), ";
-////                        //Use this one instead if you want to get rid of the wrap > new google.maps.LatLng(),
-////                        //htmlStr += "" + myPolygon.getPath().getAt(i).toUrlValue(5);
-////                    }
-////                    document.getElementById('geoFenceCoords').innerHTML = htmlStr;
-//
-////                    if (event.type == 'polygon') {
-////                        var len = drawingManager.getPath().getLength();
-////                        var htmlStr = "";
-////                        for (var i = 0; i < len; i++) {
-////                            htmlStr += "new google.maps.LatLng(" + drawingManager.getPath().getAt(i).toUrlValue(5) + "), ";
-////                            //Use this one instead if you want to get rid of the wrap > new google.maps.LatLng(),
-////                            //htmlStr += "" + myPolygon.getPath().getAt(i).toUrlValue(5);
-////                        }
-////                        document.getElementById('geoFenceCoords').innerHTML = htmlStr;
-//////                        //var radius = event.overlay.getCoords();
-//                 //   }
-//                });
-            //}
-//            function getCoords() {
-//                var len = drawingManager.getPath().getLength();
-//                var htmlStr = "";
-//                for (var i = 0; i < len; i++) {
-//                    htmlStr += "new google.maps.LatLng(" + drawingManager.getPath().getAt(i).toUrlValue(5) + "), ";
-//                    //Use this one instead if you want to get rid of the wrap > new google.maps.LatLng(),
-//                    //htmlStr += "" + myPolygon.getPath().getAt(i).toUrlValue(5);
+//                function clearMap() {
+//                    drawingManager.setDrawingMode(null);
+//                    flightPath.setMap(null);
+//                    document.getElementById('geoFenceCoords,').value = null;
 //                }
-//                document.getElementById('geoFenceCoords').innerHTML = htmlStr;
-//            }
 
-//            function  geolocation() {
-//                infoWindow = new google.maps.InfoWindow;
-//                // Try HTML5 geolocation.
-//                if (navigator.geolocation) {
-//                    navigator.geolocation.getCurrentPosition(function(position) {
-//                        var pos = {
-//                            lat: position.coords.latitude,
-//                            lng: position.coords.longitude
-//                        };
-//
-//                        infoWindow.setPosition(pos);
-//                        infoWindow.setContent('Location found.');
-//                        infoWindow.open(map);
-//                        map.setCenter(pos);
-//                    }, function() {
-//                        handleLocationError(true, infoWindow, map.getCenter());
-//                    });
-//                } else {
-//                    // Browser doesn't support Geolocation
-//                    handleLocationError(false, infoWindow, map.getCenter());
-//                }
-//            }
-//            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-//                infoWindow.setPosition(pos);
-//                infoWindow.setContent(browserHasGeolocation ?
-//                    'Error: The Geolocation service failed.' :
-//                    'Error: Your browser doesn\'t support geolocation.');
-//                infoWindow.open(map);
-//            }
-//
-            function copyToClipboard(text) {
-                window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
-            }
+               // google.maps.event.addDomListener(window, 'load', initMap);
 
 
-
-                //function for current location
-
-//                function geolocation()
-//                {
-//
-////            if(marker2.visible==true)
-////            {
-////                marker2.setVisible(false);
-////            }
-//                    //find the current location
-////                    if (navigator.geolocation) {
-////                        navigator.geolocation.getCurrentPosition(function (position) {
-////                            var pos = {
-////                                lat: position.coords.latitude,
-////                                lng: position.coords.longitude,
-////
-////                            };
-////
-////                            //clear default marker
-//////                    marker.setVisible(false);
-//////
-//////                    marker2=new google.maps.Marker({
-//////                        position: {
-//////                            lat: -30.559482,
-//////                            lng: 22.937505999999985,
-//////
-//////                        }, map: map,
-//////                        draggable: true,
-//////                        zoom:10
-//////                        //            icon:'https://d30y9cdsu7xlg0.cloudfront.net/png/2955-200.png'
-//////                    });
-//////
-//////                    $('#lat').val(pos['lat']);
-//////                    $('#lng').val(pos['lng']);
-////
-//////                    google.maps.event.addListener(marker2,'position_changed',function(){
-//////                        var lat=marker2.getPosition().lat();
-//////                        var lng=marker2.getPosition().lng();
-//////
-//////                        $('#lat').val(lat);
-//////                        $('#lng').val(lng);
-////                            });
-////
-////                        //to get the address of the current location
-//////                    var geocoder = new google.maps.Geocoder;
-//////
-//////                    var input = pos['lat']+','+pos['lng'];
-//////                    var latlngStr = input.split(',', 2);
-//////                    var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
-//////                    geocoder.geocode({'location': latlng}, function(results, status) {
-//////                        if (status === 'OK') {
-//////                            if (results[0]) {
-//////                                $('#address').val(results[0].formatted_address);
-//////                                infoWindow.setContent(results[0].formatted_address)
-//////                            } else {
-//////                                window.alert('No results found');
-//////                            }
-//////                        } else {
-//////                            window.alert('Geocoder failed due to: ' + status);
-//////                        }
-//////                                 });
-////
-////                        infoWindow.setPosition(pos);
-////                        map.setCenter(pos);
-////                        map.setZoom(19);
-//////                        marker2.setPosition(pos);
-////                        infoWindow.open(map);
-////
-//////                },function() {
-////////
-//////                    handleLocationError(true, infoWindow, map.getCenter());
-////////
-//////                });
-////                    } else {
-//                        // Browser doesn't support Geolocation
-//                        handleLocationError(false, infoWindow, map.getCenter());
-//                    }
-
-
-                    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
                         infoWindow.setPosition(pos);
                         infoWindow.setContent(browserHasGeolocation ?
                             'Error: The Geolocation service failed.' :
                             'Error: Your browser doesn\'t support geolocation.');
                         infoWindow.open(map,marker2);
                     }
-
-
-
-
-//                var drawingManager = new google.maps.drawing.DrawingManager({
-//                    drawingMode: google.maps.drawing.OverlayType.MARKER,
-//                    drawingControl: true,
-//                    drawingControlOptions: {
-//                        position: google.maps.ControlPosition.TOP_CENTER,
-//                        drawingModes: ['marker', 'circle', 'polygon', 'polyline', 'rectangle']
-//                    },
-//                    markerOptions: {icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'},
-//                    circleOptions: {
-//                        fillColor: '#ffff00',
-//                        fillOpacity: 1,
-//                        strokeWeight: 5,
-//                        clickable: false,
-//                        editable: true,
-//                        zIndex: 1
-//                    }
-//                });
-//                drawingManager.setMap(map);
-//
-
-
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=drawing&callback=initMap"
