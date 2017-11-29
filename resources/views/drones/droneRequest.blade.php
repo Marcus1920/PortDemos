@@ -491,7 +491,7 @@
                     //{
                     document.getElementById('geoFenceCoords').value = polygon.getPath();
                     //}
-                    var contents = 'Loaction name';
+                    var contents = 'Location name';
                     var bounds = new google.maps.LatLngBounds();
                     vertices.forEach(function (xy, i) {
                         bounds.extend(xy);

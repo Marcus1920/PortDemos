@@ -208,23 +208,11 @@
 
                 <p  style="text-align: justify;font-size: 150%; padding: 20px;">Map</p>
 
-
                 <div id="map" style="width: 100%; height: 500px">
-                {{--//    {!! Mapper::Render() !!}--}}
                 </div>
-
-
-                <input type="text" name="" id="cod" value="{{$staff}}" class="form-control">
+                <input type="hidden" name="" id="cod" value="{{$staff}}" class="form-control" disabled>
 
                 <div id="show"></div>
-
-                {{--@foreach($staff as $cod)--}}
-
-                    {{--{{$cod}}--}}
-
-                {{--@endforeach--}}
-
-
             </div>
 
         </div>
@@ -233,63 +221,32 @@
     @endsection
 @section('footer')
     <script>
-
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 5,
+                zoom: 7,
                 center: {lat: -30.886, lng: 29.268},
                 mapTypeId: 'terrain'
             });
-
-//        var triangleCoords=document.getElementById("")
-            {{--var  triangleCoords= Json.parse({{json_encode($remove)}});--}}
-//            var triangleCoords = [
-//                {lat: -30.774, lng: 29.190},
-//                {lat: -30.466, lng: 29.118},
-//                {lat: -30.321, lng: 29.757},
-//                {lat: -30.774, lng: 29.190}
-//            ];
-
             var codes=document.getElementById("cod").value.split(',');
+            var last = [];
+            for(var i=0; i < codes.length  ; i+=2){
+                last.push({lat: parseFloat(codes[i]), lng: parseFloat(codes[i+1])});
+                        }
 
-
-
-            //var last ={lat: -30.774, lng: 29.190};
-            var long={lat: -30.774, lng: 29.190};
-
-            for(var i=0; i < codes.length  ; i++){
-
-                last = {lat: parseFloat(codes[i]), lng: parseFloat(codes[i+1])}
-            }
-
-
-            var triangleCoords =[
-                last
-
-//                {lat: -30.774, lng: 29.190},
-//                {lat: -30.466, lng: 29.118},
-//                {lat: -30.321, lng: 29.757},
-//                {lat: -30.774, lng: 29.190}
-
-]
-        ;
-            // Construct the polygon.
-           {{--// var coordinates   = JSON.parse("{!!json_encode($remove)!!}");--}}
             var bermudaTriangle = new google.maps.Polygon({
-                paths: triangleCoords,
+                paths: last,
                 strokeColor: '#FF0000',
                 strokeOpacity: 0.8,
                 strokeWeight: 2,
                 fillColor: '#FF0000',
                 fillOpacity: 0.35
+
             });
             bermudaTriangle.setMap(map);
+            bermudaTriangle.setZoom(1);
         }
-
     </script>
     <script>
-
-
 
         $('#rejectId').on('click',function(){
 
@@ -312,7 +269,9 @@
         });
         $("#firstRejectionForm").validate();
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=drawing&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=drawing&callback=initMap"></script>
+
+
 
 @endsection
 

@@ -558,6 +558,7 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
     <!-- zoomchart -->
     <script src="{{ asset('js/zoomcharts.js') }}"></script>
 
+
     <script>
 			$(document).ready(function () {
 				if (typeof google !== "undefined") google.maps.event.addDomListener(window, 'load', initAutocomplete);

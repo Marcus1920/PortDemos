@@ -1258,6 +1258,7 @@ Route::group(array('prefix' => 'api/v1'), function()
 
 
 
+
     /*|--------------------------------------------------------------------------|
     END DRONE TYPES AND SUB TYPES ROUTING
     |--------------------------------------------------------------------------|*/
@@ -1270,3 +1271,4 @@ Route::get('requestForm','DroneTypesController@index');
 Route::get('test/{id}','DroneRequestController@test');
 Route::get('getDroneRequests/{id}','DroneRequestController@getPerUser');
  Route::get('casetest/droneSubType/{id}','DroneSubTypesController@droneSubTypes');
+Route::get('droneCoordinates/{id}','DroneRequestController@droneCoordinates');
