@@ -1272,3 +1272,13 @@ Route::get('DroneList','DroneRequestController@getList');
 Route::get('requestForm','DroneTypesController@index');
 Route::get('test/{id}','DroneRequestController@test');
 Route::get('getDroneRequests/{id}','DroneRequestController@getPerUser');
+
+//Report Module
+Route::get('report' ,['uses'=> 'ReportModuleController@index']);
+Route::post('/store', ['uses' => 'ReportModuleController@store']);
+
+
+//These routes are for javascript
+Route::get('departments','ReportModuleController@departments');
+Route::get('municipalities','ReportModuleController@municipality');
+Route::post('trying','ReportModuleController@trying');

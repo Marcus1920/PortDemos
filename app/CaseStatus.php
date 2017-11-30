@@ -9,6 +9,9 @@ class CaseStatus extends Eloquent
     protected $table    = 'cases_statuses';
     protected $fillable = ['name','slug','active'];
 
-
+    public function AmineCase()
+    {
+    	return $this->BelongsToMany(AmineCase::class,'status');
+    }
 
 }

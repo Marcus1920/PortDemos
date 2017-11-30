@@ -44,12 +44,14 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
   <!-- DataTables CSS -->
   <link href="{{ asset('bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css') }}" rel="stylesheet">
   <!-- DataTables Responsive CSS -->
-{{--<link href="{{ asset('public/bower_components/datatables-responsive/css/responsive.dataTables.scss') }}" rel="stylesheet">--}}
+{{--<link href="{{ asset('/bower_components/datatables-responsive/css/responsive.dataTables.scss') }}" rel="stylesheet">--}}
 <!-- jQuery Library -->
   <script src="{{ asset('js/jquery.min.js') }}"></script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=geometry,places"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
   {{--<script>--}}
 
   {{--$(document).ready(function() {--}}
@@ -83,7 +85,7 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
 
     .eerross {
 
-      background-image: url("{{ asset('public/img/01_fix_background.png') }}");
+      background-image: url("{{ asset('/img/01_fix_background.png') }}");
       width: 100%;
       height: 100%;
     }
@@ -91,6 +93,124 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
         font-size: 14px;
     }
   </style>
+<style>
+         .date-div
+         {
+            width: 50% ; float: left;
+         }
+         .date-txt
+         {
+            width: 40% ; float: right;
+         }
+         #datepicker-8 , #datepicker-9
+         {
+            color: blue;    
+         }
+         .sizing-row
+         {
+            width: 180px;
+         }
+         #label-f
+         {
+             width: 80% ;
+             height: 30px;
+             margin-bottom: 3px;
+             background-color: white;
+             color :black;
+             text-align: center;
+             float: left;
+         }
+         #check-box
+         {
+            width: 18% ;
+            height: 20px;
+            margin-bottom: 3px;
+            float: right;"
+         }
+        
+         #check-box ,#check_box
+         {
+            width: 18% ;
+            height: 20px;
+            margin-bottom: 3px;
+            float: right;"
+         }
+
+         .dept-selection , .predict-selection
+         {
+            width: 100%;
+            height: 200px;
+         }
+         #departments , #department-selected ,#predict , #predict-selected
+         {
+            width: 40%;
+            display: block;
+            margin: 0;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: scroll;          
+         }
+         #department-btns ,#predict-btns
+         {
+            width: 20%;
+            display: block;
+            height: 80%;
+            float: right;
+         }
+         #departments , #predict 
+         {
+            float: left;
+         }
+         #department-selected , #predict-selected
+         {
+             float: right;
+             padding-top:0px;
+             background-color: gray;
+         }
+
+         #departments::-webkit-scrollbar ,#department-selected::-webkit-scrollbar ,#predict::-webkit-scrollbar ,#predict-selected::-webkit-scrollbar
+         {
+             width:5px;
+         }
+         #departments::-webkit-scrollbar-thumb, #department-selected::-webkit-scrollbar-thumb,#predict::-webkit-scrollbar-thumb , #predict-selected::-webkit-scrollbar-thumb
+         {
+             border-radius: 1px;
+             background: rgba(0,0,0,0);
+             background-color: grey;
+         }
+         #department-selected::-webkit-scrollbar-thumb, #predict-selected::-webkit-scrollbar-thumb
+         {
+             background-color:white;
+         }
+         #department-list , #predict-list
+         {
+             width:100%;
+             height:40px;
+             padding-left: 0px;
+             margin-top: 0px;
+             padding-top: 0px;
+             margin-bottom: 0px;
+         }                
+         .municipality , .btAdds
+         {
+           width:100%;
+           height:100%;
+           margin: 0px;
+         }
+         .crud
+         {
+           width:90%;
+           height:24%;
+           margin-left:5%; 
+           margin-top: 5px;
+          color:default;
+         }
+         .btnAdded
+         {
+            text-align: center;
+         }
+</style>
+
 </head>
 <body>
   @if(!\Auth::check())
