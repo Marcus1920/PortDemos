@@ -622,8 +622,6 @@ class DroneRequestController extends Controller
             ->where('id',$id)
             ->first();
 
-        $droneRejectReasons=DroneRejectReason::find([1,2,3]);
-
         $droneRequestActivity = DroneRequestActivity::with('DroneRequest')
             ->with('User')
             ->where('drone_request_id',$id)

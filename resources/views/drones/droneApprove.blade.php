@@ -41,7 +41,7 @@
                         {!! Form::open(['url' => 'api/v1/rejectDroneRequest/'.$droneRequest->id, 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"firstRejectionForm" ]) !!}
                         {{--{!! Form::hidden('user',Auth::user()->id)!!}--}}
                         <div class="form-group reason hidden ">
-                            <div class="col-md-6 col-md-offset-3" >
+                            <div class="col-md-6 col-md-offset-2 " >
                                 <div class="col-md-5 " style="margin-top:10px;">
                                     <select name="reject_reason" id="reject_reason" class="form-control " required>
                                         <option value="0"  selected disabled>-select reason-</option>
@@ -324,26 +324,6 @@
     </div>
     @endsection
 @section('footer')
-    <script>
-        window.onload  = function tableFunction()
-        {
-            var tableRows = document.getElementById("tableId");
-            var Trows     = tableRows.rows.length;
-            for(i=0;i<Trows;i++)
-            {
-                var tableCells  = tableRows.rows.item(i).cells[1];
-                if((tableCells.innerHTML) == " ")
-                {
-                    //alert("okay"+Trows);
-                }
-                else{
-                    //alert(tableCells.innerHTML);
-                }
-            }
-
-        };
-
-    </script>
     <script>
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {

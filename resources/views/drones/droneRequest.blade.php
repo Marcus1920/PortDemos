@@ -98,45 +98,42 @@
                 {!! Form::label('Purpose Of Survey ', 'Purpose Of Survey', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
                     {!! Form::text('purpose_of_survey',NULL,['class' => 'form-control input-sm','id' => 'purpose_of_survey','disabled']) !!}
+                    @if ($errors->has('purpose_of_survey')) <p class="help-block red">*{{ $errors->first('purpose_of_survey') }}</p> @endif
                 </div>
             </div>
             <div class="form-group numberOfStockPile hidden">
                 {!! Form::label('Number of Stockpiles', 'Number of Stockpiles', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
                     {!! Form::text('number_of_stockpiles',NULL,['class' => 'form-control input-sm','id' => 'number_of_stockpiles','disabled','rows'=>'7']) !!}
+                    @if ($errors->has('number_of_stockpiles')) <p class="help-block red">*{{ $errors->first('number_of_stockpiles') }}</p> @endif
                 </div>
             </div>
             <div class="form-group verticalAccuracy hidden">
                 {!! Form::label('Vertical Accuracy', 'Vertical Accuracy', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
                     {!! Form::text('vertical_accuracy',NULL,['class' => 'form-control input-sm','id' => 'vertical_accuracy','disabled','rows'=>'7']) !!}
+                    @if ($errors->has('vertical_accuracy')) <p class="help-block red">*{{ $errors->first('vertical_accuracy') }}</p> @endif
                 </div>
             </div>
             <div class="form-group auxiliaryServices hidden">
                 {!! Form::label('Object of Interest ', 'Object of Interest ', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
                     {!! Form::text('interest',NULL,['class' => 'form-control input-sm','id' => 'interest','disabled','rows'=>'7']) !!}
+                    @if ($errors->has('interest')) <p class="help-block red">*{{ $errors->first('interest') }}</p> @endif
                 </div>
             </div>
             <div class="form-group scopeOfWOrk hidden">
                 {!! Form::label('Scope of Work ', 'Scope of Work  ', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
                     {!! Form::text('scope_of_work',NULL,['class' => 'form-control input-sm','id' => 'scope_of_work']) !!}
+                    @if ($errors->has('scope_of_work')) <p class="help-block red">*{{ $errors->first('scope_of_work') }}</p> @endif
                 </div>
             </div>
             <div class="form-group Notes hidden">
                 {!! Form::label('Notes', 'Notes ', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
                     {!! Form::textarea('notes',NULL,['class' => 'form-control input-sm','id' => 'notes']) !!}
-                </div>
-            </div>
-            <div class="form-group surveys hidden">
-                {!! Form::label('Geo Fence Clipboard', 'clip Board', array('class' => 'col-md-3 control-label  ')) !!}
-                <div class="col-md-6">
-                    <div>
-                        {!! Form::text('geoFenceCoords',NULL,['class' => 'form-control input-sm','id' => 'geoFenceCoords','rows'=>5]) !!}
-                    </div>
-                    @if ($errors->has('geoFenceCoords')) <p class="help-block red">*{{ $errors->first('geoFenceCoords') }}</p> @endif
+                    @if ($errors->has('notes')) <p class="help-block red">*{{ $errors->first('notes') }}</p> @endif
                 </div>
             </div>
             <div class="form-group " style="margin-top: 10px;">
@@ -517,6 +514,8 @@
                             'Error: Your browser doesn\'t support geolocation.');
                         infoWindow.open(map,marker2);
                     }
+
+            $("#requestDroneForm").validate();
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=drawing&callback=initMap"async defer></script>
 
