@@ -90,8 +90,7 @@
                 {!! Form::label('Area of Interest', 'Area of Interest', array('class' => 'col-md-3 control-label  ')) !!}
                 <div class="col-md-6 col-offset-3">
 
-                    <div style="width: 100% ; min-height: 500px"; id="map"></div>
-
+                    <div style="width:100% ; min-height: 500px"; id="map" onmouseover="showMap()"></div>
                     @if ($errors->has('area_of_interest')) <p class="help-block red">*{{ $errors->first('area_of_interest') }}</p> @endif
                 </div>
             </div>
@@ -248,9 +247,11 @@
 
                 }
                 //Aquatic -> ad Hoc
-                else if(selectText =='Hydrographic Survey' && selectText=='Hydrographic Solar Scanning'){
+                else if(selectText =='Hydrographic Survey' || selectText=='Hydrographic Solar Scanning'){
 
-                    initMap();
+
+                    //initMap().load();
+
                     $('.scopeOfWOrk').removeClass('hidden');
                     $('.surveys').removeClass('hidden');
                     $('.Notes').removeClass('hidden');
@@ -321,26 +322,32 @@
                     $("#purpose_of_survey").removeAttr('disabled', 'disabled');
                     $("#number_of_stockpiles").removeAttr('disabled', 'disabled');
                     $("#notes").removeAttr('disabled', 'disabled');
+
+
                 }
 
             });
 
+            var  count =0;
             function showMap()
             {
-                var mapContainer     = document.getElementById("map");
-                var content          = mapContainer.innerHTML;
-                 mapContainer.innerHTML =content;
-            }
 
+                count+=1;
+                if(count==1)
+                {
+                    initMap().load();
+                }
+
+            }
             $("#dronesDepartment").tokenInput("{!! url('/api/v1/userDepartment')!!}", {tokenLimit: 1});
 
 
-
             var map, infoWindow ,drawingManager,poly1;
+
             function initMap() {
                 map = new google.maps.Map(document.getElementById('map'),
                     {
-                        center: {lat:-14.668625907385902, lng: 12.513427734375},
+                        center: {lat:-29.85868039999999, lng: 31.021840399999974},
                         zoom: 5,
 
                         mapTypeId: google.maps.MapTypeId.RoadMap
@@ -511,8 +518,6 @@
                         infoWindow.open(map,marker2);
                     }
     </script>
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=drawing&callback=initMap"
-            async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=drawing&callback=initMap" async defer></script>
 
 @endsection
