@@ -622,14 +622,20 @@ class DroneRequestController extends Controller
             ->where('id',$id)
             ->first();
 
+        $droneRejectReasons=DroneRejectReason::find([1,2,3]);
+
         $droneRequestActivity = DroneRequestActivity::with('DroneRequest')
             ->with('User')
             ->where('drone_request_id',$id)
             ->orderBy('id','DESC')
             ->get();
 
+        $new_str                          =str_replace(str_split('()[object Object]'), '', $droneRequest->geoFence);
+        $coordinates                      =chop(str_replace("_",",",$new_str),',');
+
+
         $droneRejectReasons = DroneRejectReason::find([1,2,3]);
-        return  view('drones.secondApprovalForm',compact('droneRequest','droneRequestActivity','droneRejectReasons'));
+        return  view('drones.secondApprovalForm',compact('droneRequest','droneRequestActivity','droneRejectReasons','coordinates'));
     }
     public function userDepartment()
     {

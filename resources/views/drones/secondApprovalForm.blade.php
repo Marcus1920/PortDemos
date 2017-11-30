@@ -84,24 +84,65 @@
 
                 <h3 class="block-title">CASE DETAILS</h3>
 
-                <table class="table">
+                <table class="table" id="myTable">
                     <tbody>
-                    <tr>
-                        <td>Case  Number</td>
-                        <td> {{$droneRequest->id}}</td>
-                    </tr>
-                    <tr>
-                        <td>Case Status</td>
-                        <td>{{$droneRequest->DroneCaseStatus->name}}</td>
-                    </tr>
-                    <tr>
-                        <td>Case logged Date</td>
-                        <td>{{$droneRequest->created_at}}</td>
-                    </tr>
-                    <tr>
-                        <td>Case Duration</td>
-                        <td>{{$droneRequest->created_at->diffForHumans()}}</td>
-                    </tr>
+                    @if($droneRequest->id=="")
+                        <tr class="hidden">
+                            <td>Drone Request Number</td>
+                            <td> {{$droneRequest->id}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Drone Request Number</td>
+                            <td> {{$droneRequest->id}}</td>
+                        </tr>
+                    @endif
+                    @if($droneRequest->caseNumber =="")
+                        <tr class="hidden">
+                            <td>Case  Number</td>
+                            <td> {{$droneRequest->caseNumber}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Case  Number</td>
+                            <td> {{$droneRequest->caseNumber}}</td>
+                        </tr>
+                    @endif
+                    @if($droneRequest->DroneCaseStatus->name ==" ")
+                        <tr class="hidden">
+                            <td>Case Status</td>
+                            <td>{{$droneRequest->DroneCaseStatus->name}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Case Status</td>
+                            <td>{{$droneRequest->DroneCaseStatus->name}}</td>
+                        </tr>
+                    @endif
+                    @if($droneRequest->created_at ==" ")
+                        <tr class="hidden">
+                            <td>Case logged Date</td>
+                            <td>{{$droneRequest->created_at}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Case logged Date</td>
+                            <td>{{$droneRequest->created_at}}</td>
+                        </tr>
+                    @endif
+
+                    @if($droneRequest->created_at->diffForHumans()==" ")
+                        <tr class="hidden">
+                            <td>Case Duration</td>
+                            <td>{{$droneRequest->created_at->diffForHumans()}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Case Duration</td>
+                            <td>{{$droneRequest->created_at->diffForHumans()}}</td>
+                        </tr>
+                    @endif
+
 
                     </tbody>
                 </table>
@@ -112,22 +153,131 @@
 
                 <table class="table">
                     <tbody>
-                    <tr>
-                        <td>Requested by</td>
-                        <td>{{$droneRequest->User->name}} {{$droneRequest->User->surname}} </td>
-                    </tr>
-                    <tr>
-                        <td> Drone Type</td>
-                        <td>{{$droneRequest->DroneType->name}}</td>
-                    </tr>
-                    <tr>
-                        <td>Drone Service Request</td>
-                        <td>{{$droneRequest->DroneSubType->name}}</td>
-                    </tr>
-                    <tr>
-                        <td>Department Requested Service</td>
-                        <td>{{$droneRequest->Department->name}}</td>
-                    </tr>
+                    @if($droneRequest->User->name=="" && $droneRequest->User->surname=="" )
+                        <tr class="hidden">
+                            <td>Requested by</td>
+                            <td>{{$droneRequest->User->name}} {{$droneRequest->User->surname}} </td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Requested by</td>
+                            <td>{{$droneRequest->User->name}} {{$droneRequest->User->surname}} </td>
+                        </tr>
+                    @endif
+                    @if($droneRequest->DroneType->name =="")
+                        <tr class="hidden">
+                            <td> Drone Type</td>
+                            <td>{{$droneRequest->DroneType->name}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td> Drone Type</td>
+                            <td>{{$droneRequest->DroneType->name}}</td>
+                        </tr>
+                    @endif
+                    @if($droneRequest->DroneSubType->name=="")
+                        <tr class="hidden">
+                            <td>Drone Service Request</td>
+                            <td>{{$droneRequest->DroneSubType->name}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Drone Service Request</td>
+                            <td>{{$droneRequest->DroneSubType->name}}</td>
+                        </tr>
+                    @endif
+                    @if($droneRequest->Department->name=="")
+                        <tr class="hidden">
+                            <td>Department Requested Service</td>
+                            <td>{{$droneRequest->Department->name}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Department Requested Service</td>
+                            <td>{{$droneRequest->Department->name}}</td>
+                        </tr>
+                    @endif
+                    @if($droneRequest->purposeOfSurvey=="")
+                        <tr class="hidden">
+                            <td>Purpose Of Survey</td>
+                            <td>{{$droneRequest->purposeOfSurvey}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Purpose Of Survey</td>
+                            <td>{{$droneRequest->purposeOfSurvey}}</td>
+                        </tr>
+                    @endif
+
+                    @if($droneRequest->serviceRequired=="")
+                        <tr class="hidden">
+                            <td>Service Required</td>
+                            <td>{{$droneRequest->serviceRequired}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Service Required</td>
+                            <td>{{$droneRequest->serviceRequired}}</td>
+                        </tr>
+                    @endif
+
+                    @if($droneRequest->scope_of_work=="")
+                        <tr class="hidden">
+                            <td>Scope of Work</td>
+                            <td>{{$droneRequest->scope_of_work}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Scope of Work</td>
+                            <td>{{$droneRequest->scope_of_work}}</td>
+                        </tr>
+                    @endif
+
+                    @if($droneRequest->interest=="")
+                        <tr class="hidden">
+                            <td>Object of Interest</td>
+                            <td>{{$droneRequest->interest}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Object of Interest</td>
+                            <td>{{$droneRequest->interest}}</td>
+                        </tr>
+                    @endif
+
+                    @if($droneRequest->drone_sub_service_type_id=="")
+                        <tr class="hidden">
+                            <td>Drone Sub Service</td>
+                            <td>{{$droneRequest->drone_sub_service_type_id}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Drone Sub Service</td>
+                            <td>{{$droneRequest->drone_sub_service_type_id}}</td>
+                        </tr>
+                    @endif
+
+                    @if($droneRequest->numberOfStockpiles=="")
+                        <tr class="hidden">
+                            <td>Number Of Stockpiles</td>
+                            <td>{{$droneRequest->numberOfStockpiles}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Number Of Stockpiles</td>
+                            <td>{{$droneRequest->numberOfStockpiles}}</td>
+                        </tr>
+                    @endif
+                    @if($droneRequest->vertical_accuracy=="")
+                        <tr class="hidden">
+                            <td>Vertical Accuracy</td>
+                            <td>{{$droneRequest->vertical_accuracy}}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>Vertical Accuracy</td>
+                            <td>{{$droneRequest->vertical_accuracy}}</td>
+                        </tr>@endif
                     </tbody>
                 </table>
             </div>
@@ -157,62 +307,32 @@
             </div>
         </div>
         <h3 class="block-title" style="margin-left: 15px">NOTES</h3>
-        <div class="row " >
-            <div class="col-md-12 col-lg-12" style="padding-left: 15px">
 
+
+        <div class="row " >
+
+            <div class="col-md-6 col-lg-4" style="padding-left: 15px">
+                <h3 class="block-title" style="margin-left: 15px">NOTES</h3>
                 <p style="text-align: justify;font-size: 150%; padding: 30px;">
                     {{$droneRequest->notes}}
-                    lorem*30
                 </p>
 
-
             </div>
+            <div class="col-md-6 col-lg-8 ">
+                <h3 class="block-title" style="margin-left: 15px">Map</h3>
+                <div id="map" style="width: 100%; height: 500px">
+                </div>
+                <input type="hidden" name="" id="cod" value="{{$coordinates}}" class="form-control" disabled>
+
+                <div id="show"></div>
+            </div>
+
         </div>
         <br/>
     </div>
 @endsection
 @section('footer')
-
     <script>
-//        function getApproveToaster() {
-//            if (typeof(Storage) !== "undefined") {
-//                if (localStorage.clickcount) {
-//                    localStorage.clickcount = Number(localStorage.clickcount) + 1;
-//
-//                    var x = document.getElementById("snackbar");
-//                    x.className = "show";
-//                    setTimeout(function () {
-//                        x.className = x.className.replace("show", "");
-//                    }, 3000);
-//
-//                    event.preventDefault();
-//
-//                } else {
-//                    localStorage.clickcount = 1;
-//                }
-//            }
-//        }
-//
-//        function getRejectToaster() {
-//
-//            if (typeof(Storage) !== "undefined") {
-//                if (localStorage.rejectClickCount) {
-//                    localStorage.rejectClickCount = Number(localStorage.rejectClickCount) + 1;
-//
-//                    var x = document.getElementById("rejectSnackbar");
-//                    x.className = "show";
-//                    setTimeout(function () {
-//                        x.className = x.className.replace("show", "");
-//                    }, 3000);
-//
-//                    event.preventDefault();
-//
-//                } else {
-//                    localStorage.rejectClickCount = 1;
-//                }
-//            }
-//        }
-
         $('#rejectId').on('click',function(){
             $('.reason').removeClass('hidden');
             $('.submit').removeClass('hidden');
@@ -233,5 +353,32 @@
         });
         $("#secondRejectForm").validate();
     </script>
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: {lat: -30.886, lng: 29.268},
+                mapTypeId: 'terrain'
+            });
+            var codes=document.getElementById("cod").value.split(',');
+            var last = [];
+            for(var i=0; i < codes.length  ; i+=2){
+                last.push({lat: parseFloat(codes[i]), lng: parseFloat(codes[i+1])});
+            }
+
+            var bermudaTriangle = new google.maps.Polygon({
+                paths: last,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35
+
+            });
+            bermudaTriangle.setMap(map);
+
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=drawing&callback=initMap"></script>
 @endsection
 
