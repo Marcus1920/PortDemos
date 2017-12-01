@@ -16,7 +16,6 @@ use Auth;
 use function MongoDB\BSON\toJSON;
 use Redirect;
 use Mapper;
-
 use App\Http\Requests\DroneRequestForm;
 
 class DroneRequestController extends Controller
@@ -223,10 +222,6 @@ class DroneRequestController extends Controller
             ->make(true);
       //  return $droneRequests;
     }
-    public function create()
-    {
-        //
-    }
     public function store(Request $request)
     {
 
@@ -312,6 +307,7 @@ class DroneRequestController extends Controller
             {
                 $data = array(
                     'name'    => $droneRequestResponder[0]['name'],
+                    'message'=> "This is a message from". " $newDroneRequest->created_by"." to inform you that their department request to user a"."$newDroneRequest->drone_type_id "
 
                 );
 
@@ -426,9 +422,7 @@ class DroneRequestController extends Controller
         $user = User::where('position',$finalApproverPosition->id)->first();
 
         $data = array(
-            'name'    => $user->name,
-
-        );
+            'name'    => $user->name,);
 
         \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($user)
         {
