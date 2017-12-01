@@ -229,8 +229,7 @@ class DroneRequestController extends Controller
     }
     public function store(Request $request)
     {
-//            var_dump($request->all());
-//            die();
+
         $newDroneRequest = new DroneRequest();
 
         $userRole = User::find(\Auth::user()->id);
@@ -282,6 +281,7 @@ class DroneRequestController extends Controller
             $newDroneRequest->department = $request['dronesDepartment'];
             $newDroneRequest->reject_reason = 4;
             $newDroneRequest->reject_other_reason = "None";
+            $newDroneRequest->caseNumber = $request['caseNumber'];
             $newDroneRequest->geoFence = $request['geoFenceCoords'];
             $newDroneRequest->purposeOfSurvey = $request['purpose_of_survey'];
             $newDroneRequest->numberOfStockpiles = $request['number_of_stockpiles'];

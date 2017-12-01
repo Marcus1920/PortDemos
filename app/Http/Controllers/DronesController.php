@@ -24,13 +24,10 @@ class DronesController extends Controller
         return view('drones.droneRequest');
 
     }
-
-
     public function store(Request $request)
     {
 
     }
-
 
     public function userDepartment()
     {
@@ -64,8 +61,6 @@ class DronesController extends Controller
         return $data;
 
     }
-
-
     public function edit($id)
     {
 

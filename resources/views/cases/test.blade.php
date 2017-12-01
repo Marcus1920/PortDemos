@@ -1309,32 +1309,354 @@
 		}
 
 
-              $('#drone_type_id').on('change',function()
-              {
+//              $('#drone_type_id').on('change',function()
+//              {
+//                  var id = this.value;
+//                  $('#sub_drone_type_id').empty();
+//                  // var DroneServices = [];
+//                  $.get('droneSubType/'+ id,function(response){
+//                      $('#sub_drone_type_id').append("<option  selected disabled>Select Drone service</option>");
+//                      $.each(response,function(key,value)
+//                      {
+//                          $('#sub_drone_type_id').append("<option  value="+value.id+">"+value.name+"</option>");
+//                      });
+//
+//
+////                    document.getElementById("sub_drone_type_id").innerHTML="<option selected disabled>Select Drone Service</option>";
+////                    for(var i= 0; i < DroneServices.length;i++)
+////                    {
+////                        document.getElementById("sub_drone_type_id").innerHTML+="<option  id='options' onchange='getId();' value = "+DroneServices[i].id+">"+DroneServices[i].name+"</option>";
+////                    }
+////                    function getId() {
+////                     var selectedval  = document.getElementById("options").value();
+////                     console.log(selectedval);
+////                    }
+////
+////                }
+//                  });
+//              });
+
+
+              $('#drone_type_id').on('change', function () {
                   var id = this.value;
                   $('#sub_drone_type_id').empty();
-                  // var DroneServices = [];
-                  $.get('droneSubType/'+ id,function(response){
-                      $('#sub_drone_type_id').append("<option  selected disabled>Select Drone service</option>");
-                      $.each(response,function(key,value)
-                      {
-                          $('#sub_drone_type_id').append("<option  value="+value.id+">"+value.name+"</option>");
+                  $.get('droneSubType/' + id, function (response) {
+                      $('#sub_drone_type_id').append("<option  selected disabled>Select Drone Type</option>");
+                      $.each(response, function (key, value) {
+                          $('#sub_drone_type_id').append("<option  value=" + value.id + ">" + value.name + "</option>");
                       });
-
-
-//                    document.getElementById("sub_drone_type_id").innerHTML="<option selected disabled>Select Drone Service</option>";
-//                    for(var i= 0; i < DroneServices.length;i++)
-//                    {
-//                        document.getElementById("sub_drone_type_id").innerHTML+="<option  id='options' onchange='getId();' value = "+DroneServices[i].id+">"+DroneServices[i].name+"</option>";
-//                    }
-//                    function getId() {
-//                     var selectedval  = document.getElementById("options").value();
-//                     console.log(selectedval);
-//                    }
-//
-//                }
                   });
               });
+              $('#sub_drone_type_id').on('change', function () {
+                  var id = this.value;
+                  $('#drone_service_type_id').empty();
+                  $.get('droneServiceType/' + id, function (response) {
+                      $('#drone_service_type_id').append("<option  selected disabled>Select Drone service</option>");
+                      $.each(response, function (key, value) {
+                          $('#drone_service_type_id').append("<option  value=" + value.id + ">" + value.name + "</option>");
+                      });
+                  });
+                  var selectText = $(this).find("option:selected").text();
+                  if (selectText == 'Real Time') {
+                      $('.realTime').removeClass('hidden');
+                      $('.scopeOfWOrk').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $("#service").removeAttr('disabled');
+                      $("#scope_of_work").removeAttr('disabled');
+                      $("#notes").removeAttr('disabled');
+                      $('.droneService').addClass('hidden');
+                      $("#drone_service_type_id").attr('disabled', 'disabled');
+                  } else {
+                      $('.realTime').addClass('hidden');
+                      $('.scopeOfWOrk').addClass('hidden');
+                      $('.Notes').addClass('hidden');
+                      $("#service").attr('disabled', 'disabled');
+                      $("#scope_of_work").attr('disabled', 'disabled');
+                      $("#notes").attr('disabled', 'disabled');
+                      $('.droneService').removeClass('hidden');
+                      $("#drone_service_type_id").removeAttr('disabled');
+                  }
+              });
+              $('#drone_service_type_id').on('change', function () {
+                  var id = this.value;
+                  $('#drone_sub_service_type_id').empty();
+                  $.get('droneSubServiceType/' + id, function (response) {
+                      $('#drone_sub_service_type_id').append("<option  selected disabled>Select Drone Sub Service</option>");
+                      $.each(response, function (key, value) {
+                          $('#drone_sub_service_type_id').append("<option  value=" + value.id + ">" + value.name + "</option>");
+                      });
+                  });
+                  var selectId   =$(this).find("option:selected").val();
+                  var selectText = $(this).find("option:selected").text();
+                  //Aquatic -> ad Hoc
+                  if (selectText == 'Auxiliary Services') {
+                      $('.droneSubService').removeClass('hidden');
+                      $('.auxiliaryServices').removeClass('hidden');
+                      $('.scopeOfWOrk').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $("#drone_sub_service_type_id").removeAttr('disabled');
+                      $("#interest").removeAttr('disabled');
+                      $("#scope_of_work").removeAttr('disabled');
+                      $("#notes").removeAttr('disabled');
+                  }
+                  // Aerial ->ad Hoc
+                  else if(selectId == 6 && selectText == 'Inspection'){
+                      $('.droneSubService').removeClass('hidden');
+                      $('.auxiliaryServices').removeClass('hidden');
+                      $('.scopeOfWOrk').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $("#drone_service_type_id").removeAttr('disabled', 'disabled');
+                      $("#interest").removeAttr('disabled', 'disabled');
+                      $("#scope_of_work").removeAttr('disabled', 'disabled');
+                      $("#notes").removeAttr('disabled', 'disabled');
+                      $('.purposeOfSurvey').addClass('hidden');
+                      $('.verticalAccuracy').addClass('hidden');
+                      $('.numberOfStockPile').addClass('hidden');
+                      $('.surveys').addClass('hidden');
+                  }
+                  else if(selectText =='Surveys'){
+                      $('.droneSubService').removeClass('hidden');
+                      $('.scopeOfWOrk').addClass('hidden');
+                      $('.Notes').addClass('hidden');
+                      $('.auxiliaryServices').addClass('hidden');
+
+
+                  }
+                  //Aquatic -> ad Hoc
+                  else if(selectText =='Hydrographic Survey' || selectText=='Hydrographic Solar Scanning'){
+                      //initMap().load();
+                      $('.scopeOfWOrk').removeClass('hidden');
+                      $('.surveys').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $('.purposeOfSurvey').addClass('hidden');
+                      $('#scope_of_work').removeAttr('disabled','disabled');
+                      $("#notes").removeAttr('disabled','disabled');
+
+                  }
+                  else if(selectId == 4 && selectText=='Inspection'){
+                      $('.auxiliaryServices').removeClass('hidden');
+                      $('.scopeOfWOrk').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $('.purposeOfSurvey').addClass('hidden');
+                      $('.surveys').addClass('hidden');
+                      $("#interest").removeAttr('disabled', 'disabled');
+                      $("#scope_of_work").removeAttr('disabled');
+                      $("#notes").removeAttr('disabled');
+                  }
+                  else if(selectText == 'Film and Photography' || selectText == 'Infrastructure Assessment')
+                  {
+                      $('.auxiliaryServices').removeClass('hidden');
+                      $('.scopeOfWOrk').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $("#interest").removeAttr('disabled', 'disabled');
+                      $("#scope_of_work").removeAttr('disabled', 'disabled');
+                      $("#notes").removeAttr('disabled', 'disabled');
+                      $('.purposeOfSurvey').addClass('hidden');
+                      $('.surveys').addClass('hidden');
+                      $('.verticalAccuracy').addClass('hidden');
+                      $('.droneSubService').addClass('hidden');
+                  }
+                  else{
+                      $('.surveys').removeClass('hidden');
+                      $('.purposeOfSurvey').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $("#notes").removeAttr('disabled', 'disabled');
+                      $("#purpose_of_survey").removeAttr('disabled', 'disabled');
+                      $('.auxiliaryServices').addClass('hidden');
+                      $('.scopeOfWOrk').addClass('hidden');
+                      $('.droneSubService').addClass('hidden');
+                  }
+              });
+              $('#drone_sub_service_type_id').on('change', function () {
+                  var selectText = $(this).find("option:selected").text();
+                  //Aerial ->ad Hoc ->Surveys
+                  if(selectText == 'Stockpile Surveys'){
+                      $('.surveys').removeClass('hidden');
+                      $('.purposeOfSurvey').removeClass('hidden');
+                      $('.verticalAccuracy').addClass('hidden');
+                      $('.scopeOfWOrk').addClass('hidden');
+                      $('.auxiliaryServices').addClass('hidden');
+                      $('.numberOfStockPile').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $("#purpose_of_survey").removeAttr('disabled', 'disabled');
+                      $("#number_of_stockpiles").removeAttr('disabled', 'disabled');
+                      $("#notes").removeAttr('disabled', 'disabled');
+                  }else if(selectText =='Water Sampler' ||selectText =='Sediment Sampler' ||selectText =='Net Repairer' ||selectText =='Cut Attachment'||selectText =='Thermal Inspection'||selectText =='Industrial Inspection')
+                  {
+                      $('.verticalAccuracy').addClass('hidden');
+                  }
+                  else{
+                      $('.surveys').removeClass('hidden');
+                      $('.purposeOfSurvey').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $('.numberOfStockPile').addClass('hidden');
+                      $('.verticalAccuracy').removeClass('hidden');
+                      $("#vertical_accuracy").removeAttr('disabled', 'disabled');
+                      $("#purpose_of_survey").removeAttr('disabled', 'disabled');
+                      $("#number_of_stockpiles").removeAttr('disabled', 'disabled');
+                      $("#notes").removeAttr('disabled', 'disabled');
+                  }
+              });
+              var  count =0;
+              function showMap()
+              {
+                  count+=1;
+                  if(count==1)
+                  {
+                      initMap().load();
+                  }
+              }
+
+              var map, infoWindow ,drawingManager,poly1;
+              function initMap() {
+                  map = new google.maps.Map(document.getElementById('map'),
+                      {
+                          center: {lat:-29.85868039999999, lng: 31.021840399999974},
+                          zoom: 5,
+                          mapTypeId: google.maps.MapTypeId.RoadMap
+                      });
+//                infoWindow = new google.maps.InfoWindow;
+//                if (navigator.geolocation) {
+//                    navigator.geolocation.getCurrentPosition(function (position) {
+//                        var pos = {
+//                            lat: position.coords.latitude,
+//                            lng: position.coords.longitude
+//                        };
+//                        infoWindow.setPosition(pos);
+//                        infoWindow.setContent('Location found.');
+//                        infoWindow.open(map);
+//                        map.setCenter(pos);
+//
+//                    }, function () {
+//                        handleLocationError(true, infoWindow, map.getCenter());
+//                    });
+//                } else {
+//                    handleLocationError(false, infoWindow, map.getCenter());
+//                }
+                  var p = document.getElementById('geoFenceCoords').value.replace(/%20/g, ',');
+                  var point = p.substr(10, p.length - 1);
+                  var gFance = point.substr(0, point.indexOf('),'));
+                  var points = gFance.split(", ");
+                  var CoordsPath = points.map(function (points) {
+                      var latlon = points.split(' ');
+                      //alert(latlon[0] + " " + latlon[1]);
+                      return new google.maps.LatLng(latlon[0], latlon[1]);
+                  });
+                  if (CoordsPath != "(0, NaN)") {
+                      drawingManager = new google.maps.drawing.DrawingManager({
+                          drawingMode: google.maps.drawing.OverlayType.POLYGON,
+                          drawingControl: true,
+                          drawingControlOptions: {
+                              position: google.maps.ControlPosition.TOP_CENTER,
+                              drawingModes: [
+                                  //'marker', 'polygon'
+                                  google.maps.drawing.OverlayType.POLYGON
+                              ]
+                          },
+                          polygonOptions: doPolygon(map)
+//                        {
+//                                geodesic: true,
+//                                strokeColor: '#FF0000',
+//                                strokeOpacity: 1.0,
+//                                strokeWeight: 2,
+//                                clickable: true,
+//                                editable: true,
+//                                zIndex: 1
+//                            }
+                      });
+                  } else {
+                      drawingManager = new google.maps.drawing.DrawingManager({
+                          drawingMode: google.maps.drawing.OverlayType.POLYGON,
+                          drawingControl: true,
+                          drawingControlOptions: {
+                              position: google.maps.ControlPosition.TOP_CENTER,
+                              drawingModes: [
+                                  //'marker', 'polygon'
+                                  google.maps.drawing.OverlayType.POLYGON
+                              ]
+                          },
+                          polygonOptions: {
+                              geodesic: true,
+                              strokeColor: '#FF0000',
+                              strokeOpacity: 1.0,
+                              strokeWeight: 2,
+                              clickable: true,
+                              editable: true,
+                              zIndex: 1
+                          }
+                      });
+                      drawingManager.setMap(map);
+                      google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
+                          openInfoWindowPolygon(polygon);
+                      });
+                  }
+              }
+              function openInfoWindowPolygon(polygon) {
+                  poly1 = polygon;
+                  //alert(poly1);
+                  var vertices = polygon.getPath();
+                  //foreach(xy in vertices)
+                  //{
+                  document.getElementById('geoFenceCoords').value = polygon.getPath();
+                  //}
+                  var contents = 'Location name';
+                  var bounds = new google.maps.LatLngBounds();
+                  vertices.forEach(function (xy, i) {
+                      bounds.extend(xy);
+                      document.getElementById('geoFenceCoords').value += xy+"_";
+                  });
+                  vertices.forEach(function (xy, i)
+                  {
+                      bounds.extend(xy);
+                  });
+                  //infoWindow.setContent(contents);
+                  //infoWindow.setPosition(bounds.getCenter());
+                  drawingManager.setDrawingMode(null);
+                  infoWindow.open(map);
+              }
+              function doPolygon(map) {
+                  //document.getElementById('txtCoordinates').value = getParameterByName('GeoFence');
+                  var p = document.getElementById('geoFenceCoords').value.replace(/%20/g, ',');
+                  var point = p.substr(10, p.length - 2);
+                  var gFance = point.substr(0, point.indexOf(',),'));
+                  var points = gFance.split(" ");
+                  var CoordsPath = points.map(function (points) {
+                      var latlon = points.split(' ');
+                      alert(latlon[0] + " " + latlon[1]);
+                      return new google.maps.LatLng(latlon[0], latlon[1]);
+                  });
+                  flightPath = new google.maps.Polygon({
+                      path: CoordsPath,
+                      geodesic: true,
+                      strokeColor: '#FF0000',
+                      strokeOpacity: 1.0,
+                      strokeWeight: 2,
+                      editable: true
+                  });
+                  flightPath.setMap(map);
+                  google.maps.event.addListener(flightPath, "dragend", getPolygonCoords);
+                  google.maps.event.addListener(flightPath.getPath(), "insert_at", getPolygonCoords);
+                  google.maps.event.addListener(flightPath.getPath(), "remove_at", getPolygonCoords);
+                  google.maps.event.addListener(flightPath.getPath(), "set_at", getPolygonCoords);
+                  var latlngbounds = new google.maps.LatLngBounds();
+                  for (var i = 0; i < CoordsPath.length; i++) {
+                      latlngbounds.extend(CoordsPath[i]);
+                  }
+                  map.fitBounds(latlngbounds);
+              }
+              //                function clearMap() {
+              //                    drawingManager.setDrawingMode(null);
+              //                    flightPath.setMap(null);
+              //                    document.getElementById('geoFenceCoords,').value = null;
+              //                }
+              // google.maps.event.addDomListener(window, 'load', initMap);
+              function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+                  infoWindow.setPosition(pos);
+                  infoWindow.setContent(browserHasGeolocation ?
+                      'Error: The Geolocation service failed.' :
+                      'Error: Your browser doesn\'t support geolocation.');
+                  infoWindow.open(map,marker2);
+              }
 
 		$("#submitPoiForm").on("click", function () {
 			var pois = $("#poi_CaseForm #POISearch").val();
@@ -1391,9 +1713,7 @@
 			document.getElementById("top_navs_action").className = "bhoechie-tab-content active";
 		}
   </script>
-
-
-
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=drawing&callback=initMap" async defer></script>
 @endsection
 
 
