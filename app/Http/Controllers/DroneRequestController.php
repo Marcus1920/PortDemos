@@ -266,7 +266,7 @@ class DroneRequestController extends Controller
             $newDroneRequest->scope_of_work = $request['scope_of_work'];
             $newDroneRequest->serviceRequired = $request['service'];
             $newDroneRequest->save();
-             // return "saved";
+            
         }
         elseif($drone_sub_types->name =="Ad Hoc") {
 
@@ -287,19 +287,12 @@ class DroneRequestController extends Controller
             $newDroneRequest->numberOfStockpiles = $request['number_of_stockpiles'];
             $newDroneRequest->vertical_accuracy = $request['vertical_accuracy'];
             $newDroneRequest->save();
-            //return "saved";
+
+
+
         }
 
-//        $newDroneRequest->created_by = $request['created_by'];
-//        $newDroneRequest->drone_type_id = $request['drone_type_id'];
-//        $newDroneRequest->sub_drone_type_id = $request['sub_drone_type_id'];
-//        $newDroneRequest->drone_case_status = 1;
-//        $newDroneRequest->caseNumber  = $request['caseNumber'];;
-//        $newDroneRequest->notes = $request['comment'];
-//        $newDroneRequest->department = $request['dronesDepartment'];
-//        $newDroneRequest->reject_reason = 4;
-//        $newDroneRequest->reject_other_reason = "None";
-//        $newDroneRequest->save();
+     $newDroneRequest->save();
 
         $dronRequestActivity = new DroneRequestActivity();
         $dronRequestActivity->drone_request_id = $newDroneRequest->id;
