@@ -110,7 +110,7 @@
                 {!! Form::label('Area of Interest', 'Area of Interest', array('class' => 'col-md-3 control-label  ')) !!}
                 <div class="col-md-6 col-offset-3">
 
-                    <div style="width:100% ; min-height: 500px"; id="map" onmouseover="showMap()"></div>
+                    <div style="max-width:100% ; min-height: 500px"; id="map" onmouseover="showMap()"></div>
                     @if ($errors->has('area_of_interest')) <p class="help-block red">*{{ $errors->first('area_of_interest') }}</p> @endif
                 </div>
             </div>
