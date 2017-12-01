@@ -266,7 +266,7 @@ class DroneRequestController extends Controller
             $newDroneRequest->scope_of_work = $request['scope_of_work'];
             $newDroneRequest->serviceRequired = $request['service'];
             $newDroneRequest->save();
-            
+
         }
         elseif($drone_sub_types->name =="Ad Hoc") {
 

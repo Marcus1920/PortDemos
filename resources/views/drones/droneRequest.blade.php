@@ -243,6 +243,8 @@
                 $('.surveys').removeClass('hidden');
                 $('.Notes').removeClass('hidden');
                 $('.purposeOfSurvey').addClass('hidden');
+                $('#scope_of_work').removeAttr('disabled','disabled');
+                $("#notes").removeAttr('disabled','disabled');
             }
             else if(selectId == 4 && selectText=='Inspection'){
                 $('.auxiliaryServices').removeClass('hidden');
