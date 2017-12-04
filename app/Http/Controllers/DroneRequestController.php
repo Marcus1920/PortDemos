@@ -309,8 +309,12 @@ class DroneRequestController extends Controller
             {
                 $data = array(
                     'name'    => $droneRequestResponder[0]['name'],
+<<<<<<< HEAD
                     'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department ( $departmentName->name ) requested to use an "."$droneName->name"
 
+=======
+                  'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department ( $departmentName->name ) requested to use an "."$droneName->name"
+>>>>>>> 4eb0fa371fa31f1d5115c0a0057a84513e6bcb80
                 );
 
                 \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
@@ -330,11 +334,14 @@ class DroneRequestController extends Controller
         {
             $responderPosition = Position::where('name','Senior Engineer')->first();
             $droneRequestResponder = User::where('position',$responderPosition->id)->get();
+            $departmentName        = Department::where('id', $newDroneRequest->department)->first();
+            $droneName             = DroneType::where('id',$newDroneRequest->drone_type_id)->first();
 
             if($droneRequestResponder!=NULL)
             {
                 $data = array(
                     'name'    => $droneRequestResponder[0]['name'],
+                    'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department ( $departmentName->name ) requested to use an "."$droneName->name"
 
                 );
 
@@ -355,11 +362,14 @@ class DroneRequestController extends Controller
         {
             $responderPosition = Position::where('name','Deputy Harbour Master')->first();
             $droneRequestResponder = User::where('position',$responderPosition->id)->get();
+            $departmentName        = Department::where('id', $newDroneRequest->department)->first();
+            $droneName             = DroneType::where('id',$newDroneRequest->drone_type_id)->first();
 
             if($droneRequestResponder!=NULL)
             {
                 $data = array(
                     'name'    => $droneRequestResponder[0]['name'],
+                    'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department ( $departmentName->name ) requested to use an "."$droneName->name"
 
                 );
 
@@ -380,11 +390,14 @@ class DroneRequestController extends Controller
         {
             $responderPosition = Position::where('name','Deputy Harbour Master')->first();
             $droneRequestResponder = User::where('position',$responderPosition->id)->get();
+            $departmentName        = Department::where('id', $newDroneRequest->department)->first();
+            $droneName             = DroneType::where('id',$newDroneRequest->drone_type_id)->first();
 
             if($droneRequestResponder!=NULL)
             {
                 $data = array(
                     'name'    => $droneRequestResponder[0]['name'],
+                    'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department ( $departmentName->name ) requested to use an "."$droneName->name"
 
                 );
 
