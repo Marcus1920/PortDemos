@@ -75,7 +75,7 @@
                             </tr>
                             <tr></tr>
                                 <td width="100%" style="font-family:helvetica, Arial, sans-serif; padding-left: 20px; font-size: 13px; text-align: left; color:#2E363F; line-height: 24px;">
-                                    <strong>{{$message}}</strong>
+                                    <strong>{{$messageBody}}</strong>
                                 </td>
                             </tr>
 

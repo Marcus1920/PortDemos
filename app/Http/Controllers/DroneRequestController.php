@@ -309,10 +309,7 @@ class DroneRequestController extends Controller
             {
                 $data = array(
                     'name'    => $droneRequestResponder[0]['name'],
-
-                   'message'=>"testing"
-
-//                    'message'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their $departmentName "." department request to use a"."$droneName"
+                    'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department ( $departmentName->name ) requested to use an "."$droneName->name"
 
                 );
 
