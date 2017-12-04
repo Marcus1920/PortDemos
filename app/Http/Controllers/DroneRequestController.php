@@ -309,7 +309,11 @@ class DroneRequestController extends Controller
             {
                 $data = array(
                     'name'    => $droneRequestResponder[0]['name'],
+
                    'message'=>"testing"
+
+//                    'message'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their $departmentName "." department request to use a"."$droneName"
+
                 );
 
                 \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
