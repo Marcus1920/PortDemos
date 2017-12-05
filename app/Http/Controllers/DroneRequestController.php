@@ -487,21 +487,7 @@ class DroneRequestController extends Controller
     }
     public function Reject($id, Request $request)
     {
-        if($request['reject_other_reason']==NULL)
-        {
-            $dronRequest = DroneRequest::where('id',$id)
-                ->update(['drone_case_status'=> 4,
-                    'reject_reason'=>$request['reject_reason'],
-                    'updated_at'=>\Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString()]);
-        }
-        else
-        {
-            $dronRequest = DroneRequest::where('id',$id)
-                ->update(['drone_case_status'=> 4,
-                    'reject_reason'=>$request['reject_reason'],
-                    'reject_other_reason'=>$request['reject_other_reason'],
-                    'updated_at'=>\Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString()]);
-        }
+
         $droneRequest = DroneRequest::with('DroneType')
             ->with('User')
             ->with('DroneSubType')
@@ -510,15 +496,52 @@ class DroneRequestController extends Controller
             ->with('RejectReason')
             ->where('id',$id)
             ->first();
-        $data = array(
-            'name'    => $droneRequest->User->name,
-            'messageBody'=>
-        );
-        \Mail::send('emails.Drones.reject',$data,function($message) use ($droneRequest)
+
+
+
+        if($request['reject_other_reason']==NULL)
         {
-            $message->from('info@siyaleader.net', 'Siyaleader');
-            $message->to($droneRequest->User->email)->subject('rejected drone request');
-        });
+            $dronRequest = DroneRequest::where('id',$id)
+                ->update(['drone_case_status'=> 4,
+                    'reject_reason'=>$request['reject_reason'],
+                    'updated_at'=>\Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString()]);
+
+            $rejectReason   = DroneRejectReason::where('id',$request['reject_reason'])->first();
+
+            $data = array(
+                'name'    => $droneRequest->User->name,
+                'messageBody'=> Auth::user()->name ." ".Auth::user()->surname ." rejected the drone request on the basis of its a ".$rejectReason->name
+            );
+
+            \Mail::send('emails.Drones.reject',$data,function($message) use ($droneRequest)
+            {
+                $message->from('info@siyaleader.net', 'Siyaleader');
+                $message->to($droneRequest->User->email)->subject('rejected drone request');
+            });
+
+        }
+        else
+        {
+            $dronRequest = DroneRequest::where('id',$id)
+                ->update(['drone_case_status'=> 4,
+                    'reject_reason'=>$request['reject_reason'],
+                    'reject_other_reason'=>$request['reject_other_reason'],
+                    'updated_at'=>\Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString()]);
+
+            $data = array(
+                'name'    => $droneRequest->User->name,
+                'messageBody'=> Auth::user()->name ." ".Auth::user()->surname ." rejected the drone request because  ".$request['reject_other_reason']
+
+            );
+            \Mail::send('emails.Drones.reject',$data,function($message) use ($droneRequest)
+            {
+                $message->from('info@siyaleader.net', 'Siyaleader');
+                $message->to($droneRequest->User->email)->subject('rejected drone request');
+            });
+
+        }
+
+
         $dronRequestActivity = new DroneRequestActivity();
         $dronRequestActivity->drone_request_id = $id;
         $dronRequestActivity->user = $request['user'];
