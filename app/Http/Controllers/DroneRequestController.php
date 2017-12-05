@@ -408,7 +408,8 @@ class DroneRequestController extends Controller
         });
         $data = array(
             'name'    => $droneRequest->User->name,
-            'messageBody' =>Auth::user()->name ." ". Auth::user()->surname ." has approved your  drone request , please wait for the second approval from the higher officials."
+            'messageBody' =>Auth::user()->name ." ". Auth::user()->surname ." has approved your  drone request , please wait for the second approval from the higher officials.
+            "
         );
         \Mail::send('emails.Drones.approve',$data,function($message) use ($droneRequest)
         {
