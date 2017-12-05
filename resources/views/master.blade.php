@@ -397,7 +397,7 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
 
                   @if (Auth::user())
                       <li {{ (Request::is('reports') ? "class=active" : '') }}>
-                          <a class="sa-side-drone" href="{{ url('DroneList/')}}">
+                          <a class="sa-side-drone" href="{{ url('DronephpList/')}}">
                               <span class="menu-item">Drone Requests</span>
                           </a>
                       </li>

@@ -394,19 +394,23 @@ class DroneRequestController extends Controller
             ->with('RejectReason')
             ->where('id',$id)
             ->first();
+
         $finalApproverPosition = Position::where('name','Harbour Master')->first();
         $user = User::where('position',$finalApproverPosition->id)->first();
         $data = array(
-            'name'    => $user->name,);
-        \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($user)
+            'name'    => $user->name,
+            'messageBody' =>Auth::user()->name ." ". Auth::user()->surname ." has approved your  drone request , please wait for the second approval from the higher officials."
+            );
+        \Mail::send('emails.Drones.approve',$data,function($message) use ($user)
         {
             $message->from('info@siyaleader.net', 'Siyaleader');
             $message->to($user->email)->subject('First Approved drone request');
         });
         $data = array(
             'name'    => $droneRequest->User->name,
+            'messageBody' =>Auth::user()->name ." ". Auth::user()->surname ." has approved your  drone request , please wait for the second approval from the higher officials."
         );
-        \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequest)
+        \Mail::send('emails.Drones.approve',$data,function($message) use ($droneRequest)
         {
             $message->from('info@siyaleader.net', 'Siyaleader');
             $message->to($droneRequest->User->email)->subject('First Approved drone request');
@@ -441,16 +445,19 @@ class DroneRequestController extends Controller
         $firstResponder = User::find($droneActivity[1]['user']);
         $data1 = array(
             'name'    => $firstResponder->name,
+            'messageBody' =>Auth::user()->name ." ". Auth::user()->surname ." has approved your  drone request."
+
         );
-        \Mail::send('emails.Drones.DronesRequestCreate',$data1,function($message) use ($firstResponder)
+        \Mail::send('emails.Drones.approve',$data1,function($message) use ($firstResponder)
         {
             $message->from('info@siyaleader.net', 'Siyaleader');
             $message->to($firstResponder->email)->subject('Second approved drone request');
         });
         $data = array(
             'name'    => $droneRequest->User->name,
+            'messageBody' =>Auth::user()->name ." ". Auth::user()->surname ." has approved your  drone request."
         );
-        \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequest)
+        \Mail::send('emails.Drones.approve',$data,function($message) use ($droneRequest)
         {
             $message->from('info@siyaleader.net', 'Siyaleader');
             $message->to($droneRequest->User->email)->subject('Second approved drone request');
@@ -461,8 +468,9 @@ class DroneRequestController extends Controller
         {
             $data = array(
                 'name'    => $user->name,
+                'messageBody' =>Auth::user()->name ." ". Auth::user()->surname ." has approved your  drone request."
             );
-            \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($user)
+            \Mail::send('emails.Drones.approve',$data,function($message) use ($user)
             {
                 $message->from('info@siyaleader.net', 'Siyaleader');
                 $message->to($user->email)->subject('Second approved drone request');
