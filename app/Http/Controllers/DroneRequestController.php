@@ -512,8 +512,9 @@ class DroneRequestController extends Controller
             ->first();
         $data = array(
             'name'    => $droneRequest->User->name,
+            'messageBody'=>
         );
-        \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequest)
+        \Mail::send('emails.Drones.reject',$data,function($message) use ($droneRequest)
         {
             $message->from('info@siyaleader.net', 'Siyaleader');
             $message->to($droneRequest->User->email)->subject('rejected drone request');
