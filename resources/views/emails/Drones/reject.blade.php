@@ -40,7 +40,7 @@
 
                             <tr><!-- title -->
                                 <td width="100%" style="font-family: helvetica, Arial, sans-serif; font-size: 18px; letter-spacing: 0px; text-align: center; color:#060606;">
-                                    <h5>FIRST DRONE REJECTION FEEDBACK</h5>
+                                    <h5>DRONE REJECTION FEEDBACK</h5>
                                 </td>
                             </tr>
 
@@ -60,7 +60,7 @@
                             </tr>
 
                             <tr>
-                                <td width="100%"   style="font-family:helvetica, Arial, sans-serif; padding-left: 20px; font-size: 13px; text-align: left; color:#B1ADAD; line-height: 24px;">
+                                <td width="100%"   style="font-family:helvetica, Arial, sans-serif;  padding:0 20px 0 20px; font-size: 13px; text-align: left; color:#B1ADAD; line-height: 24px;">
 
                                     <strong>{{$messageBody}}</strong>
 
@@ -116,26 +116,34 @@
                 </tr>
                 </tbody>
             </table>
-            <!-- /Space -->
 
 
-            <!-- ROW FOOTER -->
+
             <table cellpadding="0" cellspacing="0" border="0" width="560" style="border:0; border-collapse:collapse; background-color:#ffffff; border-radius:6px;">
                 <tbody>
                 <tr>
-                    <td style="border-collapse:collapse; vertical-align:middle; text-align center; padding:20px;">
+                    <td style="border-collapse:collapse; vertical-align:middle; text-align: center; padding:20px;">
                         <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
                             <tbody>
                             <tr><!-- logo -->
                                 <td width="100%" style="font-family: helvetica, Arial, sans-serif; font-size: 18px; letter-spacing: 0px; text-align: center;">
                                     <a href="#" style="text-decoration: none;">
-                                        <img src="{{ asset('img/siyaleader_light_bg_100.png') }}" width='90px' alt="Siyaleader" />
+                                        <img src="{{ asset('img/siyaleader_light_bg_100.png') }}" width='90px' alt="Siyaleader"  style ="color:#2E363F;"/>
                                     </a>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                     </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" align="left" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+
+                <tbody>
+                <tr>
+                    <td width="100%" height="30"></td>
                 </tr>
                 </tbody>
             </table>

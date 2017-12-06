@@ -60,7 +60,7 @@
                             </tr>
 
                             <tr>
-                                <td width="100%"   style="font-family:helvetica, Arial, sans-serif; padding-left: 20px; font-size: 13px; text-align: left; color:#B1ADAD; line-height: 24px;">
+                                <td width="100%"   style="font-family:helvetica, Arial, sans-serif;  padding:0 20px 0 20px; font-size: 13px; text-align: left; color:#B1ADAD; line-height: 24px;">
 
                                     <strong>{{$messageBody}}</strong>
 
@@ -129,7 +129,7 @@
                             <tr><!-- logo -->
                                 <td width="100%" style="font-family: helvetica, Arial, sans-serif; font-size: 18px; letter-spacing: 0px; text-align: center;">
                                     <a href="#" style="text-decoration: none;">
-                                        <img src="{{ asset('img/siyaleader_light_bg_100.png') }}" width='90px' alt="Siyaleader" />
+                                        <img src="{{ asset('img/siyaleader_light_bg_100.png') }}" width='90px' alt="Siyaleader"  style ="color:#2E363F;"/>
                                     </a>
                                 </td>
                             </tr>
@@ -140,7 +140,14 @@
                 </tbody>
             </table>
 
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" align="left" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
 
+                <tbody>
+                <tr>
+                    <td width="100%" height="30"></td>
+                </tr>
+                </tbody>
+            </table>
 
         </td>
     </tr>
