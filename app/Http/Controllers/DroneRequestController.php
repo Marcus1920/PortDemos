@@ -511,7 +511,7 @@ class DroneRequestController extends Controller
 
             $data = array(
                 'name'    => $droneRequest->User->name,
-                'messageBody'=> Auth::user()->name ." ".Auth::user()->surname ." rejected the drone request on the basis of its a ".$rejectReason->name
+                'messageBody'=> Auth::user()->name ." ".Auth::user()->surname ." has rejected your  drone request because its a ".$rejectReason->name
             );
 
             \Mail::send('emails.Drones.reject',$data,function($message) use ($droneRequest)

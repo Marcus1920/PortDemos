@@ -83,10 +83,9 @@
                             </tr>
 
                             <tr>
-                                <td width="100%" style="font-family:helvetica, Arial, sans-serif; font-size: 14px; text-align: left; color:#87919F; line-height: 24px;">
-                                    <p>Kindly Regards</p>
+                                <td width="100%" style="font-family:helvetica, Arial, sans-serif; font-size: 13px;  padding-left: 20px; text-align: left; color:#2E363F; line-height: 10px;">
+                                    <p >Kindly Regards</p>
                                     <p>Siyaleader Investments.</p>
-
                                 </td>
                             </tr>
                             </tbody>
@@ -103,6 +102,7 @@
                 </tr>
                 </tbody>
             </table>
+
             <table width="100%" border="0" cellpadding="0" cellspacing="0" align="left" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
                 <tbody>
                 <tr>
@@ -110,6 +110,7 @@
                 </tr>
                 </tbody>
             </table>
+
             <table cellpadding="0" cellspacing="0" border="0" width="560" style="border:0; border-collapse:collapse; background-color:#ffffff; border-radius:6px;">
                 <tbody>
                 <tr>
