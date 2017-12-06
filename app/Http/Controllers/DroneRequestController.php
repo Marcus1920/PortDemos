@@ -286,7 +286,8 @@ class DroneRequestController extends Controller
             {
                 $data = array(
                     'name'    => $droneRequestResponder[0]['name'],
-                    'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department ( $departmentName->name ) requested to use an "."$droneName->name"
+
+                    'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department , $departmentName->name requested to use an "."$droneName->name"
                 );
                 \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
                 {
@@ -312,7 +313,7 @@ class DroneRequestController extends Controller
             {
                 $data = array(
                     'name'    => $droneRequestResponder[0]['name'],
-                    'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department ( $departmentName->name ) requested to use an "."$droneName->name"
+                    'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department , $departmentName->name requested to use an "."$droneName->name"
                 );
                 \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
                 {
@@ -338,7 +339,7 @@ class DroneRequestController extends Controller
             {
                 $data = array(
                     'name'    => $droneRequestResponder[0]['name'],
-                    'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department ( $departmentName->name ) requested to use an "."$droneName->name"
+                    'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department , $departmentName->name requested to use an "."$droneName->name"
                 );
                 \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
                 {
@@ -363,7 +364,7 @@ class DroneRequestController extends Controller
             {
                 $data = array(
                     'name'    => $droneRequestResponder[0]['name'],
-                    'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department ( $departmentName->name ) requested to use an "."$droneName->name"
+                    'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department , $departmentName->name requested to use an "."$droneName->name"
                 );
                 \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
                 {

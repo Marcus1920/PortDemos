@@ -51,7 +51,8 @@
 
                             <tr>
                                 <td width="100%" style="font-family: helvetica, Arial, sans-serif;padding-left: 20px; font-size: 18px; letter-spacing: 0px; color:#2E363F;">
-                                    Hi {{ $name }}
+                                    {{--Hi {{ $name }}--}}
+                                    hi vaughan
                                 </td>
                             </tr>
                             <tr><!-- spacing bottom -->
@@ -75,7 +76,8 @@
                             </tr>
                             <tr></tr>
                                 <td width="100%" style="font-family:helvetica, Arial, sans-serif; padding-left: 20px; font-size: 13px; text-align: left; color:#2E363F; line-height: 24px;">
-                                    <strong>{{$messageBody}}</strong>
+                                    this is the message
+                                    {{--<strong>{{$messageBody}}</strong>--}}
                                 </td>
                             </tr>
 

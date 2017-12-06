@@ -1268,3 +1268,9 @@ Route::get('casetest/droneSubType/{id}','DroneSubTypesController@droneSubTypes')
 Route::get('casetest/droneServiceType/{id}','DroneSubTypesController@droneServiceType');
 Route::get('casetest/droneSubServiceType/{id}','DroneSubTypesController@droneSubServiceType');
 
+
+Route::get('emails', function ()
+{
+    return view('emails.Drones.DronesRequestCreate');
+});
+

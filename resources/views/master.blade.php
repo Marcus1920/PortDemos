@@ -418,6 +418,18 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
                   @endif
 
           @endif
+
+              @if(isset($userViewReportsPermission) && $userViewReportsPermission->permission_id =='16')
+
+                  @if (Auth::user())
+                      <li {{ (Request::is('reports') ? "class=active" : '') }}>
+                          <a class="sa-side-agenda" href="{{ url('addressbookList/'.Auth::user()->id )}}">
+                              <span class="menu-item">Address</span>
+                          </a>
+                      </li>
+                  @endif
+
+              @endif
         </ul>
       </aside>
       <!-- Content -->
