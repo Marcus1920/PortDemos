@@ -118,7 +118,8 @@
                             <tr><!-- logo -->
                                 <td width="100%" style="font-family: helvetica, Arial, sans-serif; font-size: 18px; letter-spacing: 0px; text-align: center;">
                                     <a href="#" style="text-decoration: none;">
-                                        <img src="{{ asset('img/siyaleader_light_bg_100.png') }}" width='90px' alt="Siyaleader" />
+                                        <img src="{{ $message->embed('assets/img/siyaleader_light_bg_100.png') }}"  width='90px' alt="Siyaleader"/>
+                                        {{--<img src="{{ asset('img/siyaleader_light_bg_100.png') }}" width='90px' alt="Siyaleader" />--}}
                                     </a>
                                 </td>
                             </tr>
