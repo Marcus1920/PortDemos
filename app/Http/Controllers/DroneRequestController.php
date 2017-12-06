@@ -617,6 +617,17 @@ class DroneRequestController extends Controller
         }
         return $data;
     }
+    public function getCasedDrones($id)
+    {
+        $caseDrones = DroneRequest::with('DroneType')
+            ->with('DroneSubType')
+            ->with('DroneCaseStatus')
+            ->with('Department')
+            ->with('RejectReason')
+            -> where('caseNumber',$id)
+            ->get();
+        return $caseDrones;
+    }
 }
 
 

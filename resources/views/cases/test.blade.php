@@ -137,6 +137,9 @@
                   <li>
                     <a href="#8a" data-toggle="tab" onclick="hides()"><span class="fa fa-file-text-o"> Tasks</span></a>
                   </li>
+                  <li>
+                    <a href="#9a" data-toggle="tab" onclick="hides()"><span class="fa fa-file-text-o">Drone Request</span></a>
+                  </li>
                 </ul>
                 <hr class="whiter m-t-20">
                 <h2 class="fa" style="font-size: x-large; padding: 0; margin: inherit; clear: both">
@@ -850,6 +853,23 @@
                               </thead>
                             </table>
                           </div>
+
+                          <div class="tab-pane" id="9a">
+                            <table style="width:100%" class="table tile table-striped" id="caseDronesTable">
+                              <thead>
+                              <tr>
+                                <th>Id</th>
+                                <th>Drone Type</th>
+                                <th>Drone Sub Type</th>
+                                <th>Requested By</th>
+                                <th>Status</th>
+                                <th>Department Requested a drone</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                              </tr>
+                              </thead>
+                            </table>
+                          </div>
                         </div>
                     </div>
                   </center>
@@ -1081,29 +1101,55 @@
 				]
 			});
 			if ($.fn.dataTable.isDataTable('#CaseTasksTable')) {
-				oTableTasksTable.destroy();
-			}
-			oTableTasksTable = $('#CaseTasksTable').DataTable({
-				"processing": true,
-				"serverSide": true,
-				"autoWidth": false,
-				"pageLength": 5,
-				"bLengthChange": false,
-				"order": [[0, "desc"]],
-				"ajax": "{!! url('/getCaseTasks/')!!}" + '/' + case_id,
-				"columns": [
-					{data: 'tasks.id', name: 'tasks.id'},
-					{data: 'tasks.title', name: 'tasks.title'},
-					{data: 'tasks.description', name: 'tasks.description'},
-					{data: 'tasks.commencement_date', name: 'tasks.commencement_date'},
-					{data: 'tasks.due_date', name: 'tasks.due_date'},
-					{data: 'actions', name: 'actions'},
-				],
-				"aoColumnDefs": [
-					{"bSearchable": false, "aTargets": [1]},
-					{"bSortable": false, "aTargets": [1]}
-				]
-			});
+                      oTableTasksTable.destroy();
+                  }
+                  oTableTasksTable = $('#CaseTasksTable').DataTable({
+                      "processing": true,
+                      "serverSide": true,
+                      "autoWidth": false,
+                      "pageLength": 5,
+                      "bLengthChange": false,
+                      "order": [[0, "desc"]],
+                      "ajax": "{!! url('/getCaseTasks/')!!}" + '/' + case_id,
+                      "columns": [
+                          {data: 'tasks.id', name: 'tasks.id'},
+                          {data: 'tasks.title', name: 'tasks.title'},
+                          {data: 'tasks.description', name: 'tasks.description'},
+                          {data: 'tasks.commencement_date', name: 'tasks.commencement_date'},
+                          {data: 'tasks.due_date', name: 'tasks.due_date'},
+                          {data: 'actions', name: 'actions'},
+                      ],
+                      "aoColumnDefs": [
+                          {"bSearchable": false, "aTargets": [1]},
+                          {"bSortable": false, "aTargets": [1]}
+                      ]
+                  });
+
+// Case DroneRequests
+                  if ($.fn.dataTable.isDataTable('#caseDronesTable')) {
+                      oTableTasksTable.destroy();
+                  }
+                  oTableTasksTable = $('#caseDronesTable').DataTable({
+                      "processing": true,
+                      "serverSide": true,
+                      "autoWidth": false,
+                      "pageLength": 5,
+                      "bLengthChange": false,
+                      "order": [[0, "desc"]],
+                      "ajax": "{!! url('/getCasedDrones/')!!}" + '/' + case_id,
+                      "columns": [
+                          {data: 'id', name: 'id'},
+                          {data: 'drone_type_id', name: 'drone_type_id'},
+                          {data: 'sub_drone_type_id', name: 'sub_drone_type_id'},
+                          {data: 'drone_case_status', name: 'drone_case_status'},
+                          {data: 'notes', name: 'notes'},
+                          {data: 'actions', name: 'actions'}
+                      ],
+                      "aoColumnDefs": [
+                          {"bSearchable": false, "aTargets": [1]},
+                          {"bSortable": false, "aTargets": [1]}
+                      ]
+                  });
 // case  note
 			if ($.fn.dataTable.isDataTable('#caseResponders1'))
 			{

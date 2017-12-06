@@ -1263,14 +1263,11 @@ Route::group(array('prefix' => 'api/v1'), function()
 Route::get('DroneList','DroneRequestController@getList');
 Route::get('requestForm','DroneTypesController@index');
 Route::get('test/{id}','DroneRequestController@test');
+Route::get('getCasedDrones/{id}', 'DroneRequestController@getCasedDrones');
 Route::get('getDroneRequests/{id}','DroneRequestController@getPerUser');
 Route::get('casetest/droneSubType/{id}','DroneSubTypesController@droneSubTypes');
 Route::get('casetest/droneServiceType/{id}','DroneSubTypesController@droneServiceType');
 Route::get('casetest/droneSubServiceType/{id}','DroneSubTypesController@droneSubServiceType');
 
 
-Route::get('emails', function ()
-{
-    return view('emails.Drones.approve');
-});
 
