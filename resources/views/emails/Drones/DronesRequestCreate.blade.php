@@ -6,16 +6,17 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>Email</title>
+    <style type="text/css">
+        .button:hover{ background-color: #0066FF;}
+    </style>
 </head>
 
 <body style="margin:0; margin-top:30px; margin-bottom:30px; padding:0; width:100%; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; background-color: #F4F5F7;">
-
 
 <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border:0; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; background-color: #F4F5F7;">
     <tbody>
     <tr>
         <td align="center" style="border-collapse: collapse;">
-
             <table width="100%" border="0" cellpadding="0" cellspacing="0" align="left" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
                 <tbody>
                 <tr>
@@ -23,10 +24,6 @@
                 </tr>
                 </tbody>
             </table>
-            <!-- /Space -->
-
-
-            <!-- ROW 2 IMGS -->
             <table cellpadding="0" cellspacing="0" border="0" width="560" style="border:0; border-collapse:collapse; background-color:#ffffff; border-radius:6px;">
                 <tbody>
                 <tr>
@@ -40,44 +37,29 @@
                             </tr>
 
                             <tr><!-- title -->
-                                <td width="100%" style="font-family: helvetica, Arial, sans-serif; font-size: 18px; letter-spacing: 0px; text-align: center; color:#0000FF;">
-                                    <strong></strong> Approved.
+                                <td width="100%" style="font-family: helvetica, Arial, sans-serif; font-size: 18px; letter-spacing: 0px; text-align: center; color:#060606;">
+                                    <h5>DRONE REQUEST EMAIL</h5>
                                 </td>
                             </tr>
 
                             <tr><!-- spacing bottom -->
-                                <td width="100%" height="30"></td>
+                                <td width="100%" height="18"></td>
                             </tr>
 
                             <tr>
-                                <td width="100%" style="font-family: helvetica, Arial, sans-serif;padding-left: 20px; font-size: 18px; letter-spacing: 0px; color:#2E363F;">
-                                    {{--Hi {{ $name }}--}}
-                                    hi vaughan
+                                <td width="100%" style="font-family: helvetica, Arial, sans-serif;padding-left: 20px; font-size: 16px; letter-spacing: 0px; color:#2E363F;">
+                                    Hi {{ $name }}
+
                                 </td>
                             </tr>
                             <tr><!-- spacing bottom -->
-
-                                <td width="100%" style="font-family: helvetica, Arial, sans-serif;padding-left: 20%;">
-
-                                </td>
-
+                                <td width="100%" height="18"></td>
                             </tr>
+
                             <tr>
-                                <td width="100%" style="font-family: helvetica, Arial, sans-serif;padding-left: 20%; font-size: 18px; letter-spacing: 0px; color:#2E363F;">
+                                <td width="100%"   style="font-family:helvetica, Arial, sans-serif; padding-left: 20px; font-size: 13px; text-align: left; color:#B1ADAD; line-height: 24px;">
 
-
-                                </td>
-                            </tr>
-                            <tr><!-- spacing bottom -->
-
-                                <td width="100%" style="font-family: helvetica, Arial, sans-serif;padding-left: 20%;">
-
-                                </td>
-                            </tr>
-                            <tr></tr>
-                                <td width="100%" style="font-family:helvetica, Arial, sans-serif; padding-left: 20px; font-size: 13px; text-align: left; color:#2E363F; line-height: 24px;">
-                                    this is the message
-                                    {{--<strong>{{$messageBody}}</strong>--}}
+                                    <strong>{{$messageBody}}</strong>
                                 </td>
                             </tr>
 
@@ -95,7 +77,7 @@
                             </tr>
                             <tr>
                                 <td width="100%" style="font-family:helvetica, Arial, sans-serif; padding-left: 20px; font-size: 13px; text-align: left; color:#2E363F; line-height: 24px;">
-                                    <a href="{{ env('LIVE_URL') }}"><strong>Click here to login</strong></a>
+                                   <a href="{{ env('LIVE_URL') }}"  class="button" style=" background-color: #F55125;padding: 6px 9px;display: inline-block;text-decoration: none;color: #FFFFFF;border-radius: 1px;"><strong>Click here to login</strong></a>
 
                                 </td>
                             </tr>
@@ -107,11 +89,6 @@
                             </tr>
                             </tbody>
                         </table>
-                        <!-- /Headline Header -->
-
-
-
-                        <!-- Space -->
                         <table width="100%" border="0" cellpadding="0" cellspacing="0" align="left" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
                             <tbody>
                             <tr>
@@ -119,15 +96,11 @@
                             </tr>
                             </tbody>
                         </table>
-                        <!-- /Space -->
 
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <!-- /ROW 2 IMGS -->
-
-            <!-- Space -->
             <table width="100%" border="0" cellpadding="0" cellspacing="0" align="left" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
                 <tbody>
                 <tr>
@@ -135,10 +108,6 @@
                 </tr>
                 </tbody>
             </table>
-            <!-- /Space -->
-
-
-            <!-- ROW FOOTER -->
             <table cellpadding="0" cellspacing="0" border="0" width="560" style="border:0; border-collapse:collapse; background-color:#ffffff; border-radius:6px;">
                 <tbody>
                 <tr>
@@ -149,7 +118,7 @@
                             <tr><!-- logo -->
                                 <td width="100%" style="font-family: helvetica, Arial, sans-serif; font-size: 18px; letter-spacing: 0px; text-align: center;">
                                     <a href="#" style="text-decoration: none;">
-                                        <img src="{{ asset('img/siyaleader_light_bg_100.png') }}" width='166px' alt="Siyaleader" />
+                                        <img src="{{ asset('img/siyaleader_light_bg_100.png') }}" width='90px' alt="Siyaleader" />
                                     </a>
                                 </td>
                             </tr>
@@ -160,14 +129,10 @@
                 </tr>
                 </tbody>
             </table>
-            <!-- /ROW FOOTER -->
-
-
         </td>
     </tr>
     </tbody>
 </table>
-
 </body>
 </html>
 
