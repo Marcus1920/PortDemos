@@ -354,17 +354,28 @@
         $("#secondRejectForm").validate();
     </script>
     <script>
-        function initMap() {
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 5,
-                center: {lat: -30.886, lng: 29.268},
-                mapTypeId: 'terrain'
-            });
-            var codes=document.getElementById("cod").value.split(',');
-            var last = [];
-            for(var i=0; i < codes.length  ; i+=2){
+function initMap()
+{
+
+        var map = new google.maps.Map(document.getElementById('map'), 
+        {
+                zoom: 12,
+                center: {lat:-29.8579, lng: 31.0292},
+                mapTypeId: google.maps.MapTypeId.RoadMap
+        });
+
+        var codes=  document.getElementById("cod").value.split(',');
+        var last = [];
+
+        if(codes.length >2)
+        {
+          
+            for(var i=0; i < codes.length  ; i+=2)
+                {
                 last.push({lat: parseFloat(codes[i]), lng: parseFloat(codes[i+1])});
-            }
+                }
+
+                console.log(last);
 
             var bermudaTriangle = new google.maps.Polygon({
                 paths: last,
@@ -373,12 +384,32 @@
                 strokeWeight: 2,
                 fillColor: '#FF0000',
                 fillOpacity: 0.35
+                   });
 
-            });
             bermudaTriangle.setMap(map);
 
         }
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=drawing&callback=initMap"></script>
+        else
+        {
+           
+        for(var i=0; i < codes.length ; i+=2)
+            {
+                
+                last.push({lat: parseFloat(codes[i]), lng: parseFloat(codes[i+1])});
+            }
+
+            var bermudaTriangle = new google.maps.Marker({
+            position:last[0],
+            map:map
+              
+            });
+
+        }
+
+
+}
+        
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=drawing&callback=initMap"></script>
 @endsection
 

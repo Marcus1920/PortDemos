@@ -31,7 +31,7 @@
         @endif
         <div class="tile p-15" style="margin:0 auto;" >
             {!! Form::open(['url' => '/api/v1/drone', 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"requestDroneForm" ]) !!}
-            {!! Form::hidden('created_by',Auth::user()->id)!!}
+            
             <div class="form-group">
                 {!! Form::label('Search Department', 'Search Department', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
@@ -74,11 +74,11 @@
                     <select class="form-control" id="drone_service_type_id" name="drone_service_type_id"  value ="old('sub_drone_type_id')">
                         <option selected disabled>Nothing selected</option>
                     </select>
-                    @if ($errors->has('drone_service_type_id')) <p class="help-block red">*{{ $errors->first('drone_service_type_id') }}</p> @endif
+                    @if ($errors->has('drone_service_type_id'))<p class="help-block red">*{{ $errors->first('drone_service_type_id') }}</p> @endif
                 </div>
             </div>
             <div class="form-group droneSubService hidden">
-                {!! Form::label('Select Drone Sub Services', 'Select Drone Sub Services', array('class' => 'col-md-3 control-label')) !!}
+                {!! Form::label('Select Drone Sub Services','Select Drone Sub Services', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
                     <select class="form-control" id="drone_sub_service_type_id" name="drone_sub_service_type_id"  value ="old('sub_drone_type_id')">
                         <option selected disabled>Nothing selected</option>
@@ -86,6 +86,16 @@
                     @if ($errors->has('drone_sub_service_type_id')) <p class="help-block red">*{{ $errors->first('drone_sub_service_type_id') }}</p> @endif
                 </div>
             </div>
+
+            <div class="form-group surveys hidden">
+                {!! Form::label('Search Place ', 'Search Place ', array('class' => 'col-md-3 control-label  ')) !!}
+                <div class="col-md-6">
+                     {!! Form::text('marker',NULL,['class' => 'form-control input-sm','id' => 'pac-input','rows'=>'7','placeholder'=>'Search Box']) !!}
+                 <!--    <input id="pac-input" class="form-control" type="text" placeholder="Search Box" > -->
+                    @if ($errors->has('area_of_interest')) <p class="help-block red">*{{ $errors->first('area_of_interest') }}</p> @endif
+                </div>
+            </div>
+
             <div class="form-group surveys hidden" id="reloadMap">
                 {!! Form::label('Area of Interest', 'Area of Interest', array('class' => 'col-md-3 control-label  ')) !!}
                 <div class="col-md-6 col-offset-3">
@@ -130,11 +140,21 @@
                     {!! Form::textarea('notes',NULL,['class' => 'form-control input-sm','id' => 'notes']) !!}
                 </div>
             </div>
-            <div class="form-group surveys hidden">
+            <div class="form-group  hidden">
                 {!! Form::label('Geo Fence Clipboard', 'clip Board', array('class' => 'col-md-3 control-label  ')) !!}
                 <div class="col-md-6">
                     <div>
                         {!! Form::text('geoFenceCoords',NULL,['class' => 'form-control input-sm','id' => 'geoFenceCoords','rows'=>5]) !!}
+                    </div>
+                    @if ($errors->has('geoFenceCoords')) <p class="help-block red">*{{ $errors->first('geoFenceCoords') }}</p> @endif
+                </div>
+            </div>
+
+            <div class="form-group  hidden">
+                {!! Form::label('Geo Fence Clipboard', 'Marker clip Board', array('class' => 'col-md-3 control-label  ')) !!}
+                <div class="col-md-6">
+                    <div>
+                        {!! Form::text('markerCoordinates',NULL,['class' => 'form-control input-sm','id' => 'markerCoordinates','rows'=>5]) !!}
                     </div>
                     @if ($errors->has('geoFenceCoords')) <p class="help-block red">*{{ $errors->first('geoFenceCoords') }}</p> @endif
                 </div>
@@ -208,6 +228,7 @@
             if (selectText == 'Auxiliary Services') {
                 $('.droneSubService').removeClass('hidden');
                 $('.auxiliaryServices').removeClass('hidden');
+                $('.surveys').removeClass('hidden');
                 $('.scopeOfWOrk').removeClass('hidden');
                 $('.Notes').removeClass('hidden');
                 $("#drone_sub_service_type_id").removeAttr('disabled');
@@ -228,16 +249,18 @@
                 $('.purposeOfSurvey').addClass('hidden');
                 $('.verticalAccuracy').addClass('hidden');
                 $('.numberOfStockPile').addClass('hidden');
-                $('.surveys').addClass('hidden');
+               $('.surveys').removeClass('hidden');
             }
-            else if(selectText =='Surveys'){
+            else if(selectText =='Surveys')
+            {
                 $('.droneSubService').removeClass('hidden');
                 $('.scopeOfWOrk').addClass('hidden');
                 $('.Notes').addClass('hidden');
                 $('.auxiliaryServices').addClass('hidden');
             }
             //Aquatic -> ad Hoc
-            else if(selectText =='Hydrographic Survey' || selectText=='Hydrographic Solar Scanning'){
+            else if(selectText =='Hydrographic Survey' || selectText=='Hydrographic Solar Scanning')
+            {
                 //initMap().load();
                 $('.scopeOfWOrk').removeClass('hidden');
                 $('.surveys').removeClass('hidden');
@@ -251,7 +274,7 @@
                 $('.scopeOfWOrk').removeClass('hidden');
                 $('.Notes').removeClass('hidden');
                 $('.purposeOfSurvey').addClass('hidden');
-                $('.surveys').addClass('hidden');
+                 $('.surveys').removeClass('hidden');
                 $("#interest").removeAttr('disabled', 'disabled');
                 $("#scope_of_work").removeAttr('disabled');
                 $("#notes").removeAttr('disabled');
@@ -265,7 +288,7 @@
                 $("#scope_of_work").removeAttr('disabled', 'disabled');
                 $("#notes").removeAttr('disabled', 'disabled');
                 $('.purposeOfSurvey').addClass('hidden');
-                $('.surveys').addClass('hidden');
+                $('.surveys').removeClass('hidden');
                 $('.verticalAccuracy').addClass('hidden');
                 $('.droneSubService').addClass('hidden');
             }
@@ -320,72 +343,99 @@
             }
         }
         $("#dronesDepartment").tokenInput("{!! url('/api/v1/userDepartment')!!}", {tokenLimit: 1});
-        var map, infoWindow ,drawingManager,poly1;
+        var map, infoWindow ,drawingManager,poly1,marker;
+
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'),
                 {
-                    center: {lat:-29.85868039999999, lng: 31.021840399999974},
-                    zoom: 5,
+
+                    center: {lat: -29.8579 , lng:31.0292},
+                    zoom: 12,
                     mapTypeId: google.maps.MapTypeId.RoadMap
                 });
-//                infoWindow = new google.maps.InfoWindow;
-//                if (navigator.geolocation) {
-//                    navigator.geolocation.getCurrentPosition(function (position) {
-//                        var pos = {
-//                            lat: position.coords.latitude,
-//                            lng: position.coords.longitude
-//                        };
-//                        infoWindow.setPosition(pos);
-//                        infoWindow.setContent('Location found.');
-//                        infoWindow.open(map);
-//                        map.setCenter(pos);
-//
-//                    }, function () {
-//                        handleLocationError(true, infoWindow, map.getCenter());
-//                    });
-//                } else {
-//                    handleLocationError(false, infoWindow, map.getCenter());
-//                }
             var p = document.getElementById('geoFenceCoords').value.replace(/%20/g, ',');
             var point = p.substr(10, p.length - 1);
             var gFance = point.substr(0, point.indexOf('),'));
             var points = gFance.split(", ");
             var CoordsPath = points.map(function (points) {
                 var latlon = points.split(' ');
-                //alert(latlon[0] + " " + latlon[1]);
+
                 return new google.maps.LatLng(latlon[0], latlon[1]);
             });
+
+
+            var input = document.getElementById('pac-input');
+            var searchBox = new google.maps.places.SearchBox(input);
+            // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+            map.addListener('bounds_changed', function() {
+                searchBox.setBounds(map.getBounds());
+            });
+
+            var markers = [];
+            searchBox.addListener('places_changed', function() {
+                var places = searchBox.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+
+                markers.forEach(function(marker) {
+                    marker.setMap(null);
+                });
+                markers = [];
+
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function(place) {
+                    if (!place.geometry) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+                    var icon = {
+                        url: place.icon,
+                        size: new google.maps.Size(71, 71),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(17, 34),
+                        scaledSize: new google.maps.Size(25, 25)
+                    };
+
+                    markers.push(new google.maps.Marker({
+                        map: map,
+                        icon: icon,
+                        title: place.name,
+                        position: place.geometry.location
+                    }));
+
+                    if (place.geometry.viewport) {
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+            });
+
+
             if (CoordsPath != "(0, NaN)") {
                 drawingManager = new google.maps.drawing.DrawingManager({
-                    drawingMode: google.maps.drawing.OverlayType.POLYGON,
                     drawingControl: true,
                     drawingControlOptions: {
                         position: google.maps.ControlPosition.TOP_CENTER,
                         drawingModes: [
-                            //'marker', 'polygon'
-                            google.maps.drawing.OverlayType.POLYGON
+                             'polygon'
+
                         ]
                     },
                     polygonOptions: doPolygon(map)
-//                        {
-//                                geodesic: true,
-//                                strokeColor: '#FF0000',
-//                                strokeOpacity: 1.0,
-//                                strokeWeight: 2,
-//                                clickable: true,
-//                                editable: true,
-//                                zIndex: 1
-//                            }
                 });
             } else {
                 drawingManager = new google.maps.drawing.DrawingManager({
-                    drawingMode: google.maps.drawing.OverlayType.POLYGON,
+
                     drawingControl: true,
                     drawingControlOptions: {
                         position: google.maps.ControlPosition.TOP_CENTER,
                         drawingModes: [
-                            //'marker', 'polygon'
-                            google.maps.drawing.OverlayType.POLYGON
+                             'polygon'
                         ]
                     },
                     polygonOptions: {
@@ -398,21 +448,48 @@
                         zIndex: 1
                     }
                 });
+
                 drawingManager.setMap(map);
                 google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
                     openInfoWindowPolygon(polygon);
                 });
+
+                var  count =0;
+                google.maps.event.addListener(map, 'click', function(event) {
+                    count+=1;
+                    if(count==1)
+                    {
+                        placeMarker(map, event.latLng);
+                    }
+                });
+
             }
         }
-        function openInfoWindowPolygon(polygon) {
+
+        function placeMarker(map, location) {
+
+            var marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+
+            var infowindow = new google.maps.InfoWindow({
+                content: '<span style="color:black;">'+ 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()+'</span>'
+
+            });
+            var markerCoordinates  = (location.lat()+","+location.lng());
+
+            infowindow.open(map,marker);
+            document.getElementById('markerCoordinates').value = markerCoordinates;
+
+        }
+        function openInfoWindowPolygon(polygon){
             poly1 = polygon;
-            //alert(poly1);
+
             var vertices = polygon.getPath();
-            //foreach(xy in vertices)
-            //{
+            //textbox receive coordinates
             document.getElementById('geoFenceCoords').value = polygon.getPath();
-            //}
-            var contents = 'Location name';
+
             var bounds = new google.maps.LatLngBounds();
             vertices.forEach(function (xy, i) {
                 bounds.extend(xy);
@@ -422,47 +499,9 @@
             {
                 bounds.extend(xy);
             });
-            //infoWindow.setContent(contents);
-            //infoWindow.setPosition(bounds.getCenter());
             drawingManager.setDrawingMode(null);
             infoWindow.open(map);
         }
-        function doPolygon(map) {
-            //document.getElementById('txtCoordinates').value = getParameterByName('GeoFence');
-            var p = document.getElementById('geoFenceCoords').value.replace(/%20/g, ',');
-            var point = p.substr(10, p.length - 2);
-            var gFance = point.substr(0, point.indexOf(',),'));
-            var points = gFance.split(" ");
-            var CoordsPath = points.map(function (points) {
-                var latlon = points.split(' ');
-                alert(latlon[0] + " " + latlon[1]);
-                return new google.maps.LatLng(latlon[0], latlon[1]);
-            });
-            flightPath = new google.maps.Polygon({
-                path: CoordsPath,
-                geodesic: true,
-                strokeColor: '#FF0000',
-                strokeOpacity: 1.0,
-                strokeWeight: 2,
-                editable: true
-            });
-            flightPath.setMap(map);
-            google.maps.event.addListener(flightPath, "dragend", getPolygonCoords);
-            google.maps.event.addListener(flightPath.getPath(), "insert_at", getPolygonCoords);
-            google.maps.event.addListener(flightPath.getPath(), "remove_at", getPolygonCoords);
-            google.maps.event.addListener(flightPath.getPath(), "set_at", getPolygonCoords);
-            var latlngbounds = new google.maps.LatLngBounds();
-            for (var i = 0; i < CoordsPath.length; i++) {
-                latlngbounds.extend(CoordsPath[i]);
-            }
-            map.fitBounds(latlngbounds);
-        }
-        //                function clearMap() {
-        //                    drawingManager.setDrawingMode(null);
-        //                    flightPath.setMap(null);
-        //                    document.getElementById('geoFenceCoords,').value = null;
-        //                }
-        // google.maps.event.addDomListener(window, 'load', initMap);
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             infoWindow.setPosition(pos);
             infoWindow.setContent(browserHasGeolocation ?
@@ -471,6 +510,6 @@
             infoWindow.open(map,marker2);
         }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=drawing&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=places,drawing&callback=initMap" async defer></script>
 
 @endsection

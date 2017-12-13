@@ -102,8 +102,7 @@ class DroneRequestController extends Controller
                     drone_requests.numberOfStockpiles,
                     drone_requests.vertical_accuracy
                     
-                "
-                )
+                ")
                 )
                 ->where('drone_case_status',3)
                 ->groupBy('drone_requests.id');
@@ -214,6 +213,9 @@ class DroneRequestController extends Controller
     }
     public function store(Request $request)
     {
+
+        // dd($request->all());
+        // die();
         $newDroneRequest = new DroneRequest();
         $userRole = User::find(\Auth::user()->id);
         $position = Position::find($userRole->position);
@@ -236,7 +238,7 @@ class DroneRequestController extends Controller
         $drone_sub_types   = DroneSubType::find($request['sub_drone_type_id']);
         if($drone_sub_types->name == "Real Time")
         {
-            $newDroneRequest->created_by = $request['created_by'];
+            $newDroneRequest->created_by =\Auth::user()->id;
             $newDroneRequest->drone_type_id = $request['drone_type_id'];
             $newDroneRequest->sub_drone_type_id = $request['sub_drone_type_id'];
             $newDroneRequest->drone_case_status = 1;
@@ -249,7 +251,7 @@ class DroneRequestController extends Controller
             $newDroneRequest->save();
         }
         elseif($drone_sub_types->name =="Ad Hoc") {
-            $newDroneRequest->created_by = $request['created_by'];
+            $newDroneRequest->created_by = \Auth::user()->id;
             $newDroneRequest->drone_type_id = $request['drone_type_id'];
             $newDroneRequest->sub_drone_type_id = $request['sub_drone_type_id'];
             $newDroneRequest->drone_case_status = 1;
@@ -261,19 +263,30 @@ class DroneRequestController extends Controller
             $newDroneRequest->reject_reason = 4;
             $newDroneRequest->reject_other_reason = "None";
             $newDroneRequest->caseNumber = $request['caseNumber'];
-            $newDroneRequest->geoFence = $request['geoFenceCoords'];
+
+            if(empty($request['geoFenceCoords'])==true)
+            {
+
+                $newDroneRequest->geoFence = $request['markerCoordinates'];
+            }else
+            {
+                $newDroneRequest->geoFence = $request['geoFenceCoords'];
+            }
+
+
+             
             $newDroneRequest->purposeOfSurvey = $request['purpose_of_survey'];
             $newDroneRequest->numberOfStockpiles = $request['number_of_stockpiles'];
             $newDroneRequest->vertical_accuracy = $request['vertical_accuracy'];
             $newDroneRequest->save();
         }
-        $newDroneRequest->save();
+        // $newDroneRequest->save();
         $dronRequestActivity = new DroneRequestActivity();
         $dronRequestActivity->drone_request_id = $newDroneRequest->id;
-        $dronRequestActivity->user = $request['created_by'];
+        $dronRequestActivity->user =\Auth::user()->id;
         $dronRequestActivity->activity = "requested a drone";
         $dronRequestActivity->save();
-        $userRole = User::find($request['created_by']);
+        $userRole = User::find(\Auth::user()->id);
         $position = Position::find($userRole->position);
         if($position->name == "SHE Representative")
         {
@@ -287,7 +300,7 @@ class DroneRequestController extends Controller
                 $data = array(
                     'name'    => $droneRequestResponder[0]['name'],
 
-                    'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department , $departmentName->name requested to use an "."$droneName->name"
+                    'messageBody'=> "This is a message from". " ". \Auth::user()->name ." ". \Auth::user()->surname." to inform you that their department , $departmentName->name requested to use an "."$droneName->name"
                 );
                 \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
                 {
@@ -313,7 +326,7 @@ class DroneRequestController extends Controller
             {
                 $data = array(
                     'name'    => $droneRequestResponder[0]['name'],
-                    'messageBody'=> "This is a message from". " ". Auth::user()->name ." ". Auth::user()->surname." to inform you that their department , $departmentName->name requested to use an "."$droneName->name"
+                    'messageBody'=> "This is a message from". " ". \Auth::user()->name ." ". \Auth::user()->surname." to inform you that their department , $departmentName->name requested to use an "."$droneName->name"
                 );
                 \Mail::send('emails.Drones.DronesRequestCreate',$data,function($message) use ($droneRequestResponder)
                 {
@@ -400,7 +413,7 @@ class DroneRequestController extends Controller
         $user = User::where('position',$finalApproverPosition->id)->first();
         $data = array(
             'name'    => $user->name,
-            'messageBody' =>Auth::user()->name ." ". Auth::user()->surname ." has approved your  drone request , please wait for the second approval from the higher officials."
+            'messageBody' =>\Auth::user()->name ." ". \Auth::user()->surname ." has approved your  drone request , please wait for the second approval from the higher officials."
             );
         \Mail::send('emails.Drones.approve',$data,function($message) use ($user)
         {
@@ -409,7 +422,7 @@ class DroneRequestController extends Controller
         });
         $data = array(
             'name'    => $droneRequest->User->name,
-            'messageBody' =>Auth::user()->name ." ". Auth::user()->surname ." has approved your  drone request , please wait for the second approval from the higher officials.
+            'messageBody' =>\Auth::user()->name ." ". \Auth::user()->surname ." has approved your  drone request , please wait for the second approval from the higher officials.
             "
         );
         \Mail::send('emails.Drones.approve',$data,function($message) use ($droneRequest)
@@ -498,8 +511,6 @@ class DroneRequestController extends Controller
             ->where('id',$id)
             ->first();
 
-
-
         if($request['reject_other_reason']==NULL)
         {
             $dronRequest = DroneRequest::where('id',$id)
@@ -511,7 +522,7 @@ class DroneRequestController extends Controller
 
             $data = array(
                 'name'    => $droneRequest->User->name,
-                'messageBody'=> Auth::user()->name ." ".Auth::user()->surname ." has rejected your  drone request because its a ".$rejectReason->name
+                'messageBody'=> \Auth::user()->name ." ".\Auth::user()->surname ." has rejected your  drone request because its a ".$rejectReason->name
             );
 
             \Mail::send('emails.Drones.reject',$data,function($message) use ($droneRequest)
@@ -531,7 +542,7 @@ class DroneRequestController extends Controller
 
             $data = array(
                 'name'    => $droneRequest->User->name,
-                'messageBody'=> Auth::user()->name ." ".Auth::user()->surname ." rejected the drone request because  ".$request['reject_other_reason']
+                'messageBody'=> \Auth::user()->name ." ".\Auth::user()->surname ." rejected the drone request because  ".$request['reject_other_reason']
 
             );
             \Mail::send('emails.Drones.reject',$data,function($message) use ($droneRequest)
@@ -560,14 +571,32 @@ class DroneRequestController extends Controller
             ->with('RejectReason')
             ->where('id',$id)
             ->first();
+
         $droneRejectReasons=DroneRejectReason::find([1,2,3]);
         $droneRequestActivity = DroneRequestActivity::with('DroneRequest')
             ->with('User')
             ->where('drone_request_id',$id)
             ->orderBy('id','DESC')
             ->get();
+
+       // $coordinates  = $droneRequest->geoFence;
+
+       // return typeOf($coordinates);
+
+       //  if(substr_compare($coordinates , "()[object Object]",0))
+       //  {
+       //     return "poligony";
+       //  }else
+       //  {
+       //      return "string";
+       //  }
+       //  die();
+
         $new_str                          =str_replace(str_split('()[object Object]'), '', $droneRequest->geoFence);
         $coordinates                      =chop(str_replace("_",",",$new_str),',');
+
+        $droneRejectReasons = DroneRejectReason::find([1,2,3]);
+
         return view('drones.droneApprove',compact('droneRequest','droneRequestActivity','droneRejectReasons','coordinates'));
     }
     public function droneCoordinates($id)
@@ -617,17 +646,255 @@ class DroneRequestController extends Controller
         }
         return $data;
     }
-    public function getCasedDrones($id)
+    public function getCaseDrones($id)
     {
-        $caseDrones = DroneRequest::with('DroneType')
-            ->with('DroneSubType')
-            ->with('DroneCaseStatus')
-            ->with('Department')
-            ->with('RejectReason')
-            -> where('caseNumber',$id)
-            ->get();
-        return $caseDrones;
+
+            $droneRequests = \DB::table('drone_requests')
+                ->join('drone_types', 'drone_requests.drone_type_id', '=', 'drone_types.id')
+                ->join('drone_sub_types', 'drone_requests.sub_drone_type_id', '=', 'drone_sub_types.id')
+                ->join('users', 'drone_requests.created_by', '=', 'users.id')
+                ->join('drone_approval_statuses', 'drone_requests.drone_case_status', '=', 'drone_approval_statuses.id')
+                ->join('departments', 'drone_requests.department', '=', 'departments.id')
+                ->join('drone_reject_reasons', 'drone_requests.reject_reason', '=', 'drone_reject_reasons.id')
+                ->select(\DB::raw
+                (
+                    "
+                    drone_requests.id,
+                    drone_requests.created_at,
+                    drone_types.name as DroneType,
+                    drone_sub_types.name as DroneSubType,
+                    drone_requests.notes,
+                    users.name as CreatedBy,
+                    drone_approval_statuses.name as CaseStatus,
+                    departments.name as Department,
+                    drone_requests.notes,
+                    drone_reject_reasons.reason as RejectReason,
+                    drone_requests.created_by,
+                    drone_requests.drone_case_status,
+                    drone_requests.caseNumber,
+                    drone_requests.serviceRequired,
+                    drone_requests.drone_sub_service_type_id,
+                    drone_requests.purposeOfSurvey,
+                    drone_requests.numberOfStockpiles,
+                    drone_requests.vertical_accuracy
+                "
+                ))
+                ->where('drone_case_status',2)
+                ->orWhere('caseNumber',$id)
+                ->groupBy('drone_requests.id');
+            return \Datatables::of($droneRequests)
+                ->addColumn('actions', '
+            <div class="row">
+                    <div class="col-md-3">
+                  <a class="btn btn-xs btn-alt" data-toggle="modal" href="caseDrone/{{ $id }}" target="">View</a></div> 
+                  </div>
+                      '
+                )
+                ->make(true);
+
+
+
+
+        // $user = User::find(\Auth::user()->id);
+        // // return $user;
+
+        // $position = Position::find($user->position);
+        // return $position;
+
+        // if($position->name=="Harbour Master")
+        // {
+        //     $droneRequests = \DB::table('drone_requests')
+        //         ->join('drone_types', 'drone_requests.drone_type_id', '=', 'drone_types.id')
+        //         ->join('drone_sub_types', 'drone_requests.sub_drone_type_id', '=', 'drone_sub_types.id')
+        //         ->join('users', 'drone_requests.created_by', '=', 'users.id')
+        //         ->join('drone_approval_statuses', 'drone_requests.drone_case_status', '=', 'drone_approval_statuses.id')
+        //         ->join('departments', 'drone_requests.department', '=', 'departments.id')
+        //         ->join('drone_reject_reasons', 'drone_requests.reject_reason', '=', 'drone_reject_reasons.id')
+        //         ->select(\DB::raw
+        //         (
+        //             "
+        //             drone_requests.id,
+        //             drone_requests.created_at,
+        //             drone_types.name as DroneType,
+        //             drone_sub_types.name as DroneSubType,
+        //             drone_requests.notes,
+        //             users.name as CreatedBy,
+        //             drone_approval_statuses.name as CaseStatus,
+        //             departments.name as Department,
+        //             drone_requests.notes,
+        //             drone_reject_reasons.reason as RejectReason,
+        //             drone_requests.created_by,
+        //             drone_requests.drone_case_status,
+        //             drone_requests.caseNumber,
+        //             drone_requests.serviceRequired,
+        //             drone_requests.drone_sub_service_type_id,
+        //             drone_requests.purposeOfSurvey,
+        //             drone_requests.numberOfStockpiles,
+        //             drone_requests.vertical_accuracy
+        //         "
+        //         ))
+        //         ->where('drone_case_status',2)
+        //         ->orWhere('caseNumber',$id)
+        //         ->groupBy('drone_requests.id');
+        //     return \Datatables::of($droneRequests)
+        //         ->addColumn('actions', '
+        //     <div class="row">
+        //             <div class="col-md-3">
+        //           <a class="btn btn-xs btn-alt" data-toggle="modal" href="api/v1/drone/{{ $id }}" target="">View</a></div> 
+        //           </div>
+        //               '
+        //         )
+        //         ->make(true);
+        // }
+        // else if($position->name=="Dive Master")
+        // {
+        //     $droneRequests = \DB::table('drone_requests')
+        //         ->join('drone_types', 'drone_requests.drone_type_id', '=', 'drone_types.id')
+        //         ->join('drone_sub_types', 'drone_requests.sub_drone_type_id', '=', 'drone_sub_types.id')
+        //         ->join('users', 'drone_requests.created_by', '=', 'users.id')
+        //         ->join('drone_approval_statuses', 'drone_requests.drone_case_status', '=', 'drone_approval_statuses.id')
+        //         ->join('departments', 'drone_requests.department', '=', 'departments.id')
+        //         ->join('drone_reject_reasons', 'drone_requests.reject_reason', '=', 'drone_reject_reasons.id')
+        //         ->select(\DB::raw
+        //         (
+        //             "
+        //             drone_requests.id,
+        //             drone_requests.created_at,
+        //             drone_types.name as DroneType,
+        //             drone_sub_types.name as DroneSubType,
+        //             drone_requests.notes,
+        //             users.name as CreatedBy,
+        //             drone_approval_statuses.name as CaseStatus,
+        //             departments.name as Department,
+        //             drone_requests.notes,
+        //             drone_reject_reasons.reason as RejectReason,
+        //             drone_requests.created_by,
+        //             drone_requests.drone_case_status,
+        //             drone_requests.caseNumber,
+        //             drone_requests.serviceRequired,
+        //             drone_requests.drone_sub_service_type_id,
+        //             drone_requests.purposeOfSurvey,
+        //             drone_requests.numberOfStockpiles,
+        //             drone_requests.vertical_accuracy
+                    
+        //         "
+        //         )
+        //         )
+        //         ->where('drone_case_status',3)
+        //         ->orWhere('caseNumber',$id)
+        //         ->groupBy('drone_requests.id');
+        //     return \Datatables::of($droneRequests)
+        //         ->addColumn('actions', '
+        //     <div class="row">
+        //             <div class="col-md-3">
+        //           <a class="btn btn-xs btn-alt" data-toggle="modal" href="api/v1/drone/{{ $id }}" target="">View</a>
+        //           </div> 
+        //           </div>
+        //               '
+        //         )
+        //         ->make(true);
+        // }
+        // else if($position->name=="Environmental Manager")
+        // {
+        //     $droneRequests = \DB::table('drone_requests')
+        //         ->join('drone_types', 'drone_requests.drone_type_id', '=', 'drone_types.id')
+        //         ->join('drone_sub_types', 'drone_requests.sub_drone_type_id', '=', 'drone_sub_types.id')
+        //         ->join('users', 'drone_requests.created_by', '=', 'users.id')
+        //         ->join('drone_approval_statuses', 'drone_requests.drone_case_status', '=', 'drone_approval_statuses.id')
+        //         ->join('departments', 'drone_requests.department', '=', 'departments.id')
+        //         ->join('drone_reject_reasons', 'drone_requests.reject_reason', '=', 'drone_reject_reasons.id')
+        //         ->select(\DB::raw
+        //         (
+        //             "
+        //             drone_requests.id,
+        //             drone_requests.created_at,
+        //             drone_types.name as DroneType,
+        //             drone_sub_types.name as DroneSubType,
+        //             drone_requests.notes,
+        //             users.name as CreatedBy,
+        //             drone_approval_statuses.name as CaseStatus,
+        //             departments.name as Department,
+        //             drone_requests.notes,
+        //             drone_reject_reasons.reason as RejectReason,
+        //             drone_requests.created_by,
+        //             drone_requests.drone_case_status,
+        //             drone_requests.caseNumber,
+        //             drone_requests.serviceRequired,
+        //             drone_requests.drone_sub_service_type_id,
+        //             drone_requests.purposeOfSurvey,
+        //             drone_requests.numberOfStockpiles,
+        //             drone_requests.vertical_accuracy
+                    
+        //         "
+        //         )
+        //         )
+        //         ->where('drone_case_status',2)
+        //         ->orWhere('caseNumber',$id)
+        //         ->groupBy('drone_requests.id');
+        //     return \Datatables::of($droneRequests)
+        //         ->addColumn('actions', '
+        //     <div class="row">
+        //             <div class="col-md-3">
+        //           <a class="btn btn-xs btn-alt" data-toggle="modal" href="api/v1/drone/{{ $id }}" target="">View</a>
+        //           </div> 
+        //           </div>
+        //               '
+        //         )
+        //         ->make(true);
+        // }
+        // else {
+        //     $droneRequests = \DB::table('drone_requests')
+        //         ->join('drone_types', 'drone_requests.drone_type_id', '=', 'drone_types.id')
+        //         ->join('drone_sub_types', 'drone_requests.sub_drone_type_id', '=', 'drone_sub_types.id')
+        //         ->join('users', 'drone_requests.created_by', '=', 'users.id')
+        //         ->join('drone_approval_statuses', 'drone_requests.drone_case_status', '=', 'drone_approval_statuses.id')
+        //         ->join('departments', 'drone_requests.department', '=', 'departments.id')
+        //         ->join('drone_reject_reasons', 'drone_requests.reject_reason', '=', 'drone_reject_reasons.id')
+        //         ->select(\DB::raw
+        //         (
+        //             "
+        //             drone_requests.id,
+        //             drone_requests.created_at,
+        //             drone_types.name as DroneType,
+        //             drone_sub_types.name as DroneSubType,
+        //             drone_requests.notes,
+        //             users.name as CreatedBy,
+        //             drone_approval_statuses.name as CaseStatus,
+        //             departments.name as Department,
+        //             drone_requests.notes,
+        //             drone_reject_reasons.reason as RejectReason,
+        //             drone_requests.created_by,
+        //             drone_requests.drone_case_status,
+        //             drone_requests.caseNumber,
+        //             drone_requests.serviceRequired,
+        //             drone_requests.drone_sub_service_type_id,
+        //             drone_requests.purposeOfSurvey,
+        //             drone_requests.numberOfStockpiles,
+        //             drone_requests.vertical_accuracy
+        //         "
+        //         )
+        //         )
+        //         ->where('drone_request_owner', $user->position)
+        //         ->orWhere('drone_requests.created_by', $id)
+        //         ->orWhere('caseNumber',$id)
+        //         ->groupBy('drone_requests.id');
+        //     return \Datatables::of($droneRequests)
+        //         ->addColumn('actions', '
+        //     <div class="row">
+            
+        //     <div class="col-md-3">
+        //           <a class="btn btn-xs btn-alt"  href="/api/v1/showDroneRequest/{{ $id }}" target="">View</a>
+        //           </div>
+        //           <div class="col-md-1"></div>
+        //           </div>
+        //               '
+        //         )
+        //         ->make(true);
+        // }
+
     }
+
+
 }
 
 

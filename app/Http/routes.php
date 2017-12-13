@@ -1229,7 +1229,9 @@ DRONES ROUTING
 
 
 Route::group(array('prefix' => 'api/v1'), function()
-{    /*|--------------------------------------------------------------------------|
+{   
+
+ /*|--------------------------------------------------------------------------|
     DRONE ROUTING
     |--------------------------------------------------------------------------|*/
     Route::get('userDepartment','DroneRequestController@userDepartment');
@@ -1243,16 +1245,17 @@ Route::group(array('prefix' => 'api/v1'), function()
     Route::get('droneSubServiceType/{id}','DroneSubTypesController@droneSubServiceType');
     Route::resource('drone', 'DroneRequestController');
 
-    /*|--------------------------------------------------------------------------|
+/*|--------------------------------------------------------------------------|
     END DRONE ROUTING
     |--------------------------------------------------------------------------|*/
 
-    /*|--------------------------------------------------------------------------|
+/*|--------------------------------------------------------------------------|
      DRONE TYPES AND SUB TYPES ROUTING
     |--------------------------------------------------
     ------------------------|*/
     Route::resource('drone-type','DroneTypesController');
     Route::resource('drone-sub-type','DroneSubTypesController');
+
     /*|--------------------------------------------------------------------------|
     END DRONE TYPES AND SUB TYPES ROUTING
     |--------------------------------------------------------------------------|*/
@@ -1263,11 +1266,15 @@ Route::group(array('prefix' => 'api/v1'), function()
 Route::get('DroneList','DroneRequestController@getList');
 Route::get('requestForm','DroneTypesController@index');
 Route::get('test/{id}','DroneRequestController@test');
-Route::get('getCasedDrones/{id}', 'DroneRequestController@getCasedDrones');
+Route::get('getCaseDrones/{id}', 'DroneRequestController@getCaseDrones');
 Route::get('getDroneRequests/{id}','DroneRequestController@getPerUser');
 Route::get('casetest/droneSubType/{id}','DroneSubTypesController@droneSubTypes');
 Route::get('casetest/droneServiceType/{id}','DroneSubTypesController@droneServiceType');
 Route::get('casetest/droneSubServiceType/{id}','DroneSubTypesController@droneSubServiceType');
+Route::get('casetest/caseDrone/{id}','DroneRequestController@showFirst');
+Route::get('casetest/showDroneRequest/{id}','DroneRequestController@showFirst');
+
+
 
 
 

@@ -5,7 +5,7 @@
             <li><a href="{{ url('DroneList') }}">Drone List</a></li>
             <li class="active">First Approval</li>
         </ol>
-        @if(Auth::user()->id == $droneRequest->created_by)
+        @if(\Auth::user()->id == $droneRequest->created_by)
         <a aria-hidden="true">
         <h4 class="page-title">Drone Request Profile</h4>
         </a>
@@ -16,7 +16,7 @@
         @endif
         <br>
         <center>
-        @if(Auth::user()->id != $droneRequest->created_by)
+        @if(\Auth::user()->id != $droneRequest->created_by)
                 @if($droneRequest->drone_case_status==1)
             <a aria-hidden="true">
                 {{--<h3 class="block-title">ACTION</h3>--}}
@@ -25,7 +25,7 @@
 
                     <div class="col">
                         {!! Form::open(['url' => 'api/v1/firstDroneApproval/'.$droneRequest->id, 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"firstApprovalForm" ]) !!}
-                        {!! Form::hidden('user',Auth::user()->id)!!}
+                        {!! Form::hidden('user',\Auth::user()->id)!!}
                         <div class="form-group" >
                             <div class="col-md-6" style="margin-top:20px;">
                                 <button type="submit" class="btn btn-primary"  onclick="getApproveToaster()" id="approveId"><i  id="acceptTaskBtn"  class="fa fa-check fa-4x" aria-hidden="true"></i>Approve</button>
@@ -39,7 +39,7 @@
                     </div>
                     <div class="col">
                         {!! Form::open(['url' => 'api/v1/rejectDroneRequest/'.$droneRequest->id, 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"firstRejectionForm" ]) !!}
-                        {{--{!! Form::hidden('user',Auth::user()->id)!!}--}}
+                       <!--  {!! Form::hidden('user',\Auth::user()->id)!!} -->
                         <div class="form-group reason hidden ">
                             <div class="col-md-6 col-md-offset-2 " >
                                 <div class="col-md-5 " style="margin-top:10px;">
@@ -324,18 +324,29 @@
     </div>
     @endsection
 @section('footer')
-    <script>
-        function initMap() {
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 5,
-                center: {lat: -30.886, lng: 29.268},
-                mapTypeId: 'terrain'
-            });
-            var codes=document.getElementById("cod").value.split(',');
-            var last = [];
-            for(var i=0; i < codes.length  ; i+=2){
+<script>
+function initMap()
+{
+
+        var map = new google.maps.Map(document.getElementById('map'), 
+        {
+                zoom: 12,
+                center: {lat:-29.8579, lng: 31.0292},
+                mapTypeId: google.maps.MapTypeId.RoadMap
+        });
+
+        var codes=  document.getElementById("cod").value.split(',');
+        var last = [];
+
+        if(codes.length >2)
+        {
+          
+            for(var i=0; i < codes.length  ; i+=2)
+                {
                 last.push({lat: parseFloat(codes[i]), lng: parseFloat(codes[i+1])});
-                        }
+                }
+
+                console.log(last);
 
             var bermudaTriangle = new google.maps.Polygon({
                 paths: last,
@@ -344,11 +355,39 @@
                 strokeWeight: 2,
                 fillColor: '#FF0000',
                 fillOpacity: 0.35
+                   });
 
-            });
             bermudaTriangle.setMap(map);
 
         }
+        else
+        {
+            // console.log(parseFloat(codes));
+
+            for(var i=0; i < codes.length ; i+=2)
+            {
+                // alert(i+"markaer")
+                last.push({lat: parseFloat(codes[i]), lng: parseFloat(codes[i+1])});
+            }
+
+           
+          
+            var bermudaTriangle = new google.maps.Marker({
+            position:last[0],
+            map:map
+              
+            });
+
+            // bermudaTriangle.setMap(map);
+
+        }
+
+
+}
+
+           
+
+           
     </script>
     <script>
         $('#rejectId').on('click',function(){

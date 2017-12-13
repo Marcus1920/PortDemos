@@ -124,12 +124,10 @@
                   </li>
                   <li><a href="#4a" data-toggle="tab" onclick="hides()"><span class="fa fa-user "> POI </span></a>
                   </li>
-                  <!--------------------- -------->
                   <li>
                     <a href="#5a" data-toggle="tab" onclick="hides()"><span class="fa fa-folder-open-o "> Activities</span></a>
                   </li>
-                  <li><a href="#6a" data-toggle="tab" onclick="hides()"><span class="fa fa-file-text-o"> Notes</span>
-                    </a>
+                  <li><a href="#6a" data-toggle="tab" onclick="hides()"><span class="fa fa-file-text-o"> Notes</span></a>
                   </li>
                   <li>
                     <a href="#7a" data-toggle="tab" onclick="hides()"><span class="fa fa-paste "> Attachments</span></a>
@@ -138,7 +136,7 @@
                     <a href="#8a" data-toggle="tab" onclick="hides()"><span class="fa fa-file-text-o"> Tasks</span></a>
                   </li>
                   <li>
-                    <a href="#9a" data-toggle="tab" onclick="hides()"><span class="fa fa-file-text-o">Drone Request</span></a>
+                    <a href="#9a" data-toggle="tab" onclick="hides()"><span class="fa fa-file-text-o"> Drone Request</span></a>
                   </li>
                 </ul>
                 <hr class="whiter m-t-20">
@@ -445,9 +443,7 @@
 
 
                         @if(isset($userReferCasesPermission) && $userReferCasesPermission->permission_id =='24')
-
-
-                          <a class="btn btn-lg btn-alt col-md-1" data-toggle="modal" style="margin-top: 20%;" onClick="launchReferModal('Refer');" data-target=".modalReferCase">Refer
+                        <a class="btn btn-lg btn-alt col-md-1" data-toggle="modal" style="margin-top: 20%;" onClick="launchReferModal('Refer');" data-target=".modalReferCase">Refer
                             Case</a>
 
                         @endif
@@ -915,16 +911,12 @@
                 <div class="bhoechie-tab-content">
                   <div id="side_contents9">
 
-                    {{--@if(App\Authorize::granted())--}}
+                 
                     @if($positionId == 9 || $positionId == 10 || $positionId == 11 || $positionId == 12)
                       @include('cases.droneRequest')
                     @else
                       @include('cases.401')
                     @endif
-                      {{--@include('cases.droneRequest')--}}
-                      {{--@else--}}
-                      {{--@include('cases.401')--}}
-                      {{--@endif--}}
                   </div>
                 </div>
                 <div class="bhoechie-tab-content">
@@ -1136,12 +1128,14 @@
                       "pageLength": 5,
                       "bLengthChange": false,
                       "order": [[0, "desc"]],
-                      "ajax": "{!! url('/getCasedDrones/')!!}" + '/' + case_id,
+                      "ajax": "{!! url('/getCaseDrones/')!!}" + '/' + case_id,
                       "columns": [
                           {data: 'id', name: 'id'},
-                          {data: 'drone_type_id', name: 'drone_type_id'},
-                          {data: 'sub_drone_type_id', name: 'sub_drone_type_id'},
-                          {data: 'drone_case_status', name: 'drone_case_status'},
+                          {data: 'DroneType', name: 'DroneType'},
+                          {data: 'DroneSubType', name: 'DroneSubType'},
+                          {data: 'CreatedBy', name: 'CreatedBy'},
+                          {data: 'CaseStatus', name: 'CaseStatus'},
+                          {data: 'Department', name: 'Department'},
                           {data: 'notes', name: 'notes'},
                           {data: 'actions', name: 'actions'}
                       ],
@@ -1458,7 +1452,7 @@
                       $('.purposeOfSurvey').addClass('hidden');
                       $('.verticalAccuracy').addClass('hidden');
                       $('.numberOfStockPile').addClass('hidden');
-                      $('.surveys').addClass('hidden');
+                      $('.surveys').removeClass('hidden');
                   }
                   else if(selectText =='Surveys'){
                       $('.droneSubService').removeClass('hidden');
@@ -1466,8 +1460,7 @@
                       $('.Notes').addClass('hidden');
                       $('.auxiliaryServices').addClass('hidden');
 
-
-                  }
+                }
                   //Aquatic -> ad Hoc
                   else if(selectText =='Hydrographic Survey' || selectText=='Hydrographic Solar Scanning'){
                       //initMap().load();
@@ -1476,15 +1469,13 @@
                       $('.Notes').removeClass('hidden');
                       $('.purposeOfSurvey').addClass('hidden');
                       $('#scope_of_work').removeAttr('disabled','disabled');
-                      $("#notes").removeAttr('disabled','disabled');
-
-                  }
+                      $("#notes").removeAttr('disabled','disabled');}
                   else if(selectId == 4 && selectText=='Inspection'){
                       $('.auxiliaryServices').removeClass('hidden');
                       $('.scopeOfWOrk').removeClass('hidden');
                       $('.Notes').removeClass('hidden');
                       $('.purposeOfSurvey').addClass('hidden');
-                      $('.surveys').addClass('hidden');
+                   $('.surveys').removeClass('hidden');
                       $("#interest").removeAttr('disabled', 'disabled');
                       $("#scope_of_work").removeAttr('disabled');
                       $("#notes").removeAttr('disabled');
@@ -1498,7 +1489,7 @@
                       $("#scope_of_work").removeAttr('disabled', 'disabled');
                       $("#notes").removeAttr('disabled', 'disabled');
                       $('.purposeOfSurvey').addClass('hidden');
-                      $('.surveys').addClass('hidden');
+                      $('.surveys').removeClass('hidden');
                       $('.verticalAccuracy').addClass('hidden');
                       $('.droneSubService').addClass('hidden');
                   }
@@ -1553,156 +1544,173 @@
                   }
               }
 
-              var map, infoWindow ,drawingManager,poly1;
-              function initMap() {
-                  map = new google.maps.Map(document.getElementById('map'),
-                      {
-                          center: {lat:-29.85868039999999, lng: 31.021840399999974},
-                          zoom: 5,
-                          mapTypeId: google.maps.MapTypeId.RoadMap
-                      });
-//                infoWindow = new google.maps.InfoWindow;
-//                if (navigator.geolocation) {
-//                    navigator.geolocation.getCurrentPosition(function (position) {
-//                        var pos = {
-//                            lat: position.coords.latitude,
-//                            lng: position.coords.longitude
-//                        };
-//                        infoWindow.setPosition(pos);
-//                        infoWindow.setContent('Location found.');
-//                        infoWindow.open(map);
-//                        map.setCenter(pos);
-//
-//                    }, function () {
-//                        handleLocationError(true, infoWindow, map.getCenter());
-//                    });
-//                } else {
-//                    handleLocationError(false, infoWindow, map.getCenter());
-//                }
-                  var p = document.getElementById('geoFenceCoords').value.replace(/%20/g, ',');
-                  var point = p.substr(10, p.length - 1);
-                  var gFance = point.substr(0, point.indexOf('),'));
-                  var points = gFance.split(", ");
-                  var CoordsPath = points.map(function (points) {
-                      var latlon = points.split(' ');
-                      //alert(latlon[0] + " " + latlon[1]);
-                      return new google.maps.LatLng(latlon[0], latlon[1]);
-                  });
-                  if (CoordsPath != "(0, NaN)") {
-                      drawingManager = new google.maps.drawing.DrawingManager({
-                          drawingMode: google.maps.drawing.OverlayType.POLYGON,
-                          drawingControl: true,
-                          drawingControlOptions: {
-                              position: google.maps.ControlPosition.TOP_CENTER,
-                              drawingModes: [
-                                  //'marker', 'polygon'
-                                  google.maps.drawing.OverlayType.POLYGON
-                              ]
-                          },
-                          polygonOptions: doPolygon(map)
-//                        {
-//                                geodesic: true,
-//                                strokeColor: '#FF0000',
-//                                strokeOpacity: 1.0,
-//                                strokeWeight: 2,
-//                                clickable: true,
-//                                editable: true,
-//                                zIndex: 1
-//                            }
-                      });
-                  } else {
-                      drawingManager = new google.maps.drawing.DrawingManager({
-                          drawingMode: google.maps.drawing.OverlayType.POLYGON,
-                          drawingControl: true,
-                          drawingControlOptions: {
-                              position: google.maps.ControlPosition.TOP_CENTER,
-                              drawingModes: [
-                                  //'marker', 'polygon'
-                                  google.maps.drawing.OverlayType.POLYGON
-                              ]
-                          },
-                          polygonOptions: {
-                              geodesic: true,
-                              strokeColor: '#FF0000',
-                              strokeOpacity: 1.0,
-                              strokeWeight: 2,
-                              clickable: true,
-                              editable: true,
-                              zIndex: 1
-                          }
-                      });
-                      drawingManager.setMap(map);
-                      google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
-                          openInfoWindowPolygon(polygon);
-                      });
-                  }
-              }
-              function openInfoWindowPolygon(polygon) {
-                  poly1 = polygon;
-                  //alert(poly1);
-                  var vertices = polygon.getPath();
-                  //foreach(xy in vertices)
-                  //{
-                  document.getElementById('geoFenceCoords').value = polygon.getPath();
-                  //}
-                  var contents = 'Location name';
-                  var bounds = new google.maps.LatLngBounds();
-                  vertices.forEach(function (xy, i) {
-                      bounds.extend(xy);
-                      document.getElementById('geoFenceCoords').value += xy+"_";
-                  });
-                  vertices.forEach(function (xy, i)
-                  {
-                      bounds.extend(xy);
-                  });
-                  //infoWindow.setContent(contents);
-                  //infoWindow.setPosition(bounds.getCenter());
-                  drawingManager.setDrawingMode(null);
-                  infoWindow.open(map);
-              }
-              function doPolygon(map) {
-                  //document.getElementById('txtCoordinates').value = getParameterByName('GeoFence');
-                  var p = document.getElementById('geoFenceCoords').value.replace(/%20/g, ',');
-                  var point = p.substr(10, p.length - 2);
-                  var gFance = point.substr(0, point.indexOf(',),'));
-                  var points = gFance.split(" ");
-                  var CoordsPath = points.map(function (points) {
-                      var latlon = points.split(' ');
-                      alert(latlon[0] + " " + latlon[1]);
-                      return new google.maps.LatLng(latlon[0], latlon[1]);
-                  });
-                  flightPath = new google.maps.Polygon({
-                      path: CoordsPath,
-                      geodesic: true,
-                      strokeColor: '#FF0000',
-                      strokeOpacity: 1.0,
-                      strokeWeight: 2,
-                      editable: true
-                  });
-                  flightPath.setMap(map);
-                  google.maps.event.addListener(flightPath, "dragend", getPolygonCoords);
-                  google.maps.event.addListener(flightPath.getPath(), "insert_at", getPolygonCoords);
-                  google.maps.event.addListener(flightPath.getPath(), "remove_at", getPolygonCoords);
-                  google.maps.event.addListener(flightPath.getPath(), "set_at", getPolygonCoords);
-                  var latlngbounds = new google.maps.LatLngBounds();
-                  for (var i = 0; i < CoordsPath.length; i++) {
-                      latlngbounds.extend(CoordsPath[i]);
-                  }
-                  map.fitBounds(latlngbounds);
-              }
-              //                function clearMap() {
-              //                    drawingManager.setDrawingMode(null);
-              //                    flightPath.setMap(null);
-              //                    document.getElementById('geoFenceCoords,').value = null;
-              //                }
-              // google.maps.event.addDomListener(window, 'load', initMap);
-              function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-                  infoWindow.setPosition(pos);
-                  infoWindow.setContent(browserHasGeolocation ?
-                      'Error: The Geolocation service failed.' :
-                      'Error: Your browser doesn\'t support geolocation.');
-                  infoWindow.open(map,marker2);
-              }
+
+                function initMap() {
+            map = new google.maps.Map(document.getElementById('map'),
+                {
+
+                    center: {lat: -29.8579 , lng:31.0292},
+                    zoom: 12,
+                    mapTypeId: google.maps.MapTypeId.RoadMap
+                });
+            var p = document.getElementById('geoFenceCoords').value.replace(/%20/g, ',');
+            var point = p.substr(10, p.length - 1);
+            var gFance = point.substr(0, point.indexOf('),'));
+            var points = gFance.split(", ");
+            var CoordsPath = points.map(function (points) {
+                var latlon = points.split(' ');
+
+                return new google.maps.LatLng(latlon[0], latlon[1]);
+            });
+
+
+            var input = document.getElementById('pac-input');
+            var searchBox = new google.maps.places.SearchBox(input);
+            // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+            map.addListener('bounds_changed', function() {
+                searchBox.setBounds(map.getBounds());
+            });
+
+            var markers = [];
+            searchBox.addListener('places_changed', function() {
+                var places = searchBox.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+
+                markers.forEach(function(marker) {
+                    marker.setMap(null);
+                });
+                markers = [];
+
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function(place) {
+                    if (!place.geometry) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+                    var icon = {
+                        url: place.icon,
+                        size: new google.maps.Size(71, 71),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(17, 34),
+                        scaledSize: new google.maps.Size(25, 25)
+                    };
+
+                    markers.push(new google.maps.Marker({
+                        map: map,
+                        icon: icon,
+                        title: place.name,
+                        position: place.geometry.location
+                    }));
+
+                    if (place.geometry.viewport) {
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+            });
+
+
+            if (CoordsPath != "(0, NaN)") {
+                drawingManager = new google.maps.drawing.DrawingManager({
+                    drawingControl: true,
+                    drawingControlOptions: {
+                        position: google.maps.ControlPosition.TOP_CENTER,
+                        drawingModes: [
+                             'polygon'
+
+                        ]
+                    },
+                    polygonOptions: doPolygon(map)
+                });
+            } else {
+                drawingManager = new google.maps.drawing.DrawingManager({
+
+                    drawingControl: true,
+                    drawingControlOptions: {
+                        position: google.maps.ControlPosition.TOP_CENTER,
+                        drawingModes: [
+                             'polygon'
+                        ]
+                    },
+                    polygonOptions: {
+                        geodesic: true,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2,
+                        clickable: true,
+                        editable: true,
+                        zIndex: 1
+                    }
+                });
+
+                drawingManager.setMap(map);
+                google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
+                    openInfoWindowPolygon(polygon);
+                });
+
+                var  count =0;
+                google.maps.event.addListener(map, 'click', function(event) {
+                    count+=1;
+                    if(count==1)
+                    {
+                        placeMarker(map, event.latLng);
+                    }
+                });
+
+            }
+        }
+
+        function placeMarker(map, location) {
+
+            var marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+
+            var infowindow = new google.maps.InfoWindow({
+                content: '<span style="color:black;">'+ 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()+'</span>'
+
+            });
+            var markerCoordinates  = (location.lat()+","+location.lng());
+
+            infowindow.open(map,marker);
+            document.getElementById('markerCoordinates').value = markerCoordinates;
+
+        }
+        function openInfoWindowPolygon(polygon){
+            poly1 = polygon;
+
+            var vertices = polygon.getPath();
+            //textbox receive coordinates
+            document.getElementById('geoFenceCoords').value = polygon.getPath();
+
+            var bounds = new google.maps.LatLngBounds();
+            vertices.forEach(function (xy, i) {
+                bounds.extend(xy);
+                document.getElementById('geoFenceCoords').value += xy+"_";
+            });
+            vertices.forEach(function (xy, i)
+            {
+                bounds.extend(xy);
+            });
+            drawingManager.setDrawingMode(null);
+            infoWindow.open(map);
+        }
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map,marker2);
+        }
+
+             
 
 		$("#submitPoiForm").on("click", function () {
 			var pois = $("#poi_CaseForm #POISearch").val();

@@ -22,7 +22,7 @@
               <tr>
                    <th>Id</th>
 		           <th>Drone Type</th>
-                   <th>Drone Sub Type</th>
+                <th>Drone Sub Type</th>
 		           <th>Requested By</th>
 		           <th>Status</th>
 		           <th>Department Requested a drone</th>
@@ -41,7 +41,7 @@
 
         $(document).ready(function() {
 
-            var userId = {{Auth::user()->id}};
+            var userId = {{\Auth::user()->id}};
 
 var oTable     = $('#DroneRequestTable').DataTable({
                 "autoWidth":false,
