@@ -39,7 +39,9 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
   <link href="{{ asset('css/awesome.css') }}" rel="stylesheet">
   <link href="{{ asset('css/table.css') }}" rel="stylesheet">
   <link href="{{ asset('css/toggles.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/toast.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/toast.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/map.css') }}" rel="stylesheet">
+    
   <link href="{{ asset('css/toggle-themes/toggles-all.css') }}" rel="stylesheet">
   <!-- DataTables CSS -->
   <link href="{{ asset('bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css') }}" rel="stylesheet">
@@ -48,6 +50,7 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
 <!-- jQuery Library -->
   <script src="{{ asset('js/jquery.min.js') }}"></script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=geometry,places"></script>
+    <sript  src=" http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble.js"></sript>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -77,18 +80,21 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
 		};
   </script>
   <style>
-    body {
-
-      background-color: #5c788f;
-
+      
+      body {
+        background-color: #5c788f;
     }
+<<<<<<< HEAD
 
     .eerross {
 
       background-image: url("{{ asset('/img/01_fix_background.png') }}");
+=======
+    .eerross{
+        background-image: url("{{ asset('public/img/01_fix_background.png') }}");
+>>>>>>> 13b6b65d75999837c4a9772d2885561e3e101e63
       width: 100%;
-      height: 100%;
-    }
+      height: 100%;}
     label {
         font-size: 14px;
     }
@@ -393,7 +399,7 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
 
           @if(isset($userViewReportsPermission) && $userViewReportsPermission->permission_id =='16')
             <li {{ (Request::is('reports') ? "class=active" : '') }}>
-              <a class="sa-side-chart" href="{{ url('reports') }}">
+              <a class="sa-side-chart" href="{{ url('report') }}">
                 <span class="menu-item">Reports</span>
               </a>
             </li>
@@ -677,6 +683,7 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
 
     <!-- zoomchart -->
     <script src="{{ asset('js/zoomcharts.js') }}"></script>
+
 
     <script>
 			$(document).ready(function () {

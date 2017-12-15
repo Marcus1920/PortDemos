@@ -18,8 +18,15 @@ class CreateDroneRequestsTable extends Migration
             $table->integer('drone_type_id')->unsigned();
             $table->integer('sub_drone_type_id')->unsigned();
             $table->integer('drone_case_status')->unsigned();
-            $table->text('comments');
+            $table->text('notes')->nullable();
+            $table->string('serviceRequired')->nullable();
+            $table->string('interest')->nullable();
+            $table->string('purposeOfSurvey')->nullable();
+            $table->string('numberOfStockpiles')->nullable();
+            $table->longText('geoFence')->nullable();
+            $table->string('scope_of_work')->nullable();
             $table->integer('department')->unsigned();
+            $table->integer('drone_sub_service_type_id')->unsigned()->nullable();
             $table->integer('reject_reason')->unsigned();
             $table->string('reject_other_reason');
             $table->foreign('created_by')->references('id')->on('users');

@@ -439,7 +439,6 @@ class ComposerStaticInit1c721112013bbf52b0a2636c6824a7ee
         'App\\Http\\Controllers\\RelationshipController' => __DIR__ . '/../..' . '/app/Http/Controllers/RelationshipController.php',
         'App\\Http\\Controllers\\ReportCController' => __DIR__ . '/../..' . '/app/Http/Controllers/ReportCController.php',
         'App\\Http\\Controllers\\ReportController' => __DIR__ . '/../..' . '/app/Http/Controllers/ReportController.php',
-        'App\\Http\\Controllers\\ReportModuleController' => __DIR__ . '/../..' . '/app/Http/Controllers/ReportModuleController.php',
         'App\\Http\\Controllers\\ReportsController' => __DIR__ . '/../..' . '/app/Http/Controllers/ReportsController.php',
         'App\\Http\\Controllers\\RespondersController' => __DIR__ . '/../..' . '/app/Http/Controllers/RespondersController.php',
         'App\\Http\\Controllers\\RolesController' => __DIR__ . '/../..' . '/app/Http/Controllers/RolesController.php',

@@ -180,7 +180,7 @@ class TasksController extends Controller
                 'progress'      => 0,
                 'color'         => $calendar->color,
                 'note'          => '',
-                'user_id'          => '1',
+                'user_id'        => '1',
                 'role'          => '1',
                 'venue'         => ''
             ];

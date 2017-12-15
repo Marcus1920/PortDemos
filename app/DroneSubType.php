@@ -11,4 +11,8 @@ class DroneSubType extends Model
     {
         return $this->belongsTo(DroneType::class,'drone_type_id','id');
     }
+    public function DroneServiceType()
+    {
+        return $this->hasMany(DroneServiceType::class);
+    }
 }

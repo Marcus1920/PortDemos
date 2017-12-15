@@ -61,7 +61,7 @@ label {
 
 textarea.form-control {
     resize: none;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .select .form-control {

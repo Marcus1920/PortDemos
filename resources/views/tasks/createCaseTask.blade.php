@@ -66,6 +66,4 @@
         <button type="submit" type="button" class="btn btn-sm">Add Task</button>
     </div>
 </div>
-</div>
-
 {!! Form::close() !!}

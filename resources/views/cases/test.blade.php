@@ -124,18 +124,19 @@
                   </li>
                   <li><a href="#4a" data-toggle="tab" onclick="hides()"><span class="fa fa-user "> POI </span></a>
                   </li>
-                  <!--------------------- -------->
                   <li>
                     <a href="#5a" data-toggle="tab" onclick="hides()"><span class="fa fa-folder-open-o "> Activities</span></a>
                   </li>
-                  <li><a href="#6a" data-toggle="tab" onclick="hides()"><span class="fa fa-file-text-o"> Notes</span>
-                    </a>
+                  <li><a href="#6a" data-toggle="tab" onclick="hides()"><span class="fa fa-file-text-o"> Notes</span></a>
                   </li>
                   <li>
                     <a href="#7a" data-toggle="tab" onclick="hides()"><span class="fa fa-paste "> Attachments</span></a>
                   </li>
                   <li>
                     <a href="#8a" data-toggle="tab" onclick="hides()"><span class="fa fa-file-text-o"> Tasks</span></a>
+                  </li>
+                  <li>
+                    <a href="#9a" data-toggle="tab" onclick="hides()"><span class="fa fa-file-text-o"> Drone Request</span></a>
                   </li>
                 </ul>
                 <hr class="whiter m-t-20">
@@ -156,8 +157,7 @@
               </div>
               <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 bhoechie-tab-menu" id="side_navs">
                 <div class="list-group">
-                  <a id="case" disabled style="border: none;cursor: hand" class="list-group-item text-center active">
-                  </a>
+                  <a id="case" disabled style="border: none;cursor: hand" class="list-group-item text-center active"></a>
                   <a href="#" class="list-group-item text-center" onclick="{shows(this,1);}">
                     <h5 class="glyphicon glyphicon-folder-open"></h5><br/>Allocate Case
                   </a>
@@ -176,14 +176,18 @@
                   <a href="#" class="list-group-item text-center" onclick="{shows(this,6);}">
                     <h4 class="glyphicon glyphicon-credit-card"></h4><br/>Add Case Task
                   </a>
+
                   <a href="#" class="list-group-item text-center" id="acceptCase" onclick="{shows(this,7);acceptCase();}">
                     <h5 class="glyphicon glyphicon-ok-sign"></h5><br/>Accept Case
                   </a>
-                  <button class="list-group-item text-center" id="acceptedCase" disabled style="width: 100%; display: none">
+                  <button class="list-group-item text-center" id="acceptedCase" disabled style="width:100%; display:none">
                     <h5 class="glyphicon glyphicon-remove-sign"></h5><br/>Case accepted
                   </button>
                   <a href="#" class="list-group-item text-center" onclick="{ shows(this,8); closeCase();}">
                     <h4 class="glyphicon glyphicon-off"></h4><br/>Close Case
+                  </a>
+                  <a href="#" class="list-group-item text-center" onclick="{shows(this,9);}">
+                    <h5 class="glyphicon glyphicon-plane"></h5><br/>Request a Drone
                   </a>
                   <a href="#" class="list-group-item text-center" id="acceptCase" onclick="{return false;}">
                     <h5 class="sa-side-page" style="width: initial; margin: 0; padding: 0"></h5>Form Wizard
@@ -439,9 +443,7 @@
 
 
                         @if(isset($userReferCasesPermission) && $userReferCasesPermission->permission_id =='24')
-
-
-                          <a class="btn btn-lg btn-alt col-md-1" data-toggle="modal" style="margin-top: 20%;" onClick="launchReferModal('Refer');" data-target=".modalReferCase">Refer
+                        <a class="btn btn-lg btn-alt col-md-1" data-toggle="modal" style="margin-top: 20%;" onClick="launchReferModal('Refer');" data-target=".modalReferCase">Refer
                             Case</a>
 
                         @endif
@@ -479,10 +481,6 @@
                       {{--<div class="col-md-10" style="border-left: 1px solid white; margin-top: 2%; max-height: calc(100vh - 10px); overflow-y: auto;">--}}
 
                       @foreach($case as $case)
-
-
-
-
                         <div class="tab-content clearfix">
                           <div class="tab-pane active" id="1a">
                             <div id="caseNotesNotification"></div>
@@ -780,7 +778,6 @@
                             @if(isset($userAddPoiPermission) && $userAddPoiPermission->permission_id =='30')
 
 
-
                             @endif
                             <div class="rows">
                               <div class="col-md-2"><a class="btn btn-default" onClick="launchPersonOfInterestModal();">Add
@@ -852,6 +849,23 @@
                               </thead>
                             </table>
                           </div>
+
+                          <div class="tab-pane" id="9a">
+                            <table style="width:100%" class="table tile table-striped" id="caseDronesTable">
+                              <thead>
+                              <tr>
+                                <th>Id</th>
+                                <th>Drone Type</th>
+                                <th>Drone Sub Type</th>
+                                <th>Requested By</th>
+                                <th>Status</th>
+                                <th>Department Requested a drone</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                              </tr>
+                              </thead>
+                            </table>
+                          </div>
                         </div>
                     </div>
                   </center>
@@ -884,6 +898,7 @@
                 </div>
                 <div class="bhoechie-tab-content">
                   <div id="side_contents6">
+                    {{--@include('cases.droneRequest')--}}
                     @include('tasks.createCaseTask')
                   </div>
                 </div>
@@ -893,15 +908,28 @@
                 <div class="bhoechie-tab-content">
                   <div id="side_contents8"></div>
                 </div>
-              </div>
+                <div class="bhoechie-tab-content">
+                  <div id="side_contents9">
+
+                 
+                    @if($positionId == 9 || $positionId == 10 || $positionId == 11 || $positionId == 12)
+                      @include('cases.droneRequest')
+                    @else
+                      @include('cases.401')
+                    @endif
+                  </div>
+                </div>
+                <div class="bhoechie-tab-content">
+                  <div id="side_contents10">
+                  </div>
+                  </div>
+                </div>
+            </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-
   <!-- Modal Default -->
   <div class="modal modalPoiCase" id="modalPoiCase" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
@@ -918,10 +946,7 @@
         @endif
         <div class="modal-body">
           {!! Form::open(['url' => 'addCasePoi', 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"poi_CaseForm" ]) !!}
-
-
           @if($case)
-
             <input type="hidden" name="caseID" id="caseID" value="{{ $case->id }}">
           @endif
           <div class="form-group">
@@ -943,14 +968,13 @@
       </div>
     </div>
   </div>
-
-
   <script>
-		$(document).ready(function () {
+              $(document).ready(function () {
 			$("#task_user_id").tokenInput("{!! url('/getUsers')!!}", {tokenLimit: 1});
 			$("#addresses").tokenInput("{!! url('/getUsers')!!}", {tokenLimit: 1});
 			$("#addresses1").tokenInput("{!! url('/getUsers')!!}", {tokenLimit: 1});
 			$("#Recepient").tokenInput("{!! url('/getAddressBookUsers')!!}", {tokenLimit: 1});
+            $("#dronesDepartment").tokenInput("{!! url('/api/v1/userDepartment')!!}",{tokenLimit:1});
 			$("#Cc").tokenInput("{!! url('/getAddressBookUsers')!!}", {tokenLimit: 50});
 			$("#POISearch").tokenInput("{{ url ('/getPoisContacts')   }}",
 				{
@@ -1069,31 +1093,60 @@
 				]
 			});
 			if ($.fn.dataTable.isDataTable('#CaseTasksTable')) {
-				oTableTasksTable.destroy();
-			}
-			oTableTasksTable = $('#CaseTasksTable').DataTable({
-				"processing": true,
-				"serverSide": true,
-				"autoWidth": false,
-				"pageLength": 5,
-				"bLengthChange": false,
-				"order": [[0, "desc"]],
-				"ajax": "{!! url('/getCaseTasks/')!!}" + '/' + case_id,
-				"columns": [
-					{data: 'tasks.id', name: 'tasks.id'},
-					{data: 'tasks.title', name: 'tasks.title'},
-					{data: 'tasks.description', name: 'tasks.description'},
-					{data: 'tasks.commencement_date', name: 'tasks.commencement_date'},
-					{data: 'tasks.due_date', name: 'tasks.due_date'},
-					{data: 'actions', name: 'actions'},
-				],
-				"aoColumnDefs": [
-					{"bSearchable": false, "aTargets": [1]},
-					{"bSortable": false, "aTargets": [1]}
-				]
-			});
+                      oTableTasksTable.destroy();
+                  }
+                  oTableTasksTable = $('#CaseTasksTable').DataTable({
+                      "processing": true,
+                      "serverSide": true,
+                      "autoWidth": false,
+                      "pageLength": 5,
+                      "bLengthChange": false,
+                      "order": [[0, "desc"]],
+                      "ajax": "{!! url('/getCaseTasks/')!!}" + '/' + case_id,
+                      "columns": [
+                          {data: 'tasks.id', name: 'tasks.id'},
+                          {data: 'tasks.title', name: 'tasks.title'},
+                          {data: 'tasks.description', name: 'tasks.description'},
+                          {data: 'tasks.commencement_date', name: 'tasks.commencement_date'},
+                          {data: 'tasks.due_date', name: 'tasks.due_date'},
+                          {data: 'actions', name: 'actions'},
+                      ],
+                      "aoColumnDefs": [
+                          {"bSearchable": false, "aTargets": [1]},
+                          {"bSortable": false, "aTargets": [1]}
+                      ]
+                  });
+
+// Case DroneRequests
+                  if ($.fn.dataTable.isDataTable('#caseDronesTable')) {
+                      oTableTasksTable.destroy();
+                  }
+                  oTableTasksTable = $('#caseDronesTable').DataTable({
+                      "processing": true,
+                      "serverSide": true,
+                      "autoWidth": false,
+                      "pageLength": 5,
+                      "bLengthChange": false,
+                      "order": [[0, "desc"]],
+                      "ajax": "{!! url('/getCaseDrones/')!!}" + '/' + case_id,
+                      "columns": [
+                          {data: 'id', name: 'id'},
+                          {data: 'DroneType', name: 'DroneType'},
+                          {data: 'DroneSubType', name: 'DroneSubType'},
+                          {data: 'CreatedBy', name: 'CreatedBy'},
+                          {data: 'CaseStatus', name: 'CaseStatus'},
+                          {data: 'Department', name: 'Department'},
+                          {data: 'notes', name: 'notes'},
+                          {data: 'actions', name: 'actions'}
+                      ],
+                      "aoColumnDefs": [
+                          {"bSearchable": false, "aTargets": [1]},
+                          {"bSortable": false, "aTargets": [1]}
+                      ]
+                  });
 // case  note
-			if ($.fn.dataTable.isDataTable('#caseResponders1')) {
+			if ($.fn.dataTable.isDataTable('#caseResponders1'))
+			{
 				oTableCaseResponders1.destroy();
 			}
 			oTableCaseResponders1 = $('#caseResponders1').DataTable({
@@ -1218,34 +1271,54 @@
 				$("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
 				$("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
 			});
+
+			hides();
 		});
-		function shows(ev, index) {
-			console.log("shows(ev) index - ", index, ", ev - ", ev);
-			var index2 = index - 1;
-//                        document.getElementById("side_navs").style.display="block";
-//                        document.getElementById("top_navs_action").className="bhoechie-tab-content";
-//                        document.getElementById('side_contents1').style.display="block";
-//                        document.getElementById('side_contents2').style.display="block";
-//                        document.getElementById('side_contents3').style.display="block";
-//                        document.getElementById('side_contents4').style.display="block";
-//                        document.getElementById('side_contents5').style.display="block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById('side_contents' + (index2)).style.display = "block";
-			document.getElementById("top_navs_action").className = "bhoechie-tab-content active";
-			//location.reload()
-			//   document.getElementById("side_navs").style.display="block";
-			// document.getElementById('case').className="list-group-item text-center active";
-			//  document.getElementById("top_navs_action").className="bhoechie-tab-content ";
-			//  document.getElementById('side_contents').style.display="block";
-			//  document.getElementById('side_contents2').style.display="block";
-			//   document.getElementById('side_contents3').style.display="block";
-		}
+
+              function shows(ev, index) {
+                  console.log("shows(ev) index - ", index, ", ev - ", ev);
+                  var index2 = index;
+                  var elShow = document.getElementById('side_contents' + (index2));
+                  var elTab = $(elShow).parents(".bhoechie-tab-content");
+                  console.log("elShow - ",elShow);
+                  console.log("elTab", elTab);
+                  hides(ev);
+
+                  $(elShow).show();
+                  $(elTab[0]).show();
+                  return;
+              }
+
+//              function shows(ev, index) {
+//			console.log("shows(ev) index - ", index, ", ev - ", ev);
+//			var index2 = index - 2;
+////                        document.getElementById("side_navs").style.display="block";
+////                        document.getElementById("top_navs_action").className="bhoechie-tab-content";
+////                        document.getElementById('side_contents1').style.display="block";
+////                        document.getElementById('side_contents2').style.display="block";
+////                        document.getElementById('side_contents3').style.display="block";
+////                        document.getElementById('side_contents4').style.display="block";
+////                        document.getElementById('side_contents5').style.display="block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById('side_contents' + (index2)).style.display = "block";
+//            document.getElementById('side_contents' + (index2)).style.display = "block";
+//            document.getElementById('side_contents' + (index2)).style.display = "block";
+//            document.getElementById('side_contents' + (index2)).style.display = "block";
+//			document.getElementById("top_navs_action").className = "bhoechie-tab-content active";
+//			//location.reload()
+//			  //document.getElementById("side_navs").style.display="block";
+//			//document.getElementById('case').className="list-group-item text-center active";
+//			//  document.getElementById("top_navs_action").className="bhoechie-tab-content ";
+//			//  document.getElementById('side_contents').style.display="block";
+//			//  document.getElementById('side_contents2').style.display="block";
+//			//   document.getElementById('side_contents3').style.display="block";
+//		}
 		function launchPersonOfInterestModal(id) {
 			var sub_category = 1
 			var formData = {sub_category: sub_category};
@@ -1274,6 +1347,371 @@
 			// $('#modalCase').modal('hide');
 			$('#modalPoiCase').modal('toggle');
 		}
+
+
+//              $('#drone_type_id').on('change',function()
+//              {
+//                  var id = this.value;
+//                  $('#sub_drone_type_id').empty();
+//                  // var DroneServices = [];
+//                  $.get('droneSubType/'+ id,function(response){
+//                      $('#sub_drone_type_id').append("<option  selected disabled>Select Drone service</option>");
+//                      $.each(response,function(key,value)
+//                      {
+//                          $('#sub_drone_type_id').append("<option  value="+value.id+">"+value.name+"</option>");
+//                      });
+//
+//
+////                    document.getElementById("sub_drone_type_id").innerHTML="<option selected disabled>Select Drone Service</option>";
+////                    for(var i= 0; i < DroneServices.length;i++)
+////                    {
+////                        document.getElementById("sub_drone_type_id").innerHTML+="<option  id='options' onchange='getId();' value = "+DroneServices[i].id+">"+DroneServices[i].name+"</option>";
+////                    }
+////                    function getId() {
+////                     var selectedval  = document.getElementById("options").value();
+////                     console.log(selectedval);
+////                    }
+////
+////                }
+//                  });
+//              });
+
+
+              $('#drone_type_id').on('change', function () {
+                  var id = this.value;
+                  $('#sub_drone_type_id').empty();
+                  $.get('droneSubType/' + id, function (response) {
+                      $('#sub_drone_type_id').append("<option  selected disabled>Select Drone Type</option>");
+                      $.each(response, function (key, value) {
+                          $('#sub_drone_type_id').append("<option  value=" + value.id + ">" + value.name + "</option>");
+                      });
+                  });
+              });
+              $('#sub_drone_type_id').on('change', function () {
+                  var id = this.value;
+                  $('#drone_service_type_id').empty();
+                  $.get('droneServiceType/' + id, function (response) {
+                      $('#drone_service_type_id').append("<option  selected disabled>Select Drone service</option>");
+                      $.each(response, function (key, value) {
+                          $('#drone_service_type_id').append("<option  value=" + value.id + ">" + value.name + "</option>");
+                      });
+                  });
+                  var selectText = $(this).find("option:selected").text();
+                  if (selectText == 'Real Time') {
+                      $('.realTime').removeClass('hidden');
+                      $('.scopeOfWOrk').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $("#service").removeAttr('disabled');
+                      $("#scope_of_work").removeAttr('disabled');
+                      $("#notes").removeAttr('disabled');
+                      $('.droneService').addClass('hidden');
+                      $("#drone_service_type_id").attr('disabled', 'disabled');
+                  } else {
+                      $('.realTime').addClass('hidden');
+                      $('.scopeOfWOrk').addClass('hidden');
+                      $('.Notes').addClass('hidden');
+                      $("#service").attr('disabled', 'disabled');
+                      $("#scope_of_work").attr('disabled', 'disabled');
+                      $("#notes").attr('disabled', 'disabled');
+                      $('.droneService').removeClass('hidden');
+                      $("#drone_service_type_id").removeAttr('disabled');
+                  }
+              });
+              $('#drone_service_type_id').on('change', function () {
+                  var id = this.value;
+                  $('#drone_sub_service_type_id').empty();
+                  $.get('droneSubServiceType/' + id, function (response) {
+                      $('#drone_sub_service_type_id').append("<option  selected disabled>Select Drone Sub Service</option>");
+                      $.each(response, function (key, value) {
+                          $('#drone_sub_service_type_id').append("<option  value=" + value.id + ">" + value.name + "</option>");
+                      });
+                  });
+                  var selectId   =$(this).find("option:selected").val();
+                  var selectText = $(this).find("option:selected").text();
+                  //Aquatic -> ad Hoc
+                  if (selectText == 'Auxiliary Services') {
+                      $('.droneSubService').removeClass('hidden');
+                      $('.auxiliaryServices').removeClass('hidden');
+                      $('.scopeOfWOrk').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $("#drone_sub_service_type_id").removeAttr('disabled');
+                      $("#interest").removeAttr('disabled');
+                      $("#scope_of_work").removeAttr('disabled');
+                      $("#notes").removeAttr('disabled');
+                  }
+                  // Aerial ->ad Hoc
+                  else if(selectId == 6 && selectText == 'Inspection'){
+                      $('.droneSubService').removeClass('hidden');
+                      $('.auxiliaryServices').removeClass('hidden');
+                      $('.scopeOfWOrk').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $("#drone_service_type_id").removeAttr('disabled', 'disabled');
+                      $("#interest").removeAttr('disabled', 'disabled');
+                      $("#scope_of_work").removeAttr('disabled', 'disabled');
+                      $("#notes").removeAttr('disabled', 'disabled');
+                      $('.purposeOfSurvey').addClass('hidden');
+                      $('.verticalAccuracy').addClass('hidden');
+                      $('.numberOfStockPile').addClass('hidden');
+                      $('.surveys').removeClass('hidden');
+                  }
+                  else if(selectText =='Surveys'){
+                      $('.droneSubService').removeClass('hidden');
+                      $('.scopeOfWOrk').addClass('hidden');
+                      $('.Notes').addClass('hidden');
+                      $('.auxiliaryServices').addClass('hidden');
+
+                }
+                  //Aquatic -> ad Hoc
+                  else if(selectText =='Hydrographic Survey' || selectText=='Hydrographic Solar Scanning'){
+                      //initMap().load();
+                      $('.scopeOfWOrk').removeClass('hidden');
+                      $('.surveys').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $('.purposeOfSurvey').addClass('hidden');
+                      $('#scope_of_work').removeAttr('disabled','disabled');
+                      $("#notes").removeAttr('disabled','disabled');}
+                  else if(selectId == 4 && selectText=='Inspection'){
+                      $('.auxiliaryServices').removeClass('hidden');
+                      $('.scopeOfWOrk').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $('.purposeOfSurvey').addClass('hidden');
+                   $('.surveys').removeClass('hidden');
+                      $("#interest").removeAttr('disabled', 'disabled');
+                      $("#scope_of_work").removeAttr('disabled');
+                      $("#notes").removeAttr('disabled');
+                  }
+                  else if(selectText == 'Film and Photography' || selectText == 'Infrastructure Assessment')
+                  {
+                      $('.auxiliaryServices').removeClass('hidden');
+                      $('.scopeOfWOrk').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $("#interest").removeAttr('disabled', 'disabled');
+                      $("#scope_of_work").removeAttr('disabled', 'disabled');
+                      $("#notes").removeAttr('disabled', 'disabled');
+                      $('.purposeOfSurvey').addClass('hidden');
+                      $('.surveys').removeClass('hidden');
+                      $('.verticalAccuracy').addClass('hidden');
+                      $('.droneSubService').addClass('hidden');
+                  }
+                  else{
+                      $('.surveys').removeClass('hidden');
+                      $('.purposeOfSurvey').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $("#notes").removeAttr('disabled', 'disabled');
+                      $("#purpose_of_survey").removeAttr('disabled', 'disabled');
+                      $('.auxiliaryServices').addClass('hidden');
+                      $('.scopeOfWOrk').addClass('hidden');
+                      $('.droneSubService').addClass('hidden');
+                  }
+              });
+              $('#drone_sub_service_type_id').on('change', function () {
+                  var selectText = $(this).find("option:selected").text();
+                  //Aerial ->ad Hoc ->Surveys
+                  if(selectText == 'Stockpile Surveys'){
+                      $('.surveys').removeClass('hidden');
+                      $('.purposeOfSurvey').removeClass('hidden');
+                      $('.verticalAccuracy').addClass('hidden');
+                      $('.scopeOfWOrk').addClass('hidden');
+                      $('.auxiliaryServices').addClass('hidden');
+                      $('.numberOfStockPile').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $("#purpose_of_survey").removeAttr('disabled', 'disabled');
+                      $("#number_of_stockpiles").removeAttr('disabled', 'disabled');
+                      $("#notes").removeAttr('disabled', 'disabled');
+                  }else if(selectText =='Water Sampler' ||selectText =='Sediment Sampler' ||selectText =='Net Repairer' ||selectText =='Cut Attachment'||selectText =='Thermal Inspection'||selectText =='Industrial Inspection')
+                  {
+                      $('.verticalAccuracy').addClass('hidden');
+                  }
+                  else{
+                      $('.surveys').removeClass('hidden');
+                      $('.purposeOfSurvey').removeClass('hidden');
+                      $('.Notes').removeClass('hidden');
+                      $('.numberOfStockPile').addClass('hidden');
+                      $('.verticalAccuracy').removeClass('hidden');
+                      $("#vertical_accuracy").removeAttr('disabled', 'disabled');
+                      $("#purpose_of_survey").removeAttr('disabled', 'disabled');
+                      $("#number_of_stockpiles").removeAttr('disabled', 'disabled');
+                      $("#notes").removeAttr('disabled', 'disabled');
+                  }
+              });
+              var  count =0;
+              function showMap()
+              {
+                  count+=1;
+                  if(count==1)
+                  {
+                      initMap().load();
+                  }
+              }
+
+
+                function initMap() {
+            map = new google.maps.Map(document.getElementById('map'),
+                {
+
+                    center: {lat: -29.8579 , lng:31.0292},
+                    zoom: 12,
+                    mapTypeId: google.maps.MapTypeId.RoadMap
+                });
+            var p = document.getElementById('geoFenceCoords').value.replace(/%20/g, ',');
+            var point = p.substr(10, p.length - 1);
+            var gFance = point.substr(0, point.indexOf('),'));
+            var points = gFance.split(", ");
+            var CoordsPath = points.map(function (points) {
+                var latlon = points.split(' ');
+
+                return new google.maps.LatLng(latlon[0], latlon[1]);
+            });
+
+
+            var input = document.getElementById('pac-input');
+            var searchBox = new google.maps.places.SearchBox(input);
+            // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+            map.addListener('bounds_changed', function() {
+                searchBox.setBounds(map.getBounds());
+            });
+
+            var markers = [];
+            searchBox.addListener('places_changed', function() {
+                var places = searchBox.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+
+                markers.forEach(function(marker) {
+                    marker.setMap(null);
+                });
+                markers = [];
+
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function(place) {
+                    if (!place.geometry) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+                    var icon = {
+                        url: place.icon,
+                        size: new google.maps.Size(71, 71),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(17, 34),
+                        scaledSize: new google.maps.Size(25, 25)
+                    };
+
+                    markers.push(new google.maps.Marker({
+                        map: map,
+                        icon: icon,
+                        title: place.name,
+                        position: place.geometry.location
+                    }));
+
+                    if (place.geometry.viewport) {
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+            });
+
+
+            if (CoordsPath != "(0, NaN)") {
+                drawingManager = new google.maps.drawing.DrawingManager({
+                    drawingControl: true,
+                    drawingControlOptions: {
+                        position: google.maps.ControlPosition.TOP_CENTER,
+                        drawingModes: [
+                             'polygon'
+
+                        ]
+                    },
+                    polygonOptions: doPolygon(map)
+                });
+            } else {
+                drawingManager = new google.maps.drawing.DrawingManager({
+
+                    drawingControl: true,
+                    drawingControlOptions: {
+                        position: google.maps.ControlPosition.TOP_CENTER,
+                        drawingModes: [
+                             'polygon'
+                        ]
+                    },
+                    polygonOptions: {
+                        geodesic: true,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2,
+                        clickable: true,
+                        editable: true,
+                        zIndex: 1
+                    }
+                });
+
+                drawingManager.setMap(map);
+                google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
+                    openInfoWindowPolygon(polygon);
+                });
+
+                var  count =0;
+                google.maps.event.addListener(map, 'click', function(event) {
+                    count+=1;
+                    if(count==1)
+                    {
+                        placeMarker(map, event.latLng);
+                    }
+                });
+
+            }
+        }
+
+        function placeMarker(map, location) {
+
+            var marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+
+            var infowindow = new google.maps.InfoWindow({
+                content: '<span style="color:black;">'+ 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()+'</span>'
+
+            });
+            var markerCoordinates  = (location.lat()+","+location.lng());
+
+            infowindow.open(map,marker);
+            document.getElementById('markerCoordinates').value = markerCoordinates;
+
+        }
+        function openInfoWindowPolygon(polygon){
+            poly1 = polygon;
+
+            var vertices = polygon.getPath();
+            //textbox receive coordinates
+            document.getElementById('geoFenceCoords').value = polygon.getPath();
+
+            var bounds = new google.maps.LatLngBounds();
+            vertices.forEach(function (xy, i) {
+                bounds.extend(xy);
+                document.getElementById('geoFenceCoords').value += xy+"_";
+            });
+            vertices.forEach(function (xy, i)
+            {
+                bounds.extend(xy);
+            });
+            drawingManager.setDrawingMode(null);
+            infoWindow.open(map);
+        }
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map,marker2);
+        }
+
+             
+
 		$("#submitPoiForm").on("click", function () {
 			var pois = $("#poi_CaseForm #POISearch").val();
 			var token = $('input[name="_token"]').val();
@@ -1315,6 +1753,7 @@
 		function hides(ev) {
 			console.log("hides(ev) ev - ", ev);
 			//document.getElementById("side_navs").style.display="none";
+            // document.getElementById('side_contents1').style.display = "none";
 			document.getElementById('side_contents1').style.display = "none";
 			document.getElementById('side_contents2').style.display = "none";
 			document.getElementById('side_contents3').style.display = "none";
@@ -1323,12 +1762,12 @@
 			document.getElementById('side_contents6').style.display = "none";
 			document.getElementById('side_contents7').style.display = "none";
 			document.getElementById('side_contents8').style.display = "none";
+            document.getElementById('side_contents9').style.display = "none";
+           // document.getElementById('side_contents10').style.display ="none";
 			document.getElementById("top_navs_action").className = "bhoechie-tab-content active";
 		}
   </script>
-
-
-
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=drawing&callback=initMap" async defer></script>
 @endsection
 
 

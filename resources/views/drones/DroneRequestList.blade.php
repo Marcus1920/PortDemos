@@ -1,7 +1,5 @@
 @extends('master')
-
 @section('content')
-
     <div class="block-area" id="alternative-buttons">
         <h3 class="block-title">Manage Drones</h3>
         <a href="{{ url('requestForm') }}" class="btn btn-sm">
@@ -24,7 +22,7 @@
               <tr>
                    <th>Id</th>
 		           <th>Drone Type</th>
-                   <th>Drone Sub Type</th>
+                <th>Drone Sub Type</th>
 		           <th>Requested By</th>
 		           <th>Status</th>
 		           <th>Department Requested a drone</th>
@@ -43,7 +41,7 @@
 
         $(document).ready(function() {
 
-            var userId = {{Auth::user()->id}};
+            var userId = {{\Auth::user()->id}};
 
 var oTable     = $('#DroneRequestTable').DataTable({
                 "autoWidth":false,
@@ -59,7 +57,7 @@ var oTable     = $('#DroneRequestTable').DataTable({
                 {data: 'CreatedBy', name: 'CreatedBy'},
                 {data: 'CaseStatus', name: 'CaseStatus'},
                 {data: 'Department', name: 'Department'},
-                {data: 'comments', name: 'comments'},
+                {data: 'notes', name: 'notes'},
                     {data: 'actions', name: 'actions'}
                      {{--{data: function(b)--}}
                      {{--{--}}

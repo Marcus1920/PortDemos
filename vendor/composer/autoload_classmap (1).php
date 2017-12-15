@@ -58,7 +58,6 @@ return array(
     'App\\Http\\Controllers\\RelationshipController' => $baseDir . '/app/Http/Controllers/RelationshipController.php',
     'App\\Http\\Controllers\\ReportCController' => $baseDir . '/app/Http/Controllers/ReportCController.php',
     'App\\Http\\Controllers\\ReportController' => $baseDir . '/app/Http/Controllers/ReportController.php',
-    'App\\Http\\Controllers\\ReportModuleController' => $baseDir . '/app/Http/Controllers/ReportModuleController.php',
     'App\\Http\\Controllers\\ReportsController' => $baseDir . '/app/Http/Controllers/ReportsController.php',
     'App\\Http\\Controllers\\RespondersController' => $baseDir . '/app/Http/Controllers/RespondersController.php',
     'App\\Http\\Controllers\\RolesController' => $baseDir . '/app/Http/Controllers/RolesController.php',

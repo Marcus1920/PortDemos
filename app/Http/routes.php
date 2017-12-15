@@ -17,6 +17,7 @@ use App\CaseSubType;
 use App\AffiliationPositions;
 use App\Position;
 
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -1229,38 +1230,32 @@ DRONES ROUTING
 
 
 Route::group(array('prefix' => 'api/v1'), function()
-{    /*|--------------------------------------------------------------------------|
+{   
+
+ /*|--------------------------------------------------------------------------|
     DRONE ROUTING
     |--------------------------------------------------------------------------|*/
-
     Route::get('userDepartment','DroneRequestController@userDepartment');
-
-
     Route::get('showDroneRequest/{id}','DroneRequestController@showFirst');
-
     Route::resource('drone', 'DroneRequestController');
-
     Route::post('firstDroneApproval/{id}', 'DroneRequestController@FirstApprove');
     Route::post('finalDroneApproval/{id}', 'DroneRequestController@Approve');
     Route::post('rejectDroneRequest/{id}', 'DroneRequestController@Reject');
     Route::get('droneSubType/{id}','DroneSubTypesController@droneSubTypes');
+    Route::get('droneServiceType/{id}','DroneSubTypesController@droneServiceType');
+    Route::get('droneSubServiceType/{id}','DroneSubTypesController@droneSubServiceType');
     Route::resource('drone', 'DroneRequestController');
 
-    /*|--------------------------------------------------------------------------|
+/*|--------------------------------------------------------------------------|
     END DRONE ROUTING
     |--------------------------------------------------------------------------|*/
 
-    /*|--------------------------------------------------------------------------|
+/*|--------------------------------------------------------------------------|
      DRONE TYPES AND SUB TYPES ROUTING
     |--------------------------------------------------
     ------------------------|*/
-
-
     Route::resource('drone-type','DroneTypesController');
     Route::resource('drone-sub-type','DroneSubTypesController');
-
-
-
 
     /*|--------------------------------------------------------------------------|
     END DRONE TYPES AND SUB TYPES ROUTING
@@ -1272,6 +1267,8 @@ Route::group(array('prefix' => 'api/v1'), function()
 Route::get('DroneList','DroneRequestController@getList');
 Route::get('requestForm','DroneTypesController@index');
 Route::get('test/{id}','DroneRequestController@test');
+
+
 Route::get('getDroneRequests/{id}','DroneRequestController@getPerUser');
 
 //Report Module
@@ -1304,3 +1301,18 @@ Route::get('deprtCategories/{id}', function($id)
         $cat  =App\Category::select('name')->where('department',$id)->get();
         return $cat;
 });
+
+
+Route::get('getCaseDrones/{id}', 'DroneRequestController@getCaseDrones');
+Route::get('getDroneRequests/{id}','DroneRequestController@getPerUser');
+Route::get('casetest/droneSubType/{id}','DroneSubTypesController@droneSubTypes');
+Route::get('casetest/droneServiceType/{id}','DroneSubTypesController@droneServiceType');
+Route::get('casetest/droneSubServiceType/{id}','DroneSubTypesController@droneSubServiceType');
+Route::get('casetest/caseDrone/{id}','DroneRequestController@showFirst');
+Route::get('casetest/showDroneRequest/{id}','DroneRequestController@showFirst');
+
+
+
+
+
+
