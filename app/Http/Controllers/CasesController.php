@@ -1589,13 +1589,7 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 		return view('cases.test');
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  Request $request
-	 * @param  int     $id
-	 * @return Response
-	 */
+
 	public function captureCaseUpdate(CaseRequest $request) {
 		$txtDebug = __CLASS__ . "." . __FUNCTION__ . "(CaseRequest \$request) \$request - " . print_r($request, 1);
 		die("<pre>{$txtDebug}</pre>");
@@ -1663,12 +1657,6 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 		return 'ok';
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int $id
-	 * @return Response
-	 */
 	public function create(CreateCaseRequest $request) {
 		$txtDebug                 = __CLASS__ . "." . __FUNCTION__ . "(CreateCaseRequest \$request) \$request - " . print_r($request, 1);
 		$case                     = CaseReport::find($request['caseID']);
@@ -1725,11 +1713,9 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 			->make(true);
 	}
 
-	/**
-	 * @param CreateCaseAgentRequest $request
-	 * @return \Illuminate\Http\JsonResponse
-	 */
 	function createCaseAgent(Request $request) {
+
+		
 		$txtDebug = __CLASS__ . "." . __FUNCTION__ . "(CreateCaseAgentRequest \$request) \$request - " . print_r($request->all(), 1);
 		$house_holder_id = 0;
 		if ($request['hseHolderId']) $house_holder_id = $request['hseHolderId'];
@@ -1819,6 +1805,7 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 		$newCase->source                      = 3;
 		$newCase->active                      = 1;
 		$newCase->street_number               = $request['street_number'];
+		$newCase->id_company                   = $request['company'];
 		$newCase->route                       = $request['route'];
 		$newCase->locality                    = $request['locality'];
 		$newCase->administrative_area_level_1 = $request['administrative_area_level_1'];
@@ -1828,6 +1815,7 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 		$newCase->gps_lng                     = $request['gpsAddressLong'];
 		$newCase->address = $request['address'];
 		$newCase->save();
+
 		$create_case_owner_data = array(
 			"case_id"     => $newCase->id,
 			"user"        => $newCase->user,
@@ -1856,6 +1844,7 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 		$caseNote->user    = \Auth::user()->id;
 		$caseNote->case_id = $newCase->id;
 		$caseNote->save();
+
 		if ($request->file('caseFile') == NULL) {
 			$destinationFolder = 'files/case_' . $newCase->id;
 			if (!File::exists($destinationFolder)) {
@@ -1911,7 +1900,6 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 
 		return $data;
 	}
-
 	function relatedCases($id) {
 		$relatedCases = \DB::table('related_cases')
 			->join('cases', 'related_cases.child', '=', 'cases.id')
@@ -2030,15 +2018,22 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 
 	public function updateCase(Request $req) {
 		$txtDebug    = __CLASS__ . "" . __FUNCTION__."(\$req) \$req - ".print_r($req->all(),1);
+
 		$case = \App\CaseReport::find($req['caseID']);
 		$reporter = \App\Reporter::find($case['reporter']);
+
 		$vals = array();
-		foreach ($req->all() AS $k=>$v) {
-			if (is_array($v)) $vals[$k] = $v[0];
+		foreach ($req->all() AS $k=>$v)
+		 {
+			if (is_array($v))
+			 $vals[$k] = $v[0];
 			else $vals[$k] = $v;
-		}
+		  }
 		$txtDebug .= "\n  \$vals - ".print_r($vals,1);
+
+
 		$case->fill($vals);
+
 		//if ($vals['reporter_name']) $reporter['name'] = $vals['reporter_name'];
 		if ($vals['reporter_cellphone']) $reporter['cellphone'] = $vals['reporter_cellphone'];
 		if ($vals['reporter_email']) $reporter['email'] = $vals['reporter_email'];

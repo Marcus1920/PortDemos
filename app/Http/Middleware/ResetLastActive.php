@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Elie.Ishimwe
- * Date: 2016/12/09
- * Time: 4:01 PM
- */
 
 namespace App\Http\Middleware;
 

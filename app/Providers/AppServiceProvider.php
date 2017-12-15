@@ -583,16 +583,17 @@ class AppServiceProvider extends ServiceProvider
 
 	    }
 	    \View::share('optsCompanies',$optsCompanies);
-$txtDebug .= "\n  \$optsCompanies - ".print_r($optsCompanies,1);
+
+        $txtDebug .= "\n  \$optsCompanies - ".print_r($optsCompanies,1);
 	    $optsReporters    = array("Select / Add");
 	    if (\Schema::hasTable('reporters'))
 	    {
-		    $reporters          = \App\Reporter::orderBy('name','ASC')->get();
-$txtDebug .= "\n  \$reporters - ".print_r($reporters,1);
+		$reporters          = \App\Reporter::orderBy('name','ASC')->get();
+        $txtDebug .= "\n  \$reporters - ".print_r($reporters,1);
 		    foreach ($reporters as $reporter) {
 			    $optsReporters[$reporter->id] = $reporter->name;
 		    }
-$txtDebug .= "\n  \$optsReporters - ".print_r($optsReporters,1);
+        $txtDebug .= "\n  \$optsReporters - ".print_r($optsReporters,1);
 	    }
 //die("<pre>{$txtDebug}</pre>");
 	    \View::share('optsReporters',$optsReporters);

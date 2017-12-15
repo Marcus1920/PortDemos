@@ -33,6 +33,7 @@ use App\Position;
 |--------------------------------------------------------------------------
 |
 */
+
 Route::group(['middleware' => 'adminmiddlewar'], function () {
     Route::get('admin', 'SeniorHomeController@index');
     // Route::get('admin', 'SeniorHomeController@index');
@@ -486,7 +487,7 @@ Route::post('updateSubSubCategory', ['middleware' => 'resetLastActive', 'uses' =
 Route::get('casetest/{id}', ['middleware' => 'resetLastActive', 'uses' => 'CasesController@viewcase']);
 Route::get('cases-list/{id}', ['middleware' => 'resetLastActive', 'uses' => 'CasesController@index']);
 Route::get('case/{id}', ['middleware' => 'resetLastActive', 'uses' => 'CasesController@viewcase']);
-//Route::get('cases-list/{id}', ['middleware' => 'resetLastActive', 'uses' => 'CasesController@viewcase']);
+//Route::get('cases-list/{id}', ['middleware' => 'resetLastActive', 'uses' => 'CasesControliller@viewcase']);
 Route::get('case/{id}', ['middleware' => 'resetLastActive', 'uses' => 'CasesController@edit']);
 Route::get('workflows-list-case/{id}', ['middleware' => 'resetLastActive', 'uses' => 'CasesController@workflow']);
 Route::post('escalateCase', ['middleware' => 'resetLastActive', 'uses' => 'CasesController@escalate']);
@@ -1282,3 +1283,24 @@ Route::post('/store', ['uses' => 'ReportModuleController@store']);
 Route::get('departments','ReportModuleController@departments');
 Route::get('municipalities','ReportModuleController@municipality');
 Route::post('trying','ReportModuleController@trying');
+
+//Reports
+
+Route::get('testReports', function ()
+{
+    $companies  =App\Company::orderBy('name')->get();
+
+    return view('reportModule.test')->with('companies',$companies);
+
+});
+Route::get('companyDept/{id}', function($id)
+{
+    $comapnyDepartment = App\Department::select('name','id')->where('company',$id)->get();
+    return $comapnyDepartment;
+});
+
+Route::get('deprtCategories/{id}', function($id)
+{
+        $cat  =App\Category::select('name')->where('department',$id)->get();
+        return $cat;
+});

@@ -167,8 +167,8 @@
 <!-- Breadcrumb -->
 <ol class="breadcrumb hidden-xs">
     <li><a href="#">Administration</a></li>
-    <li><a href="#">Reports</a></li>
-    <li class="active">Reports</li>
+    <li  class="active"><a href="#">Reports</a></li>
+    <li>Reports</li>
 </ol>
 
 <h4 class="page-title">Reports</h4>
@@ -196,21 +196,8 @@
                  {!! $errors->first('start', '<span class="help-block" style="background-color: linen; width:60%;"><b>:message</b></span>') !!}
                </div>               
            </div>
-           <div class ="date-txt">
-                <p>(Optional)</p>
-           </div>
-      </div>
-      <!-- Line Brakes -->
-        <br/>
-        <br/>
-        </br>
-        </br>
-        <br/>
-
-      <!-- //date 2 -->
-      <div class="row-md-4 m-b-15">
-         
-         <div class="date-div {{ $errors->has('start') ? 'has-error': '' }}">
+           
+            <div class="date-div {{ $errors->has('start') ? 'has-error': '' }}">
            <div class="date-label">
              <p>To Date:</p>
            </div>
@@ -219,19 +206,22 @@
                {!! $errors->first('end', '<span class="help-block" style="background-color: linen; width:60%;"><b>:message</b></span>') !!}
            </div>
          </div>
-         <div class="date-txt">
-           <p>Last Year to Date</p>
-           <p>Last Month</p>
-           <p>Last Week</p>
-         </div>
+           <div class ="date-txt">
+                {{--<p>(Optional)</p>--}}
+               {{--<p>Last Year to Date</p>--}}
+               {{--<p>Last Month</p>--}}
+               {{--<p>Last Week</p>--}}
+           </div>
       </div>
-       <!-- //predict -->
+  
+    <br/>
+      
       <div class="row-md-4 m-b-15">
          <div class="sizing-row">
-            <p>Precinct:</p>
+            <p>Company:</p>
          </div>
          <div class="predict-selection">
-             <!-- Select buttons -->
+            
              <div id="predict">         
                 @foreach($municipalit_list as $municipality)
                  <ul id="predict-list" style="list-style-type: none">
@@ -239,10 +229,10 @@
                  </ul>
                 @endforeach 
              </div>
-             <!-- Selected buttons -->
-             <div id="predict-selected">          
-             </div> 
-             <!-- Options for buttons -->
+
+             <div id="predict-selected">
+             </div>
+
              <div id="predict-btns">
                 <button type="button" id="predictaddAll" class="btn-primary crud">Add All</button>         
                 <button type="button" id="predictremoveAll" class="btn-primary crud">Remove All</button>
@@ -253,18 +243,17 @@
       <div class="row-md-4 m-b-15">
         <p>Department</p>
         <div class="dept-selection">
+
           <!-- Select buttons -->
-          <div id="departments">         
-             @foreach($department_list as $department)
-              <ul id="department-list" style="list-style-type: none">
-                <input type="button" class="btAdds btn-primary" id="{{ $department->id }}" name="dept" value="{{ $department->name }}" style="width: 100%">
+          <div id="departments">
+              <ul id="department-list" style="list-style-type: none" name="deptList">
+                {{--<input type="button" class="btAdds btn-primary" id="department" name="dept" value="" style="width: 100%">--}}
               </ul>
-             @endforeach 
           </div>
-          <!-- Selected buttons -->
+
           <div id="department-selected">
-          
-          </div> 
+          </div>
+
           <!-- Options for buttons -->
           <div id="department-btns">
            <button type="button" id="addAll" class="btn-primary crud">Add All</button>         
@@ -281,11 +270,8 @@
           <div class="sizing-row">
             <p>Select Category:</p>           
                <div class="p-relative {{ $errors->has('categories') ? 'has-error': '' }}" >
-                <select name="categories" id="label-f" style="background-color:#165692; color: white">
-                   <option name="categoryrgt">Select/All</option>
-                   @foreach($categories as $key)
-                      <option name="category[]" value="{{$key->name}}" style="color: white"">{{$key->name}}</option>
-                   @endforeach
+                <select  class ="deptCat" name="categories" id="label-f" style="background-color:#165692; color: white">
+                   <option name="categoryrgt" >Select/All</option>
                 </select>
                  {!! $errors->first('categories', '<span class="help-block" style="background-color: linen; width:60%;"><b>:message</b></span>') !!}
               </div>
@@ -412,7 +398,7 @@
         </div>          
       </div>
       <!-- Resonders -->
-      <div class="row-md-4 m-b-15" style="margin-top:20px;">
+    <!--   <div class="row-md-4 m-b-15" style="margin-top:20px;">
         <div class="sizing-row {{ $errors->has('responder') ? 'has-error': '' }}">
           <p>Responder:</p>
           <div class="accepted">
@@ -441,7 +427,7 @@
           </div>
           {!! $errors->first('responder', '<span class="help-block" style="background-color: linen; width:60%;"><b>:message</b></span>') !!}       
         </div>          
-      </div>
+      </div> -->
       <!-- //button -->
       <div class="row-md-4 m-b-15">
             <div style="margin:10px 20px;">
@@ -827,7 +813,45 @@
   var oReportsTable;
 
   });
+ $('.municipality').on('click',function()
+ {
+     var id =this.id;
+     $('#department-list').empty();
+     $.get('companyDept/'+ id,function(response)
+     {
+         console.log(response);
+         $.each(response,function(key,value)
+         {
+             $('#department-list').append("<input type='button'  name='dept'  class='btAdds btn-primary' id ="+value.id+" value="+value.name+">");
+         });
 
+     });
 
-</script>
+ });
+
+ $('#department-list').on('click',function()
+ {
+     var inputs = document.getElementsByName("dept").childNodes;
+        console.log(inputs);
+     for (i = 0; i < inputs.length; i++)
+     {
+         alert(inputs);
+         //myNodelist[i].style.backgroundColor = "red";
+     }
+
+     $('#category-list').empty();
+     $.get('deprtCategories/'+ id,function(response)
+     {
+         console.log(response);
+         $('#category-list').append("<option  selected disabled>Select Category</option>");
+         $.each(response,function(key,value)
+         {
+             $('#category-list').append("<option  value="+value.id+">"+value.name+"</option>");
+         });
+
+     });
+
+ });
+
+ </script>
 @endsection

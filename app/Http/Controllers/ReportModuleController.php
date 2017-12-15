@@ -22,7 +22,7 @@ class ReportModuleController extends Controller
     {
          $department_list  = DB::table('departments')->orderBy('name','ASC')->get();
          $cases_statuses   = DB::table('cases_statuses')->orderBy('name','ASC')->get();
-         $municipalit_list = DB::table('municipalities')->orderBy('name','ASC')->get();
+         $municipalit_list = DB::table('companies')->orderBy('name','ASC')->get();
          $categories       = DB::table('categories')->orderBy('name','ASC')->get();               
          return view('reportModule.reportModule', compact('cases_statuses','department_list','municipalit_list','categories'));
     }

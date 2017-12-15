@@ -611,8 +611,8 @@
                                 <div class="form-group">
                                   {!! Form::label('Case Type', 'Company', array('class' => 'col-md-6 control-label')) !!}
                                   <div class="col-md-6">
-                                    {{--{!! Form::text('case_company',$case->company,['class' => 'form-control input-sm','id' => 'case_type','disabled' => 'disabled']) !!}--}}
-                                    {!! Form::select("company", $optsCompanies, $case->id_company, array('class'=>"form-control input-sm selCompany hasDependents", 'id'=>"selCompany", 'style'=>"display: inline-block")) !!}
+                                
+                                    {!! Form::select("id_company", $optsCompanies, $case->id_company, array('class'=>"form-control input-sm selCompany hasDependents", 'id'=>"selCompany", 'style'=>"display: inline-block")) !!}
                                   </div>
                                 </div>
                                 <div class="form-group">
