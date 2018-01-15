@@ -39,17 +39,22 @@ Route::group(['middleware' => 'adminmiddlewar'], function () {
     Route::get('admin', 'SeniorHomeController@index');
     // Route::get('admin', 'SeniorHomeController@index');
 });
+
 Route::group(['middleware' => 'adminmiddlewar'], function () {
     Route::get('/', function () {
-        if (!\Auth::check()) return view('auth.login');
-        else return redirect("/home");
+        if (!\Auth::check())
+            return view('auth.login');
+        else
+            return redirect("/home");
     });
     Route::get('home', ['uses' => 'HomeController@index']);
     Route::get('home', ['uses' => 'HomeController@index']);
     Route::get('generatecharts', ['uses' => 'HomeController@getcharts']);
 });
+
 $this->post('dologin', 'Auth\LoginController@doLogin');
 $this->post('dosignup', 'Auth\LoginController@dosignup');
+
 Route::group(array('prefix' => 'api/v1'), function () {
     Route::post('logi', 'UserController@login');
     Route::post('pedingcases', 'ReportController@Pendingcases');
@@ -82,13 +87,16 @@ Route::group(array('prefix' => 'api/v1'), function () {
     Route::post('login', 'UserCController@login');
     Route::post('forgot', 'UserCController@forgot');
 });
+
 Route::get('reports', 'MainreportController@index');
+
 Route::get('creatCase', function () {
     $user = \App\User::findOrNew(\Auth::id());
-
     return view('cases.createFor')->with("user", $user);
 });
+
 Route::get('creatCase', "MapController@index");
+
 /*
 |--------------------------------------------------------------------------
 | END HOME ROUTING
@@ -101,6 +109,7 @@ Route::get('creatCase', "MapController@index");
 |--------------------------------------------------------------------------
 |
 */
+
 Route::get('list-roles', ['middleware' => 'UsersMilldware', function () {
     return view('roles.list');
 }]);
@@ -120,6 +129,7 @@ Route::post('update-role', ['middleware' => 'resetLastActive', 'uses' => 'RolesC
 |--------------------------------------------------------------------------
 |
 */
+
 Route::get('list-users', ['middleware' => 'UsersMilldware', 'uses' => 'UserController@list_users']);
 Route::get('users-list', ['uses' => 'UserController@index']);
 Route::get('getResponder', ['middleware' => 'resetLastActive', 'uses' => 'UserController@responder']);
@@ -173,13 +183,14 @@ Route::post('edit_poi', ['middleware' => 'resetLastActive', 'uses' => 'UserContr
 |
 */
 Route::get('getOfficer/{id}', ['middleware' => 'resetLastActive', 'uses' => 'InvestigationOfficerController@show']);
-Route::get('getReporter/{id}', function ($id) {
+Route::get('getReporter/{id}', function ($id)
+{
     $officer = \App\Reporter::select('id', 'name', 'cellphone', 'email')
         ->where('id', '=', $id)
         ->get();
-
     return $officer;
 });
+
 /*
 |--------------------------------------------------------------------------
 | DOCUMENTS ROUTING
@@ -1286,19 +1297,20 @@ Route::post('trying','ReportModuleController@trying');
 Route::get('testReports', function ()
 {
     $companies  =App\Company::orderBy('name')->get();
-
     return view('reportModule.test')->with('companies',$companies);
 
 });
-Route::get('companyDept/{id}', function($id)
+Route::get('companyDept/{companyName}', function($companyName)
 {
-    $comapnyDepartment = App\Department::select('name','id')->where('company',$id)->get();
+    $companyId  = App\Company::select('id')->where('name',$companyName)->first();
+    $comapnyDepartment = App\Department::select('name','id')->where('company',$companyId->id)->get();
     return $comapnyDepartment;
 });
 
-Route::get('deprtCategories/{id}', function($id)
+Route::get('deprtCategories/{dptName}', function($dptName)
 {
-        $cat  =App\Category::select('name')->where('department',$id)->get();
+        $dptId = App\Department::select('id')->where('name',$dptName)->first();
+        $cat   = App\CaseType::select('name','id')->where('department',$dptId->id)->get();
         return $cat;
 });
 
@@ -1310,6 +1322,20 @@ Route::get('casetest/droneServiceType/{id}','DroneSubTypesController@droneServic
 Route::get('casetest/droneSubServiceType/{id}','DroneSubTypesController@droneSubServiceType');
 Route::get('casetest/caseDrone/{id}','DroneRequestController@showFirst');
 Route::get('casetest/showDroneRequest/{id}','DroneRequestController@showFirst');
+
+//Route::get('reportsDemo', function ()
+//{p
+//
+//    $companies  = App\Company::orderBy('name')->get();
+//    return view('reports.generateReport',compact('companies'));
+//
+//});
+
+
+Route::get('reportsDemo','ReportModuleController@reportsDemo');
+Route::post('generateReport','ReportModuleController@generateReport');
+
+
 
 
 

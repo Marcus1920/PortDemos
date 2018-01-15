@@ -46,7 +46,6 @@
                     {!! Form::select('drone_type_id',$selectDroneTypes,"",['class' => 'form-control validate[required]','id' => 'drone_type_id', old('drone_type_id')]) !!}
                     @if ($errors->has('drone_type_id')) <p class="help-block red">*{{ $errors->first('drone_type_id') }}</p> @endif
                 </div>
-
             </div>
 
             <div class="form-group">
@@ -56,7 +55,6 @@
                     {{--@if ($errors->has('sub_drone_type_id')) <p class="help-block red">*{{ $errors->first('sub_drone_type_id') }}</p> @endif--}}
 
                     <select class="form-control" id="sub_drone_type_id" name="sub_drone_type_id"  value ="old('sub_drone_type_id')">
-
                         <option selected disabled>Nothing selected</option>
                     </select>
                     @if ($errors->has('sub_drone_type_id')) <p class="help-block red">*{{ $errors->first('sub_drone_type_id') }}</p> @endif
@@ -65,7 +63,7 @@
             <div class="form-group realTime hidden">
                 {!! Form::label('Service Required ', 'Service Required ', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
-                    {!! Form::text('service',NULL,['class' => 'form-control input-sm','id' => 'service']) !!}
+                    {!! Form::text('service',NULL,['class' => 'form-control input-sm','id' => 'service','autocomplete'=>'off']) !!}
                 </div>
             </div>
 
@@ -78,6 +76,7 @@
                     @if ($errors->has('drone_service_type_id'))<p class="help-block red">*{{ $errors->first('drone_service_type_id') }}</p> @endif
                 </div>
             </div>
+
             <div class="form-group droneSubService hidden">
                 {!! Form::label('Select Drone Sub Services','Select Drone Sub Services', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
@@ -92,7 +91,6 @@
                 {!! Form::label('Search Place ', 'Search Place ', array('class' => 'col-md-3 control-label  ')) !!}
                 <div class="col-md-6">
                      {!! Form::text('marker',NULL,['class' => 'form-control input-sm','id' => 'pac-input','rows'=>'7','placeholder'=>'Search Box']) !!}
-                 <!--    <input id="pac-input" class="form-control" type="text" placeholder="Search Box" > -->
                     @if ($errors->has('area_of_interest')) <p class="help-block red">*{{ $errors->first('area_of_interest') }}</p> @endif
                 </div>
             </div>
@@ -100,39 +98,42 @@
             <div class="form-group surveys hidden" id="reloadMap">
                 {!! Form::label('Area of Interest', 'Area of Interest', array('class' => 'col-md-3 control-label  ')) !!}
                 <div class="col-md-6 col-offset-3">
-
                     <div style="max-width:100% ; min-height: 500px"; id="map" onmouseover="showMap()"></div>
                     @if ($errors->has('area_of_interest')) <p class="help-block red">*{{ $errors->first('area_of_interest') }}</p> @endif
                 </div>
             </div>
+
             <div class="form-group purposeOfSurvey hidden">
                 {!! Form::label('Purpose Of Survey ', 'Purpose Of Survey', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
-                    {!! Form::text('purpose_of_survey',NULL,['class' => 'form-control input-sm','id' => 'purpose_of_survey','disabled']) !!}
+                    {!! Form::text('purpose_of_survey',NULL,['class' => 'form-control input-sm','id' => 'purpose_of_survey','disabled' ,'autocomplete'=>'off']) !!}
                 </div>
             </div>
+
             <div class="form-group numberOfStockPile hidden">
                 {!! Form::label('Number of Stockpiles', 'Number of Stockpiles', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
-                    {!! Form::text('number_of_stockpiles',NULL,['class' => 'form-control input-sm','id' => 'number_of_stockpiles','disabled','rows'=>'7']) !!}
+                    {!! Form::text('number_of_stockpiles',NULL,['class' => 'form-control input-sm','id' => 'number_of_stockpiles','disabled','rows'=>'7','autocomplete'=>'off']) !!}
                 </div>
             </div>
+
             <div class="form-group verticalAccuracy hidden">
                 {!! Form::label('Vertical Accuracy', 'Vertical Accuracy', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
-                    {!! Form::text('vertical_accuracy',NULL,['class' => 'form-control input-sm','id' => 'vertical_accuracy','disabled','rows'=>'7']) !!}
+                    {!! Form::text('vertical_accuracy',NULL,['class' => 'form-control input-sm','id' => 'vertical_accuracy','disabled','rows'=>'7','autocomplete'=>'off']) !!}
                 </div>
             </div>
+
             <div class="form-group auxiliaryServices hidden">
                 {!! Form::label('Object of Interest ', 'Object of Interest ', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
-                    {!! Form::text('interest',NULL,['class' => 'form-control input-sm','id' => 'interest','disabled','rows'=>'7']) !!}
+                    {!! Form::text('interest',NULL,['class' => 'form-control input-sm','id' => 'interest','disabled','rows'=>'7','autocomplete'=>'off']) !!}
                 </div>
             </div>
             <div class="form-group scopeOfWOrk hidden">
                 {!! Form::label('Scope of Work ', 'Scope of Work  ', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
-                    {!! Form::text('scope_of_work',NULL,['class' => 'form-control input-sm','id' => 'scope_of_work']) !!}
+                    {!! Form::text('scope_of_work',NULL,['class' => 'form-control input-sm','id' => 'scope_of_work','autocomplete'=>'off']) !!}
                 </div>
             </div>
             <div class="form-group Notes hidden">
@@ -467,23 +468,55 @@
             }
         }
 
-        function placeMarker(map, location) {
+        // function placeMarker(map, location) {
+        //
+        //     var marker = new google.maps.Marker({
+        //         position: location,
+        //         map: map
+        //     });
+        //
+        //     var infowindow = new google.maps.InfoWindow({
+        //         content: '<span style="color:black;">'+ 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()+'</span>'
+        //
+        //     });
+        //     var markerCoordinates  = (location.lat()+","+location.lng());
+        //
+        //     infowindow.open(map,marker);
+        //
+        //     document.getElementById('markerCoordinates').value = markerCoordinates;
+        //
+        // }
 
-            var marker = new google.maps.Marker({
-                position: location,
-                map: map
+        function placeMarker(map,location) {
+            var geocoder = new google.maps.Geocoder;
+            geocoder.geocode({'location': location}, function (results, status) {
+                if (status === 'OK') {
+                    if (results[0]) {
+                        var marker = new google.maps.Marker({
+                            position: location,
+                            map: map
+                        });
+
+
+                        var infowindow = new google.maps.InfoWindow({
+                            content: '<span style="color:black;">' + results[0].formatted_address + '</span>'
+                        });
+
+                        var markerCoordinates  = (location.lat()+","+location.lng());
+                        infowindow.open(map, marker);
+
+                        document.getElementById('markerCoordinates').value = markerCoordinates;
+
+                    } else {
+                        window.alert('No results found');
+                    }
+                } else {
+                    window.alert('Geocoder failed due to: ' + status);
+                }
             });
-
-            var infowindow = new google.maps.InfoWindow({
-                content: '<span style="color:black;">'+ 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()+'</span>'
-
-            });
-            var markerCoordinates  = (location.lat()+","+location.lng());
-
-            infowindow.open(map,marker);
-            document.getElementById('markerCoordinates').value = markerCoordinates;
-
         }
+
+
         function openInfoWindowPolygon(polygon){
             poly1 = polygon;
 

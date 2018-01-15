@@ -209,13 +209,11 @@ class DroneRequestController extends Controller
                       '
             )
             ->make(true);
-        //  return $droneRequests;
+
     }
     public function store(Request $request)
     {
 
-        // dd($request->all());
-        // die();
         $newDroneRequest = new DroneRequest();
         $userRole = User::find(\Auth::user()->id);
         $position = Position::find($userRole->position);
@@ -438,18 +436,7 @@ class DroneRequestController extends Controller
             $message->from('info@siyaleader.net', 'Siyaleader');
             $message->to($user->email)->subject('First Approved drone request');
         });
-//
-//        $data = array(
-//
-//            'name'    => $droneRequest->User->name.' '.$droneRequest->User->surname,
-//            'messageBody' =>\Auth::user()->name ." ". \Auth::user()->surname ." has approved your  drone request , please wait for the second approval from the higher officials.
-//            "
-//        );
-//        \Mail::send('emails.Drones.approve',$data,function($message) use ($droneRequest)
-//        {
-//            $message->from('info@siyaleader.net', 'Siyaleader');
-//            $message->to($droneRequest->User->email)->subject('First Approved drone request');
-//        });
+
         $dronRequestActivity = new DroneRequestActivity();
         $dronRequestActivity->drone_request_id = $id;
         $dronRequestActivity->user = $request['user'];
@@ -491,17 +478,6 @@ class DroneRequestController extends Controller
             $message->to($firstResponder->email)->subject('Second approved drone request');
         });
 
-//        $data = array(
-//
-//            'name'    => $droneRequest->User->name.' '.$droneRequest->User->surname,
-//            'messageBody' =>Auth::user()->name ." ". Auth::user()->surname ." has approved your  drone request."
-//
-//        );
-//        \Mail::send('emails.Drones.approve',$data,function($message) use ($droneRequest)
-//        {
-//            $message->from('info@siyaleader.net', 'Siyaleader');
-//            $message->to($droneRequest->User->email)->subject('Second approved drone request');
-//        });
 
         $diveMaster = Position::where('name','Dive Master')->first();
         $user = User::where('position',$diveMaster->id)->first();
@@ -643,11 +619,13 @@ class DroneRequestController extends Controller
             ->with('RejectReason')
             ->where('id',$id)
             ->first();
+
         $droneRequestActivity = DroneRequestActivity::with('DroneRequest')
             ->with('User')
             ->where('drone_request_id',$id)
             ->orderBy('id','DESC')
             ->get();
+
         $new_str                          =str_replace(str_split('()[object Object]'), '', $droneRequest->geoFence);
         $coordinates                      =chop(str_replace("_",",",$new_str),',');
         $droneRejectReasons = DroneRejectReason::find([1,2,3]);
@@ -923,7 +901,6 @@ class DroneRequestController extends Controller
         // }
 
     }
-
 
 }
 

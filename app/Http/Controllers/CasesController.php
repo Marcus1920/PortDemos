@@ -1719,7 +1719,8 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 
 	function createCaseAgent(Request $request) {
 
-		
+
+
 		$txtDebug = __CLASS__ . "." . __FUNCTION__ . "(CreateCaseAgentRequest \$request) \$request - " . print_r($request->all(), 1);
 		$house_holder_id = 0;
 		if ($request['hseHolderId']) $house_holder_id = $request['hseHolderId'];
@@ -1806,6 +1807,7 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 		$newCase->rate_value                  = $request['rate_value'];
 		$newCase->status                      = 1;
 		$newCase->addressbook                 = 0;
+        $newCase->department                  = $request['department'];
 		$newCase->source                      = 3;
 		$newCase->active                      = 1;
 		$newCase->street_number               = $request['street_number'];

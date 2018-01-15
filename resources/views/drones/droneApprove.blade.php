@@ -2,7 +2,7 @@
 @section('content')
     <div class="block-area container" id="droneApproval">
         <ol class="breadcrumb hidden-xs">
-            <li><a href="{{ url('DroneList') }}">Drone List</a></li>
+            <li><a href="{{ url('DroneList') }}">Drone Requests List</a></li>
             <li class="active">First Approval</li>
         </ol>
         @if(\Auth::user()->id == $droneRequest->created_by)
@@ -303,15 +303,15 @@
 
         <div class="row " >
 
-            <div class="col-md-6 col-lg-4" style="padding-left: 15px">
-                <h3 class="block-title" style="margin-left: 15px">NOTES</h3>
-                <p style="text-align: justify;font-size: 150%; padding: 30px;">
+            <div class="col-md-6 col-lg-4">
+                <h3 class="block-title">NOTES</h3>
+                <p style="text-align: justify;font-size: 150%;">
                     {{$droneRequest->notes}}
                 </p>
 
             </div>
             <div class="col-md-6 col-lg-8 ">
-                <h3 class="block-title" style="margin-left: 15px">Map</h3>
+                <h3 class="block-title">Map</h3>
                 <div id="map" style="width: 100%; height: 500px">
                 </div>
                 <input type="hidden" name="" id="cod" value="{{$coordinates}}" class="form-control" disabled>
@@ -325,10 +325,10 @@
     @endsection
 @section('footer')
 <script>
+
 function initMap()
 {
-
-        var map = new google.maps.Map(document.getElementById('map'), 
+     var map = new google.maps.Map(document.getElementById('map'),
         {
                 zoom: 12,
                 center: {lat:-29.8579, lng: 31.0292},
@@ -346,8 +346,6 @@ function initMap()
                 last.push({lat: parseFloat(codes[i]), lng: parseFloat(codes[i+1])});
                 }
 
-                console.log(last);
-
             var bermudaTriangle = new google.maps.Polygon({
                 paths: last,
                 strokeColor: '#FF0000',
@@ -358,37 +356,43 @@ function initMap()
                    });
 
             bermudaTriangle.setMap(map);
-
         }
         else
         {
-            // console.log(parseFloat(codes));
-
             for(var i=0; i < codes.length ; i+=2)
             {
-                // alert(i+"markaer")
                 last.push({lat: parseFloat(codes[i]), lng: parseFloat(codes[i+1])});
             }
-
-           
-          
-            var bermudaTriangle = new google.maps.Marker({
-            position:last[0],
-            map:map
-              
-            });
-
-            // bermudaTriangle.setMap(map);
-
+            geocodePlaceName(map);
         }
 
+    function geocodePlaceName(map) {
+        var geocoder = new google.maps.Geocoder;
+        geocoder.geocode({'location': last[0]}, function (results, status) {
+            if (status === 'OK') {
+                if (results[0]) {
+                    var bermudaTriangle = new google.maps.Marker({
+                        position: last[0],
+                        map: map
+                    });
 
-}
+                    var infowindow = new google.maps.InfoWindow({
+                        content: '<span style="color:black;">' + results[0].formatted_address + '</span>'
+                    });
 
-           
+                    infowindow.open(map, bermudaTriangle);
 
-           
-    </script>
+                } else {
+                    window.alert('No results found');
+                }
+            } else {
+                window.alert('Geocoder failed due to: ' + status);
+            }
+        });
+    }
+  }
+
+</script>
     <script>
         $('#rejectId').on('click',function(){
 

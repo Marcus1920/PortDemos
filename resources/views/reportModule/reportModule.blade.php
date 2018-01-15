@@ -234,8 +234,8 @@
              </div>
 
              <div id="predict-btns">
-                <button type="button" id="predictaddAll" class="btn-primary crud">Add All</button>         
-                <button type="button" id="predictremoveAll" class="btn-primary crud">Remove All</button>
+                {{--<button type="button" id="predictaddAll" class="btn-primary crud">Add All</button>         --}}
+                <button type="button" id="predictremoveAll" class="btn-primary crud">Remove Company</button>
              </div> 
           </div> 
       </div>
@@ -246,8 +246,8 @@
 
           <!-- Select buttons -->
           <div id="departments">
-              <ul id="department-list" style="list-style-type: none" name="deptList">
-                {{--<input type="button" class="btAdds btn-primary" id="department" name="dept" value="" style="width: 100%">--}}
+              <ul id="department-list"  value ="bth" style="list-style-type: none">
+                <input type="button" class="btAdds btn-primary" id="department" name="dept" value="" style="width: 100%">
               </ul>
           </div>
 
@@ -256,7 +256,7 @@
 
           <!-- Options for buttons -->
           <div id="department-btns">
-           <button type="button" id="addAll" class="btn-primary crud">Add All</button>         
+           {{--<button type="button" id="addAll" class="btn-primary crud">Add All</button>         --}}
            <button type="button" id="removeAll" class="btn-primary crud">Remove All</button>
          </div> 
         </div>  
@@ -715,15 +715,18 @@
     {
       var base_url = 'http://localhost:8000/municipalities';
 
-      $('.municipality').click(function()
+      $('.municipality').click(function(e)
         {
+            e.preventDefualt();
+
+           // alert('municipality clicked');
           $(this).attr("disabled", true);
           array[m] = $(this).attr("id");
           var selected_id = $(this).attr("id");
-          
           m++;
          
           var btn_value = $(this).val();
+          console.log(btn_value);
 
           var selectedoptions= document.createElement('span');
           selectedoptions.setAttribute("style", "padding: 0px;margin: 0px; width : 100%;");
@@ -758,7 +761,7 @@
       //Add All
       $('#predictaddAll').click(function()
         {
-              $.get(base_url,function(data){
+                $.get(base_url,function(data){
                 $.each(data,function(jack,subjectB){
                     var selectedoptions= document.createElement('span');
                     selectedoptions.setAttribute("style", "padding: 0px;margin: 0px; width : 100%;");
@@ -819,7 +822,6 @@
      $('#department-list').empty();
      $.get('companyDept/'+ id,function(response)
      {
-         console.log(response);
          $.each(response,function(key,value)
          {
              $('#department-list').append("<input type='button'  name='dept'  class='btAdds btn-primary' id ="+value.id+" value="+value.name+">");
@@ -831,26 +833,26 @@
 
  $('#department-list').on('click',function()
  {
-     var inputs = document.getElementsByName("dept").childNodes;
-        console.log(inputs);
-     for (i = 0; i < inputs.length; i++)
-     {
-         alert(inputs);
-         //myNodelist[i].style.backgroundColor = "red";
-     }
+    var id = this.getClass();
+    alert(id);
+     // var inputs = document.getElementsByName("dept").childNodes;
+     //    console.log(inputs);
+     // for (i = 0; i < inputs.length; i++)
+     // {
+     //     alert(inputs);
+     //     //myNodelist[i].style.backgroundColor = "red";
+     // }
 
      $('#category-list').empty();
      $.get('deprtCategories/'+ id,function(response)
      {
-         console.log(response);
+         // console.log(response);
          $('#category-list').append("<option  selected disabled>Select Category</option>");
          $.each(response,function(key,value)
          {
              $('#category-list').append("<option  value="+value.id+">"+value.name+"</option>");
          });
-
      });
-
  });
 
  </script>

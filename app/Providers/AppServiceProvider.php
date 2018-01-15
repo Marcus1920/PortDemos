@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+use App\Reporter;
 use Illuminate\Support\ServiceProvider;
 use App\Position;
 use App\Department;
@@ -92,6 +93,21 @@ class AppServiceProvider extends ServiceProvider
              \View::share('selectCalendarEventTypes',$selectCalendarEventTypes);
 
         }
+
+        if (\Schema::hasTable('case_statuses'))
+        {
+            $statuses          = CaseStatus::orderBy('name','ASC')->get();
+            $selectStatuses    = array();
+            $selectStatuses[0] = "Select / All";
+
+            foreach ($statuses as $status) {
+                $selectStatuses[$status->slug] = $status->name;
+            }
+
+            \View::share('selectStatuses',$selectStatuses);
+
+        }
+
 
 
         if (\Schema::hasTable('calendar_event_types'))
@@ -313,7 +329,7 @@ class AppServiceProvider extends ServiceProvider
         {
             $departments          = Department::orderBy('name','ASC')->get();
             $selectDepartments    = array();
-            $selectDepartments[0] = "Select Company";
+            $selectDepartments[0] = "Select Department";
 
             foreach ($departments as $department) {
                $selectDepartments[$department->id] = $department->name;
@@ -372,16 +388,28 @@ class AppServiceProvider extends ServiceProvider
 
         }
 
+        if (\Schema::hasTable('companies'))
+        {
+            $companies          = Municipality::orderBy('name','ASC')->get();
+            $selectCompanies    = array();
+            $selectCompanies[0] = "Select Company";
+            foreach ($companies as $company) {
+                $selectCompanies[$company->slug] = $company->name;
+            }
+
+             \View::share('selectCompanies',$selectCompanies);
+
+        }
         if (\Schema::hasTable('municipalities'))
         {
             $municipalities          = Municipality::orderBy('name','ASC')->get();
             $selectMunicipalities    = array();
             $selectMunicipalities[0] = "Select / All";
             foreach ($municipalities as $municipality) {
-               $selectMunicipalities[$municipality->slug] = $municipality->name;
+                $selectMunicipalities[$municipality->slug] = $municipality->name;
             }
 
-             \View::share('selectMunicipalities',$selectMunicipalities);
+            \View::share('selectMunicipalities',$selectMunicipalities);
 
         }
 
@@ -464,15 +492,34 @@ class AppServiceProvider extends ServiceProvider
 
         }
 
+        if (\Schema::hasTable('reporters'))
+        {
+            $reporters         = Reporter::orderBy('name','ASC')->get();
+            $selectCasesReporters    = array();
+            $selectCasesReporters[0] = "Select Report";
+            foreach ($reporters as $reporter) {
+                $selectCasesReporters[$reporter->id] = $reporter->name;
+            }
+
+            \View::share('selectCasesReporters',$selectCasesReporters);
+
+        }
+
+
 
         if (\Schema::hasTable('cases')) {
 
             $cases = \DB::table('cases')
                         ->join('users', 'cases.reporter', '=', 'users.id')
                         ->select(
-                                    \DB::raw(
+                            \DB::raw(
                                                 "
-                                                    IF(`cases`.`addressbook` = 1,(SELECT CONCAT(`first_name`, ' ', `surname`) FROM `addressbook` WHERE `addressbook`.`id`= `cases`.`reporter`), (SELECT CONCAT(users.`name`, ' ', users.`surname`) FROM `users` WHERE `users`.`id`= `cases`.`reporter`)) as reporterName
+                                                    IF(`cases`.`addressbook` = 1,
+                                                    (SELECT CONCAT(`first_name`, ' ', `surname`)
+                                                     FROM `addressbook` WHERE `addressbook`.`id`= `cases`.`reporter`), 
+                                                     (SELECT CONCAT(users.`name`, ' ', users.`surname`) 
+                                                     FROM `users` WHERE `users`.`id`= `cases`.`reporter`))
+                                                      as reporterName
 
                                                 "
                                             )
@@ -482,7 +529,7 @@ class AppServiceProvider extends ServiceProvider
 
 
             $reporters    = array();
-            $reporters[0] = "Select / All";
+            $reporters[0] = "Select Reporter";
             foreach ($cases as $case) {
                $reporters[$case->reporterName] = $case->reporterName;
             }

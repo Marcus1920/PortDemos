@@ -1666,23 +1666,35 @@
             }
         }
 
-        function placeMarker(map, location) {
+              function placeMarker(map,location) {
+                  var geocoder = new google.maps.Geocoder;
+                  geocoder.geocode({'location': location}, function (results, status) {
+                      if (status === 'OK') {
+                          if (results[0]) {
+                              var marker = new google.maps.Marker({
+                                  position: location,
+                                  map: map
+                              });
 
-            var marker = new google.maps.Marker({
-                position: location,
-                map: map
-            });
 
-            var infowindow = new google.maps.InfoWindow({
-                content: '<span style="color:black;">'+ 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()+'</span>'
+                              var infowindow = new google.maps.InfoWindow({
+                                  content: '<span style="color:black;">' + results[0].formatted_address + '</span>'
+                              });
 
-            });
-            var markerCoordinates  = (location.lat()+","+location.lng());
+                              var markerCoordinates  = (location.lat()+","+location.lng());
+                              infowindow.open(map, marker);
 
-            infowindow.open(map,marker);
-            document.getElementById('markerCoordinates').value = markerCoordinates;
+                              document.getElementById('markerCoordinates').value = markerCoordinates;
 
-        }
+                          } else {
+                              window.alert('No results found');
+                          }
+                      } else {
+                          window.alert('Geocoder failed due to: ' + status);
+                      }
+                  });
+              }
+
         function openInfoWindowPolygon(polygon){
             poly1 = polygon;
 
