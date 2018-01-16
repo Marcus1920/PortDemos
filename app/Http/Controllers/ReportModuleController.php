@@ -224,55 +224,28 @@ class ReportModuleController extends Controller
 //        $request->status;
 //        $request->reporter;
 //        $request->graph;
-        //       $request->status;
-        //     $request->overviewReport
+//        $request->statuses;
+//        $request->overviewReport;
 
-// return  $request->all();
+        //return $request->all();
+
+        $companyDetails =    Company::where('name', $request->company)->first();
+        $dptDetails =        Department::where('name', $request->department)->first();
+        $catDetails =        CaseType::where('name', $request->category)->first();
 
 
-        $companyDetails = Company::where('name', $request->company)->first();
-        $dptDetails = Department::where('name', $request->department)->first();
-        $catDetails = CaseType::where('name', $request->category)->first();
+        $queryCases =   CaseReport::where('id_company', $companyDetails->id)
+                                ->where('department', $dptDetails->id)
+                                ->where('case_type', $catDetails->id)
+                                ->whereBetween('created_at', [$request->fromDate, $request->toDate])
+                                ->where('reporter', $request->reporter)
+                                ->get();
 
-        $queryCases = CaseReport::where('id_company', $companyDetails->id)
-            ->where('department', $dptDetails->id)
-            ->where('case_type', $catDetails->id)
-            ->whereBetween('created_at', [$request->fromDate, $request->toDate])
-            ->where('reporter', $request->reporter)
-            ->get();
-
-        //return $queryCases ;
-        foreach($queryCases as $query)
-        {
-            if(empty($query))
+            if($request->overviewReport == 'totalCases')
             {
-                return "";
-            }
-            else {
-                return "";
-            }
-
-            die;
-            if($query=="") {
-
-                return " is empty";
-
-            } else {
-                return " not empty";
-            }
-
-        }
-
-                    die;
-
-        if($queryCases == "[]")
-        {
-            foreach ($queryCases as $casePerStatus)
-            {
-                foreach ($request->status as $key)
+                foreach ($queryCases as $casePerStatus)
                 {
-
-                    if ($casePerStatus->status == $key)
+                    if ($casePerStatus->status == 1)
                     {
                         $newCases = CaseReport::where('id_company', $companyDetails->id)
                             ->where('department', $dptDetails->id)
@@ -281,11 +254,10 @@ class ReportModuleController extends Controller
                             ->where('reporter', $request->reporter)
                             ->where('status', 1)
                             ->get();
-
                         $one = count($newCases);
                     }
 
-                    if ($key == $casePerStatus->status) {
+                    if ($casePerStatus->status == 2) {
                         $newCases = CaseReport::where('id_company', $companyDetails->id)
                             ->where('department', $dptDetails->id)
                             ->where('case_type', $catDetails->id)
@@ -297,7 +269,7 @@ class ReportModuleController extends Controller
                         $two = count($newCases);
                     }
 
-                    if ($key == $casePerStatus->status) {
+                    if ($casePerStatus->status == 3) {
                         $newCases = CaseReport::where('id_company', $companyDetails->id)
                             ->where('department', $dptDetails->id)
                             ->where('case_type', $catDetails->id)
@@ -305,11 +277,10 @@ class ReportModuleController extends Controller
                             ->where('reporter', $request->reporter)
                             ->where('status', 3)
                             ->get();
-
                         $three = count($newCases);
                     }
 
-                    if ($key == $casePerStatus->status)
+                    if ($casePerStatus->status ==4 )
                     {
                         $newCases = CaseReport::where('id_company', $companyDetails->id)
                             ->where('department', $dptDetails->id)
@@ -318,11 +289,10 @@ class ReportModuleController extends Controller
                             ->where('reporter', $request->reporter)
                             ->where('status', 4)
                             ->get();
-
                         $four = count($newCases);
                     }
 
-                    if ($key == $casePerStatus->status)
+                    if ($casePerStatus->status ==5)
                     {
                         $newCases = CaseReport::where('id_company', $companyDetails->id)
                             ->where('department', $dptDetails->id)
@@ -331,12 +301,10 @@ class ReportModuleController extends Controller
                             ->where('reporter', $request->reporter)
                             ->where('status', 5)
                             ->get();
-
                         $five = count($newCases);
-
                     }
 
-                    if ($key == $casePerStatus->status)
+                    if ($casePerStatus->status ==6)
                     {
                         $newCases = CaseReport::where('id_company', $companyDetails->id)
                             ->where('department', $dptDetails->id)
@@ -345,11 +313,10 @@ class ReportModuleController extends Controller
                             ->where('reporter', $request->reporter)
                             ->where('status', 6)
                             ->get();
-
                         $six = count($newCases);
                     }
 
-                    if ($key == $casePerStatus->status)
+                    if ($casePerStatus->status ==7)
                     {
                         $newCases = CaseReport::where('id_company', $companyDetails->id)
                             ->where('department', $dptDetails->id)
@@ -358,50 +325,122 @@ class ReportModuleController extends Controller
                             ->where('reporter', $request->reporter)
                             ->where('status', 7)
                             ->get();
-
                         $seven = count($newCases);
                     }
+
+                    }
+
+                foreach($request->graph as $value)
+                {
+                    if ($value == "bar")
+                    {
+                        $bar_chart = Charts::create('bar', 'highcharts')
+                            ->title($companyDetails->name."(".$dptDetails->name.")"." "."["." ".$request->fromDate." ". "to"." ".$request->toDate."]")
+                            ->labels(['Pending', 'Pending Closure', 'Resolved', 'Referred', 'Preliminary','Confirmed','Allocated'])
+                            ->values([$one, $two, $three, $four, $five,$six,$seven])
+                            ->elementLabel("Total")
+                            ->dimensions(1000, 500)
+                            ->responsive(true);
+                    }
+
+                    if ($value == "line")
+                    {
+                        $line_chart = Charts::create('line', 'highcharts')
+                            ->title($companyDetails->name."(".$dptDetails->name.")"." "."["." ".$request->fromDate." ". "to"." ".$request->toDate."]")
+                            ->labels(['Pending', 'Pending Closure', 'Resolved', 'Referred', 'Preliminary','Confirmed','Allocated'])
+                            ->values([$one, $two, $three, $four, $five,$six,$seven])
+                            ->elementLabel("Total")
+                            ->dimensions(1000, 500)
+                            ->responsive(true);
+                    }
+                    if ($value == "pie")
+                    {
+                        $pie_chart = Charts::create('pie', 'highcharts')
+                            ->title($companyDetails->name."(".$dptDetails->name.")"." "."["." ".$request->fromDate." ". "to"." ".$request->toDate."]")
+                            ->labels(['Pending', 'Pending Closure', 'Resolved', 'Referred', 'Preliminary','Confirmed','Allocated'])
+                            ->values([$one, $two, $three, $four, $five,$six,$seven])
+                            ->elementLabel("Total")
+                            ->dimensions(1000, 500)
+                            ->responsive(true);
+                    }
+
                 }
+
+                return view('reportModule.reportChart', compact('line_chart', 'bar_chart', 'pie_chart'));
 
             }
-
-
-            foreach ($request->graph as $value)
+            if($request->overviewReport == 'openClose')
             {
-                if ($value == "bar") {
-                    $bar_chart = Charts::create('bar', 'highcharts')
-                        ->title('Number of Cases')
-                        ->labels(['Pending', 'Pending Closure', 'Resolved', 'Referred', 'Preliminary','Confirmed','Allocated'])
-                        ->values([$one, $two, $three, $four, $five,$six,$seven])
-                        ->dimensions(500, 350)
-                        ->responsive(false);
+                foreach ($queryCases as $casePerStatus)
+                {
+                    //return $casePerStatus->status;
+                    if($casePerStatus->status == 1)
+                    {
+                        $newCases = CaseReport::where('id_company', $companyDetails->id)
+                            ->where('department', $dptDetails->id)
+                            ->where('case_type', $catDetails->id)
+                            ->whereBetween('created_at', [$request->fromDate, $request->toDate])
+                            ->where('reporter', $request->reporter)
+                            ->where('status', 1)
+                            ->get();
+                        $totalPendingCases = count($newCases);
+                    }
+
+                    if($casePerStatus->status == 3)
+                    {
+                        $newCases = CaseReport::where('id_company', $companyDetails->id)
+                            ->where('department', $dptDetails->id)
+                            ->where('case_type', $catDetails->id)
+                            ->whereBetween('created_at', [$request->fromDate, $request->toDate])
+                            ->where('reporter', $request->reporter)
+                            ->where('status', 3)
+                            ->get();
+
+                        $totalResolvedCases = count($newCases);
+
+                    }
+
                 }
 
-                if ($value == "line") {
-                    $line_chart = Charts::create('line', 'highcharts')
-                        ->title('Number of Cases')
-                        ->labels(['Pending', 'Pending Closure', 'Resolved', 'Referred', 'Preliminary','Confirmed','Allocated'])
-                        ->values([$one, $two, $three, $four, $five,$six,$seven])
-                        ->dimensions(500, 350)
-                        ->responsive(false);
+                foreach($request->graph as $value)
+                {
+                    if ($value == "bar") {
+                        $bar_chart = Charts::create('bar', 'highcharts')
+                            ->title($companyDetails->name."(".$dptDetails->name.")"." "."["." ".$request->fromDate." ". "to"." ".$request->toDate."]")
+                            ->labels(['Pending','Resolved'])
+                            ->values([$totalPendingCases, $totalResolvedCases])
+                            ->elementLabel("Total")
+                            ->dimensions(1000, 500)
+                            ->responsive(true);
+
+                    }
+
+                    if ($value == "line") {
+                        $line_chart = Charts::create('line', 'highcharts')
+                            ->title($companyDetails->name."(".$dptDetails->name.")"." "."["." ".$request->fromDate." ". "to"." ".$request->toDate."]")
+                            ->labels(['Pending', 'Resolved'])
+                            ->values([$totalPendingCases, $totalResolvedCases])
+                            ->elementLabel("Total")
+                            ->dimensions(1000, 500)
+                            ->responsive(true);
+
+
+                    }
+                    if ($value == "pie") {
+                        $pie_chart = Charts::create('pie', 'highcharts')
+                            ->title($companyDetails->name."(".$dptDetails->name.")"." "."["." ".$request->fromDate." ". "to"." ".$request->toDate."]")
+                            ->labels(['Pending', 'Resolved'])
+                            ->values([$totalPendingCases, $totalResolvedCases])
+                            ->elementLabel("Total")
+                            ->dimensions(1000, 500)
+                            ->responsive(true);
+                    }
+
                 }
-                if ($value == "pie") {
-                    $pie_chart = Charts::create('pie', 'highcharts')
-                        ->title('Number of Cases')
-                        ->labels(['Pending', 'Pending Closure', 'Resolved', 'Referred', 'Preliminary','Confirmed','Allocated'])
-                        ->values([$one, $two, $three, $four, $five,$six,$seven])
-                        ->dimensions(500, 350)
-                        ->responsive(false);
-                }
 
-            }
+                return view('reportModule.reportChart', compact('line_chart', 'bar_chart', 'pie_chart'));
 
-            return view('reportModule.reportChart', compact('line_chart', 'bar_chart', 'pie_chart'));
 
-        }
-        else
-            {
-                return "no data";
             }
 
     }

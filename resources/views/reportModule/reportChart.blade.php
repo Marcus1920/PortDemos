@@ -2,31 +2,78 @@
 
 @section('content')
 {!! Charts::assets() !!}
-<div style=" width: 100%;height: 50%;">
+<section class="content">
 
-	@if(!empty($bar_chart))
+	<div class="row" >
+		<div class="col-md-1" >
+		</div>
+		<div class="col-md-5" >
+			<!-- AREA CHART -->
+			<a>
+				<div class="box box-primary">
+					<div class="box-header">
+						<hr class="whiter m-b-20">
+					</div>
+					@if(!empty($bar_chart))
+						<div class="box-body chart-responsive">
+							{!! $bar_chart->render() !!}
+						</div>
+				@endif<!-- /.box-body -->
+				</div><!-- /.box -->
+			</a>
+			<strong> </strong>
 
-	     <div style="width: 50%; float: left;height: 80%;margin-bottom: 10px;">
-		     {!! $bar_chart->render() !!}
-	    </div>
 
-	@endif
 
-	@if(!empty($line_chart))
-			<div style="width: 50%; float: right;height: 80%;margin-bottom: 10px;">
-		     {!! $line_chart->render() !!}
-	        </div>
+		</div>
+		<div class="col-md-5">
+			<a>
+				<div class="box box-info">
+					<div class="box-header">
+						<hr class="whiter m-b-20">
+					</div>
+					@if(!empty($line_chart))
+						<div class="box-body chart-responsive ">
+							{!! $line_chart->render() !!}
+						</div>
+				@endif
+				</div>
 
-		@endif
+			</a>
+			<strong></strong>
 
-</div>
 
-<div style=" width: 100%;">
-	@if(!empty($pie_chart))
-		<div style="width: 50%; float: left;margin-bottom: 10px; ">
-		     {!! $pie_chart->render() !!}
-	    </div>
-	@endif
-</div>
+
+		</div>
+		<div class="col-md-1" >
+		</div>
+	</div>
+	<br/><br/><br/>
+	<div class="row" >
+		<div class="col-md-3" >
+		</div>
+		<div class="col-md-6" >
+
+			<a>
+				<div class="box box-primary">
+					<div class="box-header">
+
+					</div>
+					@if(!empty($pie_chart))
+						<div class="box-body chart-responsive">
+							{!!$pie_chart->render()!!}
+						</div>
+					@endif
+				</div>
+			</a>
+			<strong> </strong>
+
+
+
+		</div>
+		<div class="col-md-3" >
+		</div>
+	</div>
+</section>
 
 @endsection

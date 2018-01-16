@@ -17,7 +17,7 @@
 
         {!! Form::open(['url' => '/generateReport', 'method' => 'post', 'class' => 'form-horizontal']) !!}
         <div class="row">
-            <div class="col-md-4 m-b-15">
+            <div class="col-md-4 col-md-offset-2">
                 <p>From:</p>
                 <div class="input-icon datetime-pick date-only">
                     <input data-format="yyyy-MM-dd" type="text" id='fromDate' name ='fromDate' class="form-control input-sm" />
@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4 m-b-15">
+            <div class="col-md-4">
                 <p>To:</p>
                 <div class="input-icon datetime-pick date-only">
                     <input data-format="yyyy-MM-dd" type="text" value ="" id='toDate' name ='toDate' class="form-control input-sm" />
@@ -37,11 +37,12 @@
                 </div>
             </div>
         </div>
+
         <br/>
 
         <div class="row">
 
-            <div class="col-md-4 m-b-15">
+            <div class="col-md-4 col-md-offset-2">
                 <p>Companies:</p>
                 <div class="p-relative">
                     <select class="form-control"  id="company" name="company">
@@ -50,17 +51,15 @@
                             <option id="{{$company->id}}" class="companyId">{{$company->name}}</option>
                         @endforeach
                     </select>
-                    {{--{!! Form::select('company',$selectCompanies,0,['class' => 'form-control input-sm' ,'id' => 'companies']) !!}--}}
                 </div>
             </div>
 
-            <div class="col-md-4 m-b-15">
+            <div class="col-md-4">
                 <p>Business Units:</p>
                 <div class="p-relative">
                     <select class="form-control"  id="department-list" name="department" style="height: 28px;">
                         <option selected disabled>Select Department</option>
                     </select>
-                    {{--{!! Form::select('department',$selectDepartments,0,['class' => 'form-control input-sm' ,'id' => 'department']) !!}--}}
                 </div>
             </div>
         </div>
@@ -68,118 +67,82 @@
         <br/>
 
         <div class="row">
-            <div class="col-md-4 m-b-15">
+            <div class="col-md-4 col-md-offset-2">
                 <p>Category:</p>
                 <div class="p-relative">
 
                     <select class="form-control"  id="category_id" name="category">
                         <option selected disabled>Select Category</option>
                     </select>
-                    {{--{!! Form::select('category',$selectCategories,0,['class' => 'form-control input-sm' ,'id' => 'category']) !!}--}}
                 </div>
             </div>
 
-            <div class="col-md-4 m-b-15">
-                <p>Status:</p>
-
-                <div>
-                    {{--<select class="form-control"  id="status_id" name="status">--}}
-                        {{--<option selected disabled>Select Status</option>--}}
-                        @foreach($statuses as $status)
-                            {{--<option id="{{$status->id}}">{{$status->name}}</option>--}}
-                            {{$status->name}}<input type="checkbox" value="{{$status->id}}" id="{{$status->id}}" name="status[]"><br>
-                        @endforeach
-                    {{--</select>--}}
-
+            <div class="col-md-4">
+                <p>Reporter:</p>
+                <div class="p-relative">
+                    {!! Form::select('reporter',$selectCasesReporters,0,['class' => 'form-control input-sm' ,'id' =>'reporter ']) !!}
                 </div>
             </div>
 
-            <div class="col-md-4 m-b-15">
+        </div>
+
+        <br/>
+
+        <div clas="row">
+            <div class="col-md-4 col-md-offset-2">
 
                 <p>Overview Report:</p>
                 <div>
-                    No. of Cases <input type="checkbox" value="totalCases" id="" name="overviewReport[]"><br>
-                    No. of Open & Close Case<input type="checkbox" value="openClose" id=""  name="overviewReport[]"><br>
-                    Longest To close Case<input type="checkbox" value="longest" id=""  name="overviewReport[]"><br>
-                    Shotest To close Case<input type="checkbox" value="shortest" id=""  name="overviewReport[]"><br>
-                    Average To close Case<input type="checkbox" value="average" id=""  name="overviewReport[]"><br>
+
+                    <input type="radio" name="overviewReport" value="totalCases" checked> No. of Cases <br>
+                    <input type="radio" name="overviewReport" value="openClose"> No. of Open & Close Case<br>
+                    <input type="radio" name="overviewReport" value="longest"> Longest To close Case<br>
+                    <input type="radio" name="overviewReport" value="shortest"> Shortest To close Case<br>
+                    <input type="radio" name="overviewReport" value="average"> Average To close Case<br>
+
+                    {{--No. of Cases <input type="radio" value="totalCases"  name="overviewReport[]"><br>--}}
+                    {{--No. of Open & Close Case<input type="radio" value="openClose" name="overviewReport[]"><br>--}}
+                    {{--Longest To close Case<input type="radio" value="longest"  name="overviewReport[]"><br>--}}
+                    {{--Shortest To close Case<input type="radio" value="shortest"  name="overviewReport[]"><br>--}}
+                    {{--Average To close Case<input type="radio" value="average"  name="overviewReport[]"><br>--}}
                 </div>
 
 
             </div>
 
+            <div class="col-md-4">
+                <p>Status:</p>
 
-
-
-
-        </div>
-
-        <br/>
-
-        <br/>
-
-        <div class="col-md-4 m-b-15">
-            <p>Reporter:</p>
-            <div class="p-relative">
-                {!! Form::select('reporter',$selectCasesReporters,0,['class' => 'form-control input-sm' ,'id' =>'reporter ']) !!}
+                <div>
+                    @foreach($statuses as $status)
+                        {{$status->name}}<input type="checkbox" value="{{$status->id}}" id="{{$status->id}}" name="statuses[]"><br>
+                    @endforeach
+                </div>
             </div>
         </div>
-
+        <br/>
 
         <div class="row">
-
-            <div class="col-md-4 m-b-15">
+            <div class="col-md-4 col-md-offset-2">
                 <p>Type of Report:</p>
-                <div class="p-relative">
-
-                    <div class="bar-graph" >
-                        <div id="label-f" style="background-color: inherit;  color: #ffffff; ">
-                            Bar Graph
-                        </div>
-                        <div id="check-box">
-                            <input type="checkbox" id="case-type" name="graph[]" value="bar" style="width: 100px">
-                        </div>
-                    </div>
-
-
-                    <div class="line-graph">
-                        <div id="label-f" style="background-color: inherit; color: #ffffff; ">
-                            Line Graph
-                        </div>
-                        <div id="check-box">
-                            <input type="checkbox" id="case-type" name="graph[]" value="line" style="width: 100px">
-                        </div>
-                    </div>
-
-
-                    <div class="pie-chart">
-                        <div id="label-f" style="background-color: inherit; color: #ffffff; ">
-                            Pie Chart
-                        </div>
-                        <div id="check-box" style="background-color: inherit; ">
-                            <input type="checkbox" id="case-type" name="graph[]" value="pie" style="width: 100px">
-                        </div>
-                    </div>
-
-                    <div class="column-graph">
-                        <div id="label-f" style="background-color: inherit; color: #ffffff; ">
-                            Column Graph
-                        </div>
-                        <div id="check-box">
-                            <input type="checkbox" id="case-type" name="graph[]" value="column" style="width: 100px">
-                        </div>
-                    </div>
-
+                <div>
+                    <input type="checkbox" name="graph[]" value="bar">Bar Graph<br>
+                    <input type="checkbox" name="graph[]" value="line">Line Graph<br>
+                    <input type="checkbox" name="graph[]" value="pie">Pie Chart<br>
                 </div>
             </div>
 
-            <div class="col-md-4 m-b-15">
-               <br/>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-6">
+                <br/>
                 <div class="p-relative">
                     <button type="submit" id="generate"  class="btn btn-sm">Generate Report</button>
                 </div>
             </div>
         </div>
+
         {!! Form::close() !!}
     </div>
 
@@ -308,13 +271,14 @@
         });
 
         $('#overviewReport').click(function() {
-            var sel = $('input[type=checkbox]:checked').map(function(_, el) {
+            var sel = $('input[type=radio]:checked')
+            (function(_, el) {
                 return $(el).val();
             }).get();
 
         });
 
-        $('#status').click(function() {
+        $('#statuses').click(function() {
             var sel = $('input[type=checkbox]:checked').map(function(_, el) {
                 return $(el).val();
             }).get();
