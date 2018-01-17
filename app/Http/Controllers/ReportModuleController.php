@@ -227,7 +227,7 @@ class ReportModuleController extends Controller
 //        $request->statuses;
 //        $request->overviewReport;
 
-        //return $request->all();
+        return $request->all();
 
         $companyDetails =    Company::where('name', $request->company)->first();
         $dptDetails =        Department::where('name', $request->department)->first();

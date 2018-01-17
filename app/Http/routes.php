@@ -1283,7 +1283,7 @@ Route::get('test/{id}','DroneRequestController@test');
 Route::get('getDroneRequests/{id}','DroneRequestController@getPerUser');
 
 //Report Module
-Route::get('report' ,['uses'=> 'ReportModuleController@index']);
+Route::get('reportsDemo' ,['uses'=> 'ReportModuleController@index']);
 Route::post('/store', ['uses' => 'ReportModuleController@store']);
 
 
@@ -1332,7 +1332,7 @@ Route::get('casetest/showDroneRequest/{id}','DroneRequestController@showFirst');
 //});
 
 
-Route::get('reportsDemo','ReportModuleController@reportsDemo');
+Route::get('report','ReportModuleController@reportsDemo');
 Route::post('generateReport','ReportModuleController@generateReport');
 
 

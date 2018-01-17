@@ -53,21 +53,11 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
     <sript  src=" http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble.js"></sript>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+    <script src="{{asset('js/vue.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
+
      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
-  {{--<script>--}}
-
-  {{--$(document).ready(function() {--}}
-  {{--jQuery.migrateMute = true;--}}
-  {{--});--}}
-
-
-  {{--$(document).ready(function() {--}}
-  {{--jQuery.migrateMute = true;--}}
-  {{--$.fn.dataTable.ext.errMode = 'none';--}}
-  {{--});--}}
-
-  {{--</script>--}}
   <script>
 		var placeSearch, autocomplete;
 		var componentForm = {
@@ -84,20 +74,16 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
       body {
         background-color: #5c788f;
     }
-<<<<<<< HEAD
-
-    .eerross {
-
-      background-image: url("{{ asset('/img/01_fix_background.png') }}");
-=======
     .eerross{
         background-image: url("{{ asset('public/img/01_fix_background.png') }}");
->>>>>>> 13b6b65d75999837c4a9772d2885561e3e101e63
+
       width: 100%;
       height: 100%;}
+
     label {
         font-size: 14px;
     }
+      [v-cloak] { display:none; }
   </style>
 <style>
          .date-div

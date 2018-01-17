@@ -19,7 +19,7 @@
         @if(\Auth::user()->id != $droneRequest->created_by)
                 @if($droneRequest->drone_case_status==1)
             <a aria-hidden="true">
-                {{--<h3 class="block-title">ACTION</h3>--}}
+
 
                 <div class="row" style="margin-left: 330px;">
 
@@ -69,10 +69,6 @@
                             </div>
                         </div>
                         {!! Form::close() !!}
-
-                        <div id="snackbar">The Request was already approved</div>
-                        <div id="rejectSnackbar">The Request was already rejected</div>
-
                     </div>
                 </div>
             </a>
