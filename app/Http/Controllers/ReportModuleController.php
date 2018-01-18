@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\CaseType;
 use App\CaseReport;
+use App\Reporter;
 use App\userPermission;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -206,14 +207,13 @@ class ReportModuleController extends Controller
         }
         return view('reportModule.reportChart', compact('line_chart', 'bar_chart', 'pie_chart'));
     }
-
     public function reportsDemo()
     {
         $companies = Company::orderBy('name')->get();
         $statuses = CaseStatus::orderBy('name')->get();
-        return view('reports.generateReport', compact('companies', 'statuses'));
+        $reporters = Reporter::orderBy('name')->get();
+        return view('reports.generateReport', compact('companies', 'statuses','reporters'));
     }
-
     public function generateReport(Request $request)
     {
 //        $request->fromDate;
@@ -222,24 +222,36 @@ class ReportModuleController extends Controller
 //        $request->department;
 //        $request->category;
 //        $request->status;
-//        $request->reporter;
+//        $reporterId;
 //        $request->graph;
 //        $request->statuses;
 //        $request->overviewReport;
 
-        return $request->all();
+        $this->validate(request(), [
+            'fromDate' => 'required',
+            'toDate' => 'required',
+            'company' => 'required',
+            'department' => 'required',
+            'category' => 'required',
+            'reporter' => 'required',
+            'graphs' => 'required'
+        ]);
+
+
+
 
         $companyDetails =    Company::where('name', $request->company)->first();
         $dptDetails =        Department::where('name', $request->department)->first();
         $catDetails =        CaseType::where('name', $request->category)->first();
-
+        $reporterId    =     Reporter::where('name',$request->reporter)->value('id');
 
         $queryCases =   CaseReport::where('id_company', $companyDetails->id)
                                 ->where('department', $dptDetails->id)
                                 ->where('case_type', $catDetails->id)
                                 ->whereBetween('created_at', [$request->fromDate, $request->toDate])
-                                ->where('reporter', $request->reporter)
+                                ->where('reporter',$reporterId )
                                 ->get();
+
 
             if($request->overviewReport == 'totalCases')
             {
@@ -251,7 +263,7 @@ class ReportModuleController extends Controller
                             ->where('department', $dptDetails->id)
                             ->where('case_type', $catDetails->id)
                             ->whereBetween('created_at', [$request->fromDate, $request->toDate])
-                            ->where('reporter', $request->reporter)
+                            ->where('reporter',  $reporterId )
                             ->where('status', 1)
                             ->get();
                         $one = count($newCases);
@@ -262,7 +274,7 @@ class ReportModuleController extends Controller
                             ->where('department', $dptDetails->id)
                             ->where('case_type', $catDetails->id)
                             ->whereBetween('created_at', [$request->fromDate, $request->toDate])
-                            ->where('reporter', $request->reporter)
+                            ->where('reporter', $reporterId)
                             ->where('status', 2)
                             ->get();
 
@@ -274,7 +286,7 @@ class ReportModuleController extends Controller
                             ->where('department', $dptDetails->id)
                             ->where('case_type', $catDetails->id)
                             ->whereBetween('created_at', [$request->fromDate, $request->toDate])
-                            ->where('reporter', $request->reporter)
+                            ->where('reporter', $reporterId)
                             ->where('status', 3)
                             ->get();
                         $three = count($newCases);
@@ -286,19 +298,19 @@ class ReportModuleController extends Controller
                             ->where('department', $dptDetails->id)
                             ->where('case_type', $catDetails->id)
                             ->whereBetween('created_at', [$request->fromDate, $request->toDate])
-                            ->where('reporter', $request->reporter)
+                            ->where('reporter', $reporterId)
                             ->where('status', 4)
                             ->get();
                         $four = count($newCases);
                     }
 
-                    if ($casePerStatus->status ==5)
+                    if ($casePerStatus->status == 5)
                     {
                         $newCases = CaseReport::where('id_company', $companyDetails->id)
                             ->where('department', $dptDetails->id)
                             ->where('case_type', $catDetails->id)
                             ->whereBetween('created_at', [$request->fromDate, $request->toDate])
-                            ->where('reporter', $request->reporter)
+                            ->where('reporter', $reporterId)
                             ->where('status', 5)
                             ->get();
                         $five = count($newCases);
@@ -310,7 +322,7 @@ class ReportModuleController extends Controller
                             ->where('department', $dptDetails->id)
                             ->where('case_type', $catDetails->id)
                             ->whereBetween('created_at', [$request->fromDate, $request->toDate])
-                            ->where('reporter', $request->reporter)
+                            ->where('reporter', $reporterId)
                             ->where('status', 6)
                             ->get();
                         $six = count($newCases);
@@ -322,7 +334,7 @@ class ReportModuleController extends Controller
                             ->where('department', $dptDetails->id)
                             ->where('case_type', $catDetails->id)
                             ->whereBetween('created_at', [$request->fromDate, $request->toDate])
-                            ->where('reporter', $request->reporter)
+                            ->where('reporter', $reporterId)
                             ->where('status', 7)
                             ->get();
                         $seven = count($newCases);
@@ -330,7 +342,7 @@ class ReportModuleController extends Controller
 
                     }
 
-                foreach($request->graph as $value)
+                foreach($request->graphs as $value)
                 {
                     if ($value == "bar")
                     {
@@ -380,7 +392,7 @@ class ReportModuleController extends Controller
                             ->where('department', $dptDetails->id)
                             ->where('case_type', $catDetails->id)
                             ->whereBetween('created_at', [$request->fromDate, $request->toDate])
-                            ->where('reporter', $request->reporter)
+                            ->where('reporter', $reporterId)
                             ->where('status', 1)
                             ->get();
                         $totalPendingCases = count($newCases);
@@ -392,7 +404,7 @@ class ReportModuleController extends Controller
                             ->where('department', $dptDetails->id)
                             ->where('case_type', $catDetails->id)
                             ->whereBetween('created_at', [$request->fromDate, $request->toDate])
-                            ->where('reporter', $request->reporter)
+                            ->where('reporter', $reporterId)
                             ->where('status', 3)
                             ->get();
 

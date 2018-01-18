@@ -47,7 +47,7 @@
                                         <option value="0"  selected disabled>-select reason-</option>
                                         @foreach($droneRejectReasons as $reason)
                                             <option value="{{$reason->id}}" name="reject_reason" id="{{$reason->id}}" required>{{$reason->reason}}</option>
-                                            @if ($errors->has('reject_reason')) <p class="help-block red">*{{ $errors->first('reject_reason') }}</p> @endif
+                                            {{--@if ($errors->has('reject_reason')) <p class="help-block red">*{{ $errors->first('reject_reason') }}</p> @endif--}}
                                         @endforeach
                                     </select>
                                 </div>

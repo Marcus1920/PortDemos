@@ -1,7 +1,43 @@
 @extends('master')
 
 @section('content')
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        function increment()
+        {
+            count +=1;
+        }
 
+        $(document).ready(function(){
+            $("#datepicker-Fromdate").datepicker({
+                maxDate :-0,
+                dateFormat: 'yy-mm-dd'
+            });
+            $("#datepicker-Todate").datepicker({
+                maxDate :-0,
+                dateFormat: 'yy-mm-dd'
+            });
+        });
+
+        $(function()
+        {
+            $( "#datepicker-Fromdate" ).datepicker({
+                prevText:"click for previous months",
+                nextText:"click for next months",
+                showOtherMonths:true,
+                selectOtherMonths: false
+
+            });
+            $( "#datepicker-Todate" ).datepicker({
+                prevText:"click for previous months",
+                nextText:"click for next months",
+                showOtherMonths:true,
+                selectOtherMonths: true
+
+            });
+        });
+    </script>
 
     <ol class="breadcrumb hidden-xs">
         <li><a href="{{'home'}}">Home</a></li>
@@ -15,28 +51,41 @@
 
         <h3 class="block-title">FILTERS</h3>
 
-        {!! Form::open(['url' => '/generateReport', 'method' => 'post', 'class' => 'form-horizontal' ,'id'=>'reportId'  ,'v-on:submit'=>"validateForm"]) !!}
+        {!! Form::open(['url' => '/generateReport', 'method' => 'post', 'class' => 'form-horizontal' ,'id'=>'reportId']) !!}
         <div class="row">
             <div class="col-md-4 col-md-offset-2">
                 <p>From:</p>
-                <div class="input-icon datetime-pick date-only">
-                    <input   data-format="yyyy-MM-dd" type="text" id='fromDate' name ='fromDate' class="form-control input-sm"/>
-                    <span class="add-on">
-                  <i class="sa-plus"></i>
-              </span>
+                {{--<div class="input-icon datetime-pick date-only">--}}
+                    {{--<input   data-format="yyyy-MM-dd" type="text" id='fromDate' name ='fromDate' class="form-control input-sm"/>--}}
+                    {{--<span class="add-on">--}}
+                  {{--<i class="sa-plus"></i>--}}
+              {{--</span>--}}
+                   {{----}}
+                {{--</div>--}}
+
+                <div class="date-input">
+                    <p><input type = "text"   data-format="yyyy-MM-dd"  name="fromDate" placeholder ="Choose start date" id = "datepicker-Fromdate" class="form-control input-sm"></p>
+                    @if ($errors->has('fromDate')) <p class="help-block red">*{{ $errors->first('fromDate') }}</p> @endif
                 </div>
 
             </div>
 
             <div class="col-md-4">
                 <p>To:</p>
-                <div class="input-icon datetime-pick date-only">
-                    <input data-format="yyyy-MM-dd" type="text" value ="" id='toDate' name ='toDate' class="form-control input-sm" />
-                    <span class="add-on">
-                  <i class="sa-plus"></i>
-              </span>
+                {{--<div class="input-icon datetime-pick date-only">--}}
+                    {{--<input data-format="yyyy-MM-dd" type="text" value ="" id='toDate' name ='toDate' class="form-control input-sm" />--}}
+                    {{--<span class="add-on">--}}
+                  {{--<i class="sa-plus"></i>--}}
+              {{--</span>--}}
 
+                {{--</div>--}}
+
+                <div class="date-input">
+                    <p><input type = "text"    data-format="yyyy-MM-dd"  name="toDate" placeholder ="Choose an end date" id = "datepicker-Todate" class="form-control input-sm"></p>
+                    @if ($errors->has('toDate')) <p class="help-block red">*{{ $errors->first('toDate') }}</p> @endif
                 </div>
+
+
             </div>
         </div>
 
@@ -48,24 +97,23 @@
                 <p>Companies:</p>
                 <div class="p-relative">
 
-                    <select class="form-control"  id="company" name="company" v-model="company">
+                    <select class="form-control"  id="company" name="company" >
                         <option selected disabled>Select Company</option>
                         @foreach($companies as $company)
                             <option id="{{$company->id}}" class="companyId">{{$company->name}}</option>
                         @endforeach
                     </select>
-
-                    <span class="help-block" v-cloak v-if="submition && wrongCompany" style="color:red;">@{{companyFB}}</span>
+                    @if ($errors->has('company')) <p class="help-block red">*{{ $errors->first('company') }}</p> @endif
                 </div>
             </div>
 
             <div class="col-md-4">
                 <p>Business Units:</p>
                 <div class="p-relative">
-                    <select class="form-control"  id="department-list" name="department" style="height: 28px;" v-model="department">
+                    <select class="form-control"  id="department-list" name="department" style="height: 28px;">
                         <option selected disabled style="display: inherit">Select Department</option>
                     </select>
-                    <span class="help-block" v-cloak v-if="submition && wrongDepartment" style="color:red;">@{{departmentFB }}</span>
+                    @if ($errors->has('department')) <p class="help-block red">*{{ $errors->first('department') }}</p> @endif
                 </div>
             </div>
         </div>
@@ -77,18 +125,24 @@
                 <p>Category:</p>
                 <div class="p-relative">
 
-                    <select class="form-control"  id="category_id" name="category" v-model="category">
+                    <select class="form-control"  id="category_id" name="category" >
                         <option selected disabled>Select Category</option>
                     </select>
-                    <span class="help-block" v-cloak v-if="submition && wrongCategory" style="color:red;">@{{categoryFB}}</span>
+                    @if ($errors->has('category')) <p class="help-block red">*{{ $errors->first('category') }}</p> @endif
                 </div>
             </div>
 
             <div class="col-md-4">
                 <p>Reporter:</p>
                 <div class="p-relative">
-                    {!! Form::select('reporter',$selectCasesReporters,0,['class' => 'form-control input-sm' ,'id' =>'reporter ' ,'v-model'=>'reporter']) !!}
-                    <span class="help-block" v-cloak v-if="submition && wrongReporter" style="color:red;">@{{reporterFB}}</span>
+                    <select class="form-control"  id="reporter" name="reporter">
+                        <option selected disabled>Select Reporter</option>
+                        @foreach($reporters as $reporter)
+                            <option id="{{$reporter->id}}">{{$reporter->name}}</option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('reporter')) <p class="help-block red">*{{ $errors->first('reporter') }}</p> @endif
+
                 </div>
             </div>
 
@@ -97,7 +151,7 @@
         <br/>
 
         <div clas="row">
-            <div class="col-md-4 col-md-offset-2">
+            <div class="col-md-3 col-md-offset-2">
 
                 <p>Overview Report:</p>
                 <div>
@@ -111,34 +165,37 @@
 
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <p>Status:</p>
                 <div>
-                    @foreach($statuses as $status)
-                        {{$status->name}}<input type="checkbox" value="{{$status->id}}" id="{{$status->id}}" name="statuses[]"><br>
-                    @endforeach
+                    <input type="radio" name="statuses" value="totalCases" checked>Statuses<br>
+                    {{--@foreach($statuses as $status)--}}
+                        {{--{{$status->name}}<input type="checkbox" value="{{$status->id}}" id="{{$status->id}}" name="statuses[]"><br>--}}
+                    {{--@endforeach--}}
+
                 </div>
             </div>
         </div>
+
+        <div class="col-md-3">
+            <p>Report Graphs:</p>
+            <div id="graph" >
+
+                <input type="checkbox"  value="bar"  name="graphs[]" >Bar Graph<br>
+                <input type="checkbox"  value="line"   name="graphs[]"  >Line Graph<br>
+                <input type="checkbox"  value="pie"   name="graphs[]" >Pie Chart<br>
+            </div>
+            @if ($errors->has('graphs')) <p class="help-block red">*{{ $errors->first('graphs') }}</p> @endif
+
+        </div>
+
         <br/>
 
         <div class="row">
-            <div class="col-md-4 col-md-offset-2">
-                <p>Type of Report:</p>
-                <div >
-                    <input type="checkbox"  value="bar"    v-model="graph" >Bar Graph<br>
-                    <input type="checkbox"  value="line"   v-model="graph">Line Graph<br>
-                    <input type="checkbox"  value="pie"    v-model="graph">Pie Chart<br>
-                </div>
-                <span v-cloak>@{{graph }}</span>
-                <span v-cloak>@{{graphTypes }}</span>
-                {{--<span class="help-block" v-cloak v-if="submition && wrongGraph" style="color:red;">@{{graphFB }}</span>--}}
-            </div>
-
         </div>
 
         <div class="row">
-            <div class="col-md-6 col-md-offset-6">
+            <div class="col-md-6 col-md-offset-2">
                 <br/>
                 <div class="p-relative">
                     <button type="submit" id="generate"  class="btn btn-sm">Generate Report</button>
@@ -152,7 +209,6 @@
 @endsection
 
 @section('footer')
-    <script  src="{{asset('js/reportsValidation.js')}}" ></script>
     <script>
         $(document).ready(function()
         {
@@ -189,16 +245,8 @@
             });
         });
 
-        $('#label-f').click(function() {
+        $('#graph').click(function() {
             var sel = $('input[type=checkbox]:checked').map(function(_, el) {
-                return $(el).val();
-            }).get();
-
-        });
-
-        $('#overviewReport').click(function() {
-            var sel = $('input[type=radio]:checked')
-            (function(_, el) {
                 return $(el).val();
             }).get();
 
@@ -212,5 +260,6 @@
         });
 
     </script>
+
 
 @endsection

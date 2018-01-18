@@ -17,7 +17,7 @@ const ERRORS = {
             category: '',
             reporter: '',
             statuses: '',
-            graph: [],
+            graphs:['pie','bar'],
             submition: false
         },
         computed: {
@@ -48,21 +48,16 @@ const ERRORS = {
                 this.reporterFB = ERRORS.reporterField;
                 return true
             }
-                return false },
+                return false }
+
             // wrongGraph:function()
             // {
-            //     if( this.graph === '')
+            //     if(this.graph === '')
             // {
             //     this.graphFB = ERRORS.graphField;
             //     return true
             // }
             //     return false },
-
-
-            graphTypes:function ()
-                {
-                    return this.graph.toString();
-                }
 
         },
         methods: {
@@ -71,21 +66,9 @@ const ERRORS = {
                 if(this.wrongCompany || this.wrongDepartment || this.wrongCategory ||  this.wrongReporter)
                 {
                     event.preventDefault();
-
-                    console.log(this.company );
-                    console.log(this.department);
-                    console.log(this.category);
-                    console.log(this.reporter);
-                    //console.log(this.graph);
-
                 }
                 else {
-                    axios.post('/generateReport')
-                        .then(function (response) {
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
+                    return this.submition = true;
                 }
             }
 
