@@ -1302,8 +1302,10 @@ Route::get('testReports', function ()
 });
 Route::get('companyDept/{companyName}', function($companyName)
 {
-    $companyId  = App\Company::select('id')->where('name',$companyName)->first();
-    $comapnyDepartment = App\Department::select('name','id')->where('company',$companyId->id)->get();
+
+   // return $companyName;
+    //$companyId  = App\Company::select('id')->where('name',$companyName)->first();
+    $comapnyDepartment = App\Department::select('name','id')->where('company',$companyName)->get();
     return $comapnyDepartment;
 });
 

@@ -251,6 +251,7 @@ class ReportModuleController extends Controller
                                 ->whereBetween('created_at', [$request->fromDate, $request->toDate])
                                 ->where('reporter',$reporterId )
                                 ->get();
+        return $queryCases;
 
 
             if($request->overviewReport == 'totalCases')

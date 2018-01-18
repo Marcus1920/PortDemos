@@ -64,7 +64,7 @@
                 {{--</div>--}}
 
                 <div class="date-input">
-                    <p><input type = "text"   data-format="yyyy-MM-dd"  name="fromDate" placeholder ="Choose start date" id = "datepicker-Fromdate" class="form-control input-sm"></p>
+                    <p><input type = "text"   value="{{ old('fromDate') }}" data-format="yyyy-MM-dd"  name="fromDate" placeholder ="Choose start date" id = "datepicker-Fromdate" class="form-control input-sm"></p>
                     @if ($errors->has('fromDate')) <p class="help-block red">*{{ $errors->first('fromDate') }}</p> @endif
                 </div>
 
@@ -81,7 +81,7 @@
                 {{--</div>--}}
 
                 <div class="date-input">
-                    <p><input type = "text"    data-format="yyyy-MM-dd"  name="toDate" placeholder ="Choose an end date" id = "datepicker-Todate" class="form-control input-sm"></p>
+                    <p><input type = "text"  value="{{ old('toDate') }}"   data-format="yyyy-MM-dd"  name="toDate" placeholder ="Choose an end date" id = "datepicker-Todate" class="form-control input-sm"></p>
                     @if ($errors->has('toDate')) <p class="help-block red">*{{ $errors->first('toDate') }}</p> @endif
                 </div>
 
@@ -97,12 +97,13 @@
                 <p>Companies:</p>
                 <div class="p-relative">
 
-                    <select class="form-control"  id="company" name="company" >
+                    <select class="form-control"  id="company" name="company">
                         <option selected disabled>Select Company</option>
                         @foreach($companies as $company)
-                            <option id="{{$company->id}}" class="companyId">{{$company->name}}</option>
+                            <option id="{{$company->id}}" class="companyId"  value="{{ $company->id }}" @if(old('company') == $company->id) {{ 'selected' }} @endif>{{$company->name}}</option>
                         @endforeach
                     </select>
+
                     @if ($errors->has('company')) <p class="help-block red">*{{ $errors->first('company') }}</p> @endif
                 </div>
             </div>
@@ -125,7 +126,7 @@
                 <p>Category:</p>
                 <div class="p-relative">
 
-                    <select class="form-control"  id="category_id" name="category" >
+                    <select class="form-control"  id="category_id" name="category">
                         <option selected disabled>Select Category</option>
                     </select>
                     @if ($errors->has('category')) <p class="help-block red">*{{ $errors->first('category') }}</p> @endif
@@ -138,7 +139,7 @@
                     <select class="form-control"  id="reporter" name="reporter">
                         <option selected disabled>Select Reporter</option>
                         @foreach($reporters as $reporter)
-                            <option id="{{$reporter->id}}">{{$reporter->name}}</option>
+                            <option id="{{$reporter->id}}"   value="{{ $reporter->id }}" @if(old('reporter') == $reporter->id) {{ 'selected' }} @endif>{{$reporter->name}}</option>
                         @endforeach
                     </select>
                     @if ($errors->has('reporter')) <p class="help-block red">*{{ $errors->first('reporter') }}</p> @endif
@@ -181,7 +182,7 @@
             <p>Report Graphs:</p>
             <div id="graph" >
 
-                <input type="checkbox"  value="bar"  name="graphs[]" >Bar Graph<br>
+                <input type="checkbox"  value="bar"  name="graphs[]"  >Bar Graph<br>
                 <input type="checkbox"  value="line"   name="graphs[]"  >Line Graph<br>
                 <input type="checkbox"  value="pie"   name="graphs[]" >Pie Chart<br>
             </div>
@@ -229,6 +230,7 @@
                 $.each(response,function(key,value)
                 {
                     $('#department-list').append("<option id ="+value.id+">"+ value.name +"</option>");
+                {{--<option id="{{$company->id}}" class="companyId"  value="{{ $company->id }}" @if(old('company') == $company->id) {{ 'selected' }} @endif>{{$company->name}}</option>--}}
                 });
             });
 
