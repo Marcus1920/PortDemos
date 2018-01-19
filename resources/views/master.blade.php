@@ -40,6 +40,7 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
   <link href="{{ asset('css/table.css') }}" rel="stylesheet">
   <link href="{{ asset('css/toggles.css') }}" rel="stylesheet">
   <link href="{{ asset('css/toast.css') }}" rel="stylesheet">
+    <link href="{{asset('css/toastr.min.css')}}" rel="stylesheet">
   <link href="{{ asset('css/map.css') }}" rel="stylesheet">
     
   <link href="{{ asset('css/toggle-themes/toggles-all.css') }}" rel="stylesheet">
@@ -580,29 +581,14 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
 
     <!-- All JS functions -->
     <script src="{{ asset('js/functions.js') }}"></script>
+    <script src ="{{asset('js/toastr.min.js')}}"></script>
 
-
-    <!-- Token Input -->
     <script src="{{ asset('js/jquery.tokeninput.js') }}"></script> <!-- Token Input -->
-
-
-    <!-- Noty JavaScript -->
     <script src="{{ asset('bower_components/noty/js/noty/packaged/jquery.noty.packaged.js') }}"></script>
-
-    <!-- DataTables JavaScript -->
-
-
     <script src="{{ asset('bower_components/datatables/media/js/datatables-plugins/pagination/scrolling.js') }}"></script>
     <script src="{{ asset('bower_components/datatables/media/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js') }}"></script>
-
-
-
-    <!-- Jquery Bootstrap Maxlength -->
     <script src="{{ asset('bower_components/bootstrap-maxlength/bootstrap-maxlength.min.js') }}"></script>
-
-
-    <!-- Media -->
     <script src="{{ asset('js/media-player.min.js') }}"></script> <!-- Video Player -->
     <script src="{{ asset('js/pirobox.min.js') }}"></script> <!-- Lightbox -->
     <script src="{{ asset('js/file-manager/elfinder.js') }}"></script> <!-- File Manager -->
@@ -853,5 +839,16 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
 				console.log("  wMarkers - ", wMarkers);
 			});
 		});
+  </script>
+  <script>
+              @if(Session::has('message'))
+      var type ="{{session::get('alert-type','info')}}";
+      switch(type)
+      {
+          case 'danger':
+              toastr.success("{{session::get('message')}}");
+              break;
+      }
+      @endif
   </script>
 </body></html>

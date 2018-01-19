@@ -111,7 +111,7 @@
             <div class="col-md-4">
                 <p>Business Units:</p>
                 <div class="p-relative">
-                    <select class="form-control"  id="department-list" name="department" style="height: 28px;">
+                    <select class="form-control"  id="department-list"  name="department" style="height: 28px;">
                         <option selected disabled style="display: inherit">Select Department</option>
                     </select>
                     @if ($errors->has('department')) <p class="help-block red">*{{ $errors->first('department') }}</p> @endif
@@ -153,7 +153,6 @@
 
         <div clas="row">
             <div class="col-md-3 col-md-offset-2">
-
                 <p>Overview Report:</p>
                 <div>
                     <input type="radio" name="overviewReport" value="totalCases" checked> No. of Cases <br>
@@ -162,14 +161,14 @@
                     <input type="radio" name="overviewReport" value="shortest"> Shortest To close Case<br>
                     <input type="radio" name="overviewReport" value="average"> Average To close Case<br>
                 </div>
-
-
             </div>
+
+
 
             <div class="col-md-3">
                 <p>Status:</p>
                 <div>
-                    <input type="radio" name="statuses" value="totalCases" checked>Statuses<br>
+                    <input type="radio" name="statuses" values="statuses" checked>Statuses<br>
                     {{--@foreach($statuses as $status)--}}
                         {{--{{$status->name}}<input type="checkbox" value="{{$status->id}}" id="{{$status->id}}" name="statuses[]"><br>--}}
                     {{--@endforeach--}}
@@ -203,14 +202,16 @@
                 </div>
             </div>
         </div>
-
+         @if(count($errors)>0)
+             <input type="hidden" id="errorCounter" value="{{count($errors)}}"/>
+         @endif
         {!! Form::close() !!}
     </div>
-
 @endsection
-
 @section('footer')
     <script>
+
+        var currentDepartment;
         $(document).ready(function()
         {
             var defaultDate = $.datepicker.formatDate('yy-mm-dd', new Date());
@@ -218,31 +219,62 @@
             $("#toDate").val(defaultDate);
             var oReportsTable;
 
+            var  errorValue   = $('#errorCounter').val();
+            if(errorValue > 0)
+            {
+                currentDepartment        = window.sessionStorage.getItem("department");
+
+             }
+            else{
+                sessionStorage.clear();
+        }
+
         });
 
+        var companyName;
         $('#company').on('change',function()
         {
-            var companyName = this.value;
+             companyName = this.value;
             $('#department-list').empty();
             $.get('companyDept/'+ companyName,function(response)
             {
                 $('#department-list').append("<option  selected disabled>Select Department</option>");
                 $.each(response,function(key,value)
                 {
-                    $('#department-list').append("<option id ="+value.id+">"+ value.name +"</option>");
+                    $('#department-list').append("<option  id ="+value.id+">"+ value.name +"</option>");
                 {{--<option id="{{$company->id}}" class="companyId"  value="{{ $company->id }}" @if(old('company') == $company->id) {{ 'selected' }} @endif>{{$company->name}}</option>--}}
+
                 });
             });
 
         });
+
+
+        var departmentId;
         $('#department-list').on('change', function () {
-            var dptName = this.value;
-            console.log(dptName);
+
+            var dptName   =this.value;
+            var selVal    =$(this).val();
+
+
+
+            // $.get('departDetails/' + dptName, function (response) {
+            //     departmentId = response;
+            //     console.log(departmentId);
+            // });
+            //
+            // var departmentInfo   ={ id:value.id ,name:selVal};
+            //
+            // sessionStorage.setItem("department", departmentInfo);
+            // console.log(departmentInfo);
+
             $('#category_id').empty();
             $.get('deprtCategories/' + dptName, function (response) {
                 $('#category_id').append("<option  selected disabled>Select Category</option>");
                 $.each(response, function (key, value) {
                     $('#category_id').append("<option  id=" + value.id + ">" + value.name + "</option>");
+
+
                 });
             });
         });
