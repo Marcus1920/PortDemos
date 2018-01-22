@@ -1334,6 +1334,7 @@ Route::get('casetest/showDroneRequest/{id}','DroneRequestController@showFirst');
 //});
 
 
+
 Route::get('report','ReportModuleController@reportsDemo');
 Route::post('generateReport','ReportModuleController@generateReport');
 

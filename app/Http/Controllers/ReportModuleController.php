@@ -412,7 +412,7 @@ class ReportModuleController extends Controller
                     if ($value == "bar") {
                         $bar_chart = Charts::create('bar', 'highcharts')
                             ->title($companyDetails->name."(".$dptDetails->name.")"." "."["." ".$request->fromDate." ". "to"." ".$request->toDate."]")
-                            ->labels(['Pending','Resolved'])
+                            ->labels(['Open','Closed'])
                             ->values([$totalPendingCases, $totalResolvedCases])
                             ->elementLabel("Total")
                             ->dimensions(1000, 500)
@@ -423,7 +423,7 @@ class ReportModuleController extends Controller
                     if ($value == "line") {
                         $line_chart = Charts::create('line', 'highcharts')
                             ->title($companyDetails->name."(".$dptDetails->name.")"." "."["." ".$request->fromDate." ". "to"." ".$request->toDate."]")
-                            ->labels(['Pending', 'Resolved'])
+                            ->labels(['Open', 'Closed'])
                             ->values([$totalPendingCases, $totalResolvedCases])
                             ->elementLabel("Total")
                             ->dimensions(1000, 500)
@@ -434,7 +434,7 @@ class ReportModuleController extends Controller
                     if ($value == "pie") {
                         $pie_chart = Charts::create('pie', 'highcharts')
                             ->title($companyDetails->name."(".$dptDetails->name.")"." "."["." ".$request->fromDate." ". "to"." ".$request->toDate."]")
-                            ->labels(['Pending', 'Resolved'])
+                            ->labels(['Open', 'Closed'])
                             ->values([$totalPendingCases, $totalResolvedCases])
                             ->elementLabel("Total")
                             ->dimensions(1000, 500)
@@ -450,8 +450,8 @@ class ReportModuleController extends Controller
         {
 
             $notification = array(
-                'message'=>' No data set for this select.Try again!',
-                'alert-type'=>'danger'
+                'message'=>' No data set for this selection.!',
+                'alert-type'=>'error'
             );
 
             return back()->with($notification);

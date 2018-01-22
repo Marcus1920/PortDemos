@@ -64,8 +64,17 @@
                 {{--</div>--}}
 
                 <div class="date-input">
-                    <p><input type = "text"   value="{{ old('fromDate') }}" data-format="yyyy-MM-dd"  name="fromDate" placeholder ="Choose start date" id = "datepicker-Fromdate" class="form-control input-sm"></p>
+
+                    <div class="input-icon datetime-pick date-only">
+                        <input data-format="yyyy-MM-dd" type="text" id='fromDate' name ='fromDate' class="form-control input-sm" />
+                        <span class="add-on">
+                          <i class="sa-plus"></i>
+                      </span>
+
+                    </div>
                     @if ($errors->has('fromDate')) <p class="help-block red">*{{ $errors->first('fromDate') }}</p> @endif
+                    {{--<p><input type = "text"   value="{{ old('fromDate') }}" data-format="yyyy-MM-dd"  name="fromDate" placeholder ="Choose start date" id = "datepicker-Fromdate" class="form-control input-sm"></p>--}}
+                    {{--@if ($errors->has('fromDate')) <p class="help-block red">*{{ $errors->first('fromDate') }}</p> @endif--}}
                 </div>
 
             </div>
@@ -81,8 +90,17 @@
                 {{--</div>--}}
 
                 <div class="date-input">
-                    <p><input type = "text"  value="{{ old('toDate') }}"   data-format="yyyy-MM-dd"  name="toDate" placeholder ="Choose an end date" id = "datepicker-Todate" class="form-control input-sm"></p>
+
+                    <div class="input-icon datetime-pick date-only">
+                        <input data-format="yyyy-MM-dd" type="text" id='toDate' name ='toDate' class="form-control input-sm" />
+                        <span class="add-on">
+                          <i class="sa-plus"></i>
+                      </span>
+
+                    </div>
                     @if ($errors->has('toDate')) <p class="help-block red">*{{ $errors->first('toDate') }}</p> @endif
+                    {{--<p><input type = "text"  value="{{ old('toDate') }}"   data-format="yyyy-MM-dd"  name="toDate" placeholder ="Choose an end date" id = "datepicker-Todate" class="form-control input-sm"></p>--}}
+                    {{--@if ($errors->has('toDate')) <p class="help-block red">*{{ $errors->first('toDate') }}</p> @endif--}}
                 </div>
 
 
@@ -156,10 +174,10 @@
                 <p>Overview Report:</p>
                 <div>
                     <input type="radio" name="overviewReport" value="totalCases" checked> No. of Cases <br>
-                    <input type="radio" name="overviewReport" value="openClose"> No. of Open & Close Case<br>
-                    <input type="radio" name="overviewReport" value="longest"> Longest To close Case<br>
-                    <input type="radio" name="overviewReport" value="shortest"> Shortest To close Case<br>
-                    <input type="radio" name="overviewReport" value="average"> Average To close Case<br>
+                    <input type="radio" name="overviewReport" value="openClose"> No. of Open & Closed Cases<br>
+                    {{--<input type="radio" name="overviewReport" value="longest"> Longest To close Case<br>--}}
+                    {{--<input type="radio" name="overviewReport" value="shortest"> Shortest To close Case<br>--}}
+                    {{--<input type="radio" name="overviewReport" value="average"> Average To close Case<br>--}}
                 </div>
             </div>
 
@@ -195,7 +213,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6 col-md-offset-2">
+            <div class="col-md-6 col-md-offset-9">
                 <br/>
                 <div class="p-relative">
                     <button type="submit" id="generate"  class="btn btn-sm">Generate Report</button>

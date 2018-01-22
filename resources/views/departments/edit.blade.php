@@ -31,6 +31,7 @@
                   @if ($errors->has('acronym')) <p class="help-block red">*{{ $errors->first('acronym') }}</p> @endif
                 </div>
             </div>
+
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <button type="submit" id='submitUpdateDepartmentForm' type="button" class="btn btn-sm">Save Changes</button>
@@ -39,9 +40,7 @@
             </div>
             <div class="modal-footer">
 
-
             </div>
-
             {!! Form::close() !!}
         </div>
     </div>
