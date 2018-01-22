@@ -116,7 +116,6 @@
     });
 
     }
-
     @if (count($errors) > 0)
 
       $('#modalEditDepartment').modal('show');

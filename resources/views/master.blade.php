@@ -35,181 +35,174 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
 	<link href="{{ asset('css/Treant.css') }}" rel="stylesheet">
 	<link href="{{ asset('css/collapsable.css') }}" rel="stylesheet">
 <!-- <link href="{{ asset('/css/perfect-scrollbar.css') }}" rel="stylesheet"> -->
-	<link href="{{ asset('css/form-builder.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/awesome.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/table.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/toggles.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/toast.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/map.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/form-builder.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/awesome.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/table.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/toggles.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/toast.css') }}" rel="stylesheet">
+    <link href="{{asset('css/toastr.min.css')}}" rel="stylesheet">
+  <link href="{{ asset('css/map.css') }}" rel="stylesheet">
+    
+  <link href="{{ asset('css/toggle-themes/toggles-all.css') }}" rel="stylesheet">
+  <!-- DataTables CSS -->
+  <link href="{{ asset('bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css') }}" rel="stylesheet">
+  <!-- DataTables Responsive CSS -->
+{{--<link href="{{ asset('/bower_components/datatables-responsive/css/responsive.dataTables.scss') }}" rel="stylesheet">--}}
+<!-- jQuery Library -->
+  <script src="{{ asset('js/jquery.min.js') }}"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=geometry,places"></script>
+    <sript  src=" http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble.js"></sript>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+    <script src="{{asset('js/vue.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
 
-	<link href="{{ asset('css/toggle-themes/toggles-all.css') }}" rel="stylesheet">
-	<!-- DataTables CSS -->
-	<link href="{{ asset('bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css') }}" rel="stylesheet">
-	<!-- DataTables Responsive CSS -->
-	{{--<link href="{{ asset('/bower_components/datatables-responsive/css/responsive.dataTables.scss') }}" rel="stylesheet">--}}
+     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script>
+		var placeSearch, autocomplete;
+		var componentForm = {
+			street_number: 'short_name',
+			route: 'long_name',
+			locality: 'long_name',
+			administrative_area_level_1: 'short_name',
+			country: 'long_name',
+			postal_code: 'short_name'
+		};
+  </script>
+  <style>
+      
+      body {
+        background-color: #5c788f;
+    }
+    .eerross{
+        background-image: url("{{ asset('public/img/01_fix_background.png') }}");
 
-	<link href="{{ asset('/css/rangeslider.css') }}" rel="stylesheet">
+      width: 100%;
+      height: 100%;}
 
-	<!-- jQuery Library -->
-	<script src="{{ asset('js/jquery.min.js') }}"></script>
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwXS96_uM6y-6ZJZhSJGE87pO-qxpDp-Q&libraries=geometry,places"></script>
-	<sript src=" http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble.js"></sript>
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
-	<script src="{{asset('js/vue.js')}}"></script>
-	<script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
+    label {
+        font-size: 14px;
+    }
+      [v-cloak] { display:none; }
+  </style>
+<style>
+         .date-div
+         {
+            width: 50% ; float: left;
+         }
+         .date-txt
+         {
+            width: 40% ; float: right;
+         }
+         #datepicker-8 , #datepicker-9
+         {
+            color: blue;    
+         }
+         .sizing-row
+         {
+            width: 180px;
+         }
+         #label-f
+         {
+             width: 80% ;
+             height: 30px;
+             margin-bottom: 3px;
+             background-color: white;
+             color :black;
+             text-align: center;
+             float: left;
+         }
+         #check-box
+         {
+            width: 18% ;
+            height: 20px;
+            margin-bottom: 3px;
+            float: right;"
+         }
+        
+         #check-box ,#check_box
+         {
+            width: 18% ;
+            height: 20px;
+            margin-bottom: 3px;
+            float: right;"
+         }
 
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<link rel="stylesheet" href="/resources/demos/style.css">
-	<script>
-    var placeSearch, autocomplete;
-    var componentForm = {
-      street_number: 'short_name',
-      route: 'long_name',
-      locality: 'long_name',
-      administrative_area_level_1: 'short_name',
-      country: 'long_name',
-      postal_code: 'short_name'
-    };
-	</script>
-	<style>
+         .dept-selection , .predict-selection
+         {
+            width: 100%;
+            height: 200px;
+         }
+         #departments , #department-selected ,#predict , #predict-selected
+         {
+            width: 40%;
+            display: block;
+            margin: 0;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: scroll;          
+         }
+         #department-btns ,#predict-btns
+         {
+            width: 20%;
+            display: block;
+            height: 80%;
+            float: right;
+         }
+         #departments , #predict 
+         {
+            float: left;
+         }
+         #department-selected , #predict-selected
+         {
+             float: right;
+             padding-top:0px;
+             background-color: gray;
+         }
 
-		body {
-			background-color: #5c788f;
-		}
-
-		.eerross {
-			background-image: url("{{ asset('public/img/01_fix_background.png') }}");
-
-			width: 100%;
-			height: 100%;
-		}
-
-		label {
-			font-size: 14px;
-		}
-
-		[v-cloak] {
-			display: none;
-		}
-	</style>
-	<style>
-		.date-div {
-			width: 50%;
-			float: left;
-		}
-
-		.date-txt {
-			width: 40%;
-			float: right;
-		}
-
-		#datepicker-8, #datepicker-9 {
-			color: blue;
-		}
-
-		.sizing-row {
-			width: 180px;
-		}
-
-		#label-f {
-			width: 80%;
-			height: 30px;
-			margin-bottom: 3px;
-			background-color: white;
-			color: black;
-			text-align: center;
-			float: left;
-		}
-
-		#check-box {
-			width: 18%;
-			height: 20px;
-			margin-bottom: 3px;
-			float: right;
-		"
-		}
-
-		#check-box, #check_box {
-			width: 18%;
-			height: 20px;
-			margin-bottom: 3px;
-			float: right;
-		"
-		}
-
-		.dept-selection, .predict-selection {
-			width: 100%;
-			height: 200px;
-		}
-
-		#departments, #department-selected, #predict, #predict-selected {
-			width: 40%;
-			display: block;
-			margin: 0;
-			height: 100%;
-			overflow-x: hidden;
-			overflow-y: scroll;
-		}
-
-		#department-btns, #predict-btns {
-			width: 20%;
-			display: block;
-			height: 80%;
-			float: right;
-		}
-
-		#departments, #predict {
-			float: left;
-		}
-
-		#department-selected, #predict-selected {
-			float: right;
-			padding-top: 0px;
-			background-color: gray;
-		}
-
-		#departments::-webkit-scrollbar, #department-selected::-webkit-scrollbar, #predict::-webkit-scrollbar, #predict-selected::-webkit-scrollbar {
-			width: 5px;
-		}
-
-		#departments::-webkit-scrollbar-thumb, #department-selected::-webkit-scrollbar-thumb, #predict::-webkit-scrollbar-thumb, #predict-selected::-webkit-scrollbar-thumb {
-			border-radius: 1px;
-			background: rgba(0, 0, 0, 0);
-			background-color: grey;
-		}
-
-		#department-selected::-webkit-scrollbar-thumb, #predict-selected::-webkit-scrollbar-thumb {
-			background-color: white;
-		}
-
-		#department-list, #predict-list {
-			width: 100%;
-			height: 40px;
-			padding-left: 0px;
-			margin-top: 0px;
-			padding-top: 0px;
-			margin-bottom: 0px;
-		}
-
-		.municipality, .btAdds {
-			width: 100%;
-			height: 100%;
-			margin: 0px;
-		}
-
-		.crud {
-			width: 90%;
-			height: 24%;
-			margin-left: 5%;
-			margin-top: 5px;
-			color: default;
-		}
-
-		.btnAdded {
-			text-align: center;
-		}
-	</style>
+         #departments::-webkit-scrollbar ,#department-selected::-webkit-scrollbar ,#predict::-webkit-scrollbar ,#predict-selected::-webkit-scrollbar
+         {
+             width:5px;
+         }
+         #departments::-webkit-scrollbar-thumb, #department-selected::-webkit-scrollbar-thumb,#predict::-webkit-scrollbar-thumb , #predict-selected::-webkit-scrollbar-thumb
+         {
+             border-radius: 1px;
+             background: rgba(0,0,0,0);
+             background-color: grey;
+         }
+         #department-selected::-webkit-scrollbar-thumb, #predict-selected::-webkit-scrollbar-thumb
+         {
+             background-color:white;
+         }
+         #department-list , #predict-list
+         {
+             width:100%;
+             height:40px;
+             padding-left: 0px;
+             margin-top: 0px;
+             padding-top: 0px;
+             margin-bottom: 0px;
+         }                
+         .municipality , .btAdds
+         {
+           width:100%;
+           height:100%;
+           margin: 0px;
+         }
+         .crud
+         {
+           width:90%;
+           height:24%;
+           margin-left:5%; 
+           margin-top: 5px;
+          color:default;
+         }
+         .btnAdded
+         {
+            text-align: center;
+         }
+</style>
 
 </head>
 <body>
@@ -586,34 +579,19 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
 		<!-- jQuery Form Validation Library - requirred with above js -->
 
 
-		<!-- All JS functions -->
-		<script src="{{ asset('js/functions.js') }}"></script>
+    <!-- All JS functions -->
+    <script src="{{ asset('js/functions.js') }}"></script>
+    <script src ="{{asset('js/toastr.min.js')}}"></script>
 
-
-		<!-- Token Input -->
-		<script src="{{ asset('js/jquery.tokeninput.js') }}"></script> <!-- Token Input -->
-
-
-		<!-- Noty JavaScript -->
-		<script src="{{ asset('bower_components/noty/js/noty/packaged/jquery.noty.packaged.js') }}"></script>
-
-		<!-- DataTables JavaScript -->
-
-
-	<!--<script src="{{ asset('bower_components/datatables/media/js/datatables-plugins/pagination/scrolling.js') }}"></script>-->
-		<script src="{{ asset('bower_components/datatables/media/js/jquery.dataTables.min.js') }}"></script>
-		<script src="{{ asset('bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js') }}"></script>
-
-
-
-		<!-- Jquery Bootstrap Maxlength -->
-		<script src="{{ asset('bower_components/bootstrap-maxlength/bootstrap-maxlength.min.js') }}"></script>
-
-
-		<!-- Media -->
-		<script src="{{ asset('js/media-player.min.js') }}"></script> <!-- Video Player -->
-		<script src="{{ asset('js/pirobox.min.js') }}"></script> <!-- Lightbox -->
-		<script src="{{ asset('js/file-manager/elfinder.js') }}"></script> <!-- File Manager -->
+    <script src="{{ asset('js/jquery.tokeninput.js') }}"></script> <!-- Token Input -->
+    <script src="{{ asset('bower_components/noty/js/noty/packaged/jquery.noty.packaged.js') }}"></script>
+    <script src="{{ asset('bower_components/datatables/media/js/datatables-plugins/pagination/scrolling.js') }}"></script>
+    <script src="{{ asset('bower_components/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('bower_components/bootstrap-maxlength/bootstrap-maxlength.min.js') }}"></script>
+    <script src="{{ asset('js/media-player.min.js') }}"></script> <!-- Video Player -->
+    <script src="{{ asset('js/pirobox.min.js') }}"></script> <!-- Lightbox -->
+    <script src="{{ asset('js/file-manager/elfinder.js') }}"></script> <!-- File Manager -->
 
 
 		<script type="text/javascript" src="{{ asset('incl/oms.min.js') }}"></script>
@@ -854,49 +832,42 @@ $title .= " - " . Route::getCurrentRoute()->getUri();
              var opt = new Option(data[i][1], data[i][0]);
              el.options.add(opt);
              }*/
-            //$(el).append("<option value=0>Select "+thing['name']+"</option>");
-            $(el).append("<option value=0>Select</option>");
-            $.each(data, function (key, element) {
-              console.log("   Appending: key - ", key, ", element - ", element);
-              $(el).append("<option value=" + key + ">" + element + "</option>");
-            });
-          }
-          $(el).val(0);
-        });
+						//$(el).append("<option value=0>Select "+thing['name']+"</option>");
+						$(el).append("<option value=0>Select</option>");
+						$.each(data, function (key, element) {
+							console.log("   Appending: key - ", key, ", element - ", element);
+							$(el).append("<option value=" + key + ">" + element + "</option>");
+						});
+					}
+					$(el).val(0);
+				});
 
-        var wMarkers = $("#wMarkers").first();
-        console.log("  wMarkers - ", wMarkers);
-      });
-      $('input[type="range"]').rangeslider({
-        polyfill: false,
-        // Callback function
-        onInit: function () {
-          console.log("rangeslider.init");
-        },
+				var wMarkers = $("#wMarkers").first();
+				console.log("  wMarkers - ", wMarkers);
+			});
+		});
+  </script>
+  <script>
+              @if(Session::has('message'))
+      var type = "{{ Session::get('alert-type', 'info') }}";
+      switch(type){
+          case 'info':
+              toastr.info("{{ Session::get('message') }}");
+              break;
 
-        // Callback function
-        onSlide: function (position, value) {
-          /////console.log("rangeslider.sllide(position, value) position - ",position,", value - ",value);
-          var lbl = null;
-          lbl = this.$element.closest(".form-group").find("label.range");
-          //lbl = $(this.$element.parentsUntil(".form-group").first()).find("label");
-          //lbl = this.$element.parents("label");
-          /////console.log("lbl - ",lbl,", this - ",this);
-          //$(this).parentsUntil("div").find(".control-label").text("WtF");
-          lbl.text(value);
-        },
+          case 'warning':
+              toastr.warning("{{ Session::get('message') }}");
+              break;
 
-        // Callback function
-        onSlideEnd: function (position, value) {
-          /////console.log("rangeslider.sllideEnd(position, value) position - ",position,", value - ",value);
-          if (this.value != this.initial) $("#wNote").show();
-          else $("#wNote").hide();
-          var el = $("#wNote").find("#note");
-          /////console.log("  Note - ",el);
-          if ($.trim($("#wNote").find("#note").val()) == "" || $.trim($("#wNote").find("#hours").val()) == "") $("button[type=submit]").attr("disabled", "disabled");
-          else $("button[type=submit]").removeAttr("disabled");
-        }
-      });
-    });
-	</script>
+          case 'success':
+              toastr.success("{{ Session::get('message') }}");
+              break;
+
+          case 'error':
+              toastr.error("{{ Session::get('message') }}");
+              break;
+      }
+      @endif
+  </script>
 </body></html>
+

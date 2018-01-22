@@ -3,17 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 class ReportsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
     public function index()
     {
 
@@ -47,10 +41,6 @@ class ReportsController extends Controller
                             ->addColumn('actions','<a class="btn btn-xs btn-alt" data-toggle="modal" onClick="launchCaseModal({{$id}});" data-target=".modalCase">View</a>')
                             ->make(true);
     }
-
-
-
-
     public function show(Request $request)
     {
 
@@ -127,5 +117,5 @@ class ReportsController extends Controller
 
     }
 
-
 }
+
