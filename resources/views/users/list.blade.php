@@ -11,12 +11,12 @@
 <!-- Alternative -->
 <div class="block-area" id="alternative-buttons">
     <h3 class="block-title">Users Listing</h3>
-    @if(isset($userAddUserPermission) && $userAddUserPermission->permission_id =='31')
+    @can("action.users.add")
 
     <a href="{{ url('add-user') }}" class="btn btn-sm">
        Add User
     </a>
-    @endif
+    @endcan
 </div>
 
  <!-- Collapse -->
@@ -47,6 +47,7 @@
                     <th>Email</th>
                     <th>Status</th>
                     <th>Position</th>
+                    <th>Group</th>
                     <th>Actions</th>
               </tr>
             </thead>
@@ -98,6 +99,7 @@
                     {data: 'email', name: 'users.email'},
                     {data: 'active', name: 'users_statuses.name'},
                     {data: 'position', name: 'positions.name'},
+                    {data: 'role', name: 'roles.name'},
                     {data: 'actions',  name: 'actions'},
 
                ],

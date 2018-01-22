@@ -23,7 +23,9 @@ class CategoriesController extends Controller
     public function index($id)
     {
 
-        $categories = CaseType::select(array('id','name','created_at'))->where('department','=',$id);
+        $categories = CaseType::select(array('id','name','created_at'
+				, \DB::raw('(select count(*) from cases_sub_types where cases_sub_types.case_type = cases_types.id) AS cntKids')
+				))->where('department','=',$id);
         return \Datatables::of($categories)
                             ->addColumn('actions','<a class="btn btn-xs btn-alt" data-toggle="modal"  onClick="launchUpdateCategoryModal({{$id}});" data-target=".modalEditCategory">Edit</a>
 

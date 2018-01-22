@@ -21,12 +21,22 @@ class UsersMilldware
 
        return $next($request);
        //// return redirect('/home');
-    }
-    else
-    {
-        // $mesage  =   '<h1>  Home    </h1>' ;
-        return redirect('/erro');
+
 
     }
+
+
+    else
+    {
+
+       // $mesage  =   '<h1>  Home    </h1>' ;
+
+
+          return redirect('/erro');
+
+    }
+
+
+
     }
 }

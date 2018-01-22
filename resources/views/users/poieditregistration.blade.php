@@ -92,7 +92,7 @@
                             </div>
 
                           <label>Notes</label>
-                          <input type="text" name="profile_pic_note" value="{{$poi->poidocid->notes}}" class="form-control input-sm m-b-3"/>
+                          <input type="text" name="profile_pic_note" value="{{$poi->poidocid?$poi->poidocid->notes:''}}" class="form-control input-sm m-b-3"/>
 
 
                         </div>

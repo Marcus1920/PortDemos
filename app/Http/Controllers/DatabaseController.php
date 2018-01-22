@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB as DB;
 use Illuminate\Database\Query\Builder as Builder;
-use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
+//use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 
 
 class DatabaseController extends Controller {
@@ -80,6 +80,29 @@ class DatabaseController extends Controller {
 		$txtDebug .= "\n\$tables - ".print_r($tables,1);
 		//die("<pre>{$txtDebug}</pre>");
 		return $tables;
+	}
+
+	function postDelete(\Illuminate\Http\Request  $req) {
+		$txtDebug = __CLASS__."".__FUNCTION__."()";
+		$args = func_get_args();
+		//$txtDebug .= "\n  \$args - ".print_r($args,1);
+		$txtDebug .= "\n  \$req - ".print_r($req->all(),1);
+		//$txtDebug .= "\n  \$_REQUEST - ".print_r($_REQUEST,1);
+		$table = array_key_exists("table", $req->all()) ? $req->all()['table'] : 0;
+		$id = array_key_exists("id", $req->all()) ? $req->all()['id'] : 0;
+		$deleted = 0;
+		$data = null;
+		if ($table == "cases") {
+			if ($id > 0) $data = \App\CaseReport::find($id);
+			if ($data) $deleted = $data->delete();
+			if ($deleted) \Session::flash("success", "Item deleted");
+			else \Session::flash("error", "Error deleting item");
+			//$data->restore();
+		}
+		$txtDebug .= "\n  \$table - {$table}, \$id - {$id}, \$deleted - ".print_r($deleted,1);
+		$txtDebug .= "\n  \$data - ".print_r($data,1);
+		return redirect()->back();
+		die("<pre>{$txtDebug}</pre>");
 	}
 }  
 ?>

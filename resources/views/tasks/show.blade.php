@@ -233,7 +233,7 @@
 
             var completeValue     = "{!! $task->complete !!}";
 
-            $('.spinner-2').spinedit('setValue',completeValue);
+            //$('.spinner-2').spinedit('setValue',completeValue);
 
         });
 

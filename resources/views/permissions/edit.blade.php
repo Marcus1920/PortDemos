@@ -7,14 +7,34 @@
                 <h4 class="modal-title">Permission</h4>
             </div>
             <div class="modal-body">
-            {!! Form::open(['url' => 'updatePermission', 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"updateAffiliationForm" ]) !!}
+            {!! Form::open(['url' => 'updatePermission', 'method' => 'post', 'class' => 'form-horizontal', 'id'=>"updatePermissionForm" ]) !!}
             {!! Form::hidden('permissionId',NULL,['id' => 'permissionId']) !!}
             {!! Form::hidden('id',Auth::user()->id) !!}
             <div class="form-group">
                 {!! Form::label('Name', 'Name', array('class' => 'col-md-2 control-label')) !!}
                 <div class="col-md-10">
-                  {!! Form::text('name',NULL,['class' => 'form-control input-sm','id' => 'name']) !!}
+                  {!! Form::text('name',NULL,['class' => 'form-control input-sm','id' => 'name', 'title'=>"Identifier to be used in code"]) !!}
                   @if ($errors->has('name')) <p class="help-block red">*{{ $errors->first('name') }}</p> @endif
+                </div>
+            </div>
+                <div class="form-group">
+                {!! Form::label('Description', 'Description', array('class' => 'col-md-2 control-label')) !!}
+                <div class="col-md-10">
+                  {!! Form::text('title',NULL,['class' => 'form-control input-sm','id' => 'title', 'title'=>"Description of the permission"]) !!}
+                  @if ($errors->has('title')) <p class="help-block red">*{{ $errors->first('title') }}</p> @endif
+                </div>
+            </div>
+                <b style="display: block; margin: 0 1em">Database</b>
+            <div class="form-group">
+                {!! Form::label('Table', 'Table', array('class' => 'col-md-2 control-label')) !!}
+                <div class="col-md-10">
+                    {!! Form::text('db[table]',NULL,['class' => 'form-control input-sm','id' => 'dbtable', 'title'=>"Associated database table"]) !!}
+                </div>
+            </div>
+            <div class="form-group">
+                {!! Form::label('Field', 'Field', array('class' => 'col-md-2 control-label')) !!}
+                <div class="col-md-10">
+                    {!! Form::text('db[field]',NULL,['class' => 'form-control input-sm','id' => 'dbfield', 'title'=>"Associated database field"]) !!}
                 </div>
             </div>
             <div class="form-group">

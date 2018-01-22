@@ -158,7 +158,8 @@ class TasksController extends Controller
 
     public function store(TaskRequest $request)
     {
-
+$txtDebug = __CLASS__."".__FUNCTION__."(\$request)";
+$txtDebug .= "\n  \$request - ".print_r($request->all(),1);
         $task = $this->tasks->storeTask($request);
 
         if(isset($request['case_id'])){
@@ -168,7 +169,10 @@ class TasksController extends Controller
         }
 		
 		$eventType = $this->eventType->getEventType('Task');
+$txtDebug .= "\n  \$eventType - ".print_r($eventType,1);
         $calendar  = $this->calendar->getCalendarPerGroup($eventType->id,6);
+			$txtDebug .= "\n  \$calendar - ".print_r($calendar,1);
+			//die("<pre>{$txtDebug}</pre>");
         $taskEventData =
             [
                 'event_type_id' => $eventType->id,
@@ -270,6 +274,7 @@ class TasksController extends Controller
         $taskActivities = $this->taskActivity->getTaskActivities()->where('task_id',$task->id);
         $taskReminders  = $this->taskReminders->getReminders()->where('task_id',$task->id)->where('user_id',Auth::user()->id);
 
+foreach ($taskNotes AS $note) $task->actual_hours += $note->hours;
         return view('tasks.show',compact('task','taskNotes','taskFiles','parentTasks','subTasks','taskAssignee','taskActivities','taskReminders'));
 
 
@@ -323,6 +328,16 @@ class TasksController extends Controller
 
         $form   = Input::all();
         $task   = $this->tasks->getTask($form['task_id']);
+        if ($task->complete != $form['complete']) {
+					$taskNote                 = new \App\TaskNote();
+					$taskNote->task_id        = $form['task_id'];
+					$diff = $form['complete'] - $task->complete;
+					$taskNote->note           = "Progress change: {$form['complete']}% ({$diff})";
+					$taskNote->note           .= "\n".$form['note'];
+					$taskNote->created_by     = Auth::user()->id;
+					$taskNote->hours           .= $form['hours'];
+					$taskNote->save();
+				}
         $this->tasks->updateTask($form);
         return Redirect::to('tasks/'.$form['task_id']);
 

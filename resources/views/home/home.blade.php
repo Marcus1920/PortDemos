@@ -11,6 +11,7 @@
     <div class="row" >
         <div class="col-md-1" >
         </div>
+        @can("view.home.case-statuses")
         <div class="col-md-5" >
             <!-- AREA CHART -->
             <a href="{{url('allocatedCases')}}">
@@ -30,6 +31,8 @@
 
 
         </div><!-- /.col (LEFT) -->
+        @endcan
+        @can("view.home.tasks")
         <div class="col-md-5">
             <!-- LINE CHART -->
             <a href="{{url('tasks')}}">
@@ -49,13 +52,14 @@
 
 
         </div><!-- /.col (RIGHT) -->
+        @endcan
         <div class="col-md-1" >
         </div>
     </div><!-- /.row -->
     <div class="row" >
         <div class="col-md-1" >
         </div>
-
+        @can("view.home.map")
         <div class="col-md-10" style="text-align: center">
             <a href="{{url('maps')}}">
 
@@ -68,11 +72,11 @@
                     <img style="width: 100%" src="https://maps.googleapis.com/maps/api/staticmap?center=Durban+Port,South+Africa&zoom=13&size=600x400&maptype=roadmap&markers=color:blue&key=AIzaSyAVXK8rT6sSD_sL2ENnIYKaphpWdl5BjW4" />
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
-            <!-- DONUT CHART   -->
+            <!-- DONUT CHART -->
             </a>
 
         </div><!-- /.col (LEFT) -->
-
+        @endcan
         <div class="col-md-5" style="display: none">
             <a href="{{url('closedCases')}}">
             <div class="box box-info">

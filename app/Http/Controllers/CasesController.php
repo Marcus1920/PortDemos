@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -52,7 +53,7 @@ class CasesController extends Controller {
 
 	public function __construct(CaseResponderService $responder_service, CaseOwnerService $case_owner_service, CaseActivityService $case_activity_service) {
 		$this->case_responders = $responder_service;
-		$this->case_owners     = $case_owner_service;
+		$this->case_owners = $case_owner_service;
 		$this->case_activities = $case_activity_service;
 	}
 
@@ -61,14 +62,14 @@ class CasesController extends Controller {
 			->get();
 		$otherCases = CaseReport::where('user', '=', Auth::user()->id)
 			->get();
-		$caseIds    = array();
+		$caseIds = array();
 		foreach ($myCases as $case) {
 			$caseIds[] = $case->case_id;
 		}
 		foreach ($otherCases as $caseOld) {
 			$caseIds[] = $caseOld->id;
 		}
-		$caseIds     = array_unique($caseIds);
+		$caseIds = array_unique($caseIds);
 		$userRoleObj = UserRole::find(Auth::user()->role);
 		if ($userRoleObj->id == 1) {
 			$cases = \DB::table('cases')
@@ -79,31 +80,30 @@ class CasesController extends Controller {
 				->where('cases_statuses.name', '=', 'Allocated')
 				->orWhere('cases_statuses.name', '=', 'Referred')
 				->select(
-					/*\DB::raw("
-                                        cases.id,
-                                        cases.created_at,
-                                        cases.description,
-                                        cases_statuses.name as status,
-                                        cases_owners.accept,
-                                        cases.case_type,
-                                        cases_sources.name as source,
-                                        cases_types.name as case_type,
-                                        cases_owners.type"
-					)*/
+				/*\DB::raw("
+																			cases.id,
+																			cases.created_at,
+																			cases.description,
+																			cases_statuses.name as status,
+																			cases_owners.accept,
+																			cases.case_type,
+																			cases_sources.name as source,
+																			cases_types.name as case_type,
+																			cases_owners.type"
+				)*/
 					array(
-					"cases.id",
-          "cases.created_at",
-          "cases.description",
-          "cases_sources.name as source",
-					"cases_types.name as case_type",
-					"cases_owners.accept",
-					"cases.case_type",
-          "cases_statuses.name as status",
-					"cases_owners.type")
+						"cases.id",
+						"cases.created_at",
+						"cases.description",
+						"cases_sources.name as source",
+						"cases_types.name as case_type",
+						"cases_owners.accept",
+						"cases.case_type",
+						"cases_statuses.name as status",
+						"cases_owners.type")
 				)
 				->groupBy('cases.id');
-		}
-		else {
+		} else {
 			if ($userRoleObj->name == 'Call Centre Agent') {
 				$cases = \DB::table('cases')
 					->join('cases_owners', 'cases.id', '=', 'cases_owners.case_id')
@@ -125,8 +125,7 @@ class CasesController extends Controller {
 						)
 					)
 					->groupBy('cases.id');
-			}
-			else {
+			} else {
 				$cases = \DB::table('cases')
 					->join('cases_owners', 'cases.id', '=', 'cases_owners.case_id')
 					->join('cases_statuses', 'cases.status', '=', 'cases_statuses.id')
@@ -180,8 +179,7 @@ class CasesController extends Controller {
                                                    <a class="btn btn-xs btn-alt" data-toggle="modal" href="view-case-poi-associates/{{ $id }}" target="_blank">View POI</a>
                                                     ')
 				->make(true);
-		}
-		else {
+		} else {
 			$cases = \DB::table('cases')
 				->join('cases_statuses', 'cases.status', '=', 'cases_statuses.id')
 				->join('cases_sources', 'cases.source', '=', 'cases_sources.id')
@@ -214,20 +212,20 @@ class CasesController extends Controller {
 				->join('cases_sources', 'cases.source', '=', 'cases_sources.id')
 				->where('cases_statuses.name', '=', 'Resolved')
 				->select(
-					/*\DB::raw("
+				/*\DB::raw("
 
-                                    cases.id,
-                                    cases.created_at,
-                                    cases.description,
-                                    cases_sources.name as source,
-                                    cases_statuses.name as status"
-					)*/
+																	cases.id,
+																	cases.created_at,
+																	cases.description,
+																	cases_sources.name as source,
+																	cases_statuses.name as status"
+				)*/
 					array("cases.id",
 						"cases.created_at",
 						"cases.description",
 						"cases_sources.name as source",
-                                    "cases_statuses.name as status"
-									)
+						"cases_statuses.name as status"
+					)
 				);
 
 			return \Datatables::of($cases)
@@ -236,28 +234,27 @@ class CasesController extends Controller {
 		<a class="btn btn-xs btn-alt" data-toggle="modal"  href="casetest/{{$id}}">View</a>
                                         <a class="btn btn-xs btn-alt" data-toggle="modal" href="view-case-poi-associates/{{ $id }}" target="_blank">POI</a>')
 				->make(true);
-		}
-		else {
+		} else {
 			$cases = \DB::table('cases')
 				->join('cases_statuses', 'cases.status', '=', 'cases_statuses.id')
 				->join('cases_sources', 'cases.source', '=', 'cases_sources.id')
 				->where('cases_statuses.name', '=', 'Resolved')
 				->where('user', '=', \Auth::user()->id)
 				->select(
-					/*\DB::raw("
+				/*\DB::raw("
 
-                                    cases.id,
-                                    cases.created_at,
-                                    cases.description,
-                                    cases_sources.name as source,
-                                    cases_statuses.name as status"
-					)*/
+																	cases.id,
+																	cases.created_at,
+																	cases.description,
+																	cases_sources.name as source,
+																	cases_statuses.name as status"
+				)*/
 					array("cases.id",
 						"cases.created_at",
 						"cases.description",
 						"cases_sources.name as source",
-                                    "cases_statuses.name as status"
-									)
+						"cases_statuses.name as status"
+					)
 				);
 
 			return \Datatables::of($cases)
@@ -282,25 +279,24 @@ class CasesController extends Controller {
 				})
 				->where('cases_statuses.name', '=', 'Pending')
 				->select(
-					/*\DB::raw(
-						"
+				/*\DB::raw(
+					"
 
-                                    cases.id,
-                                    cases.created_at,
-                                    cases.description,
-                                    cases_sources.name as source,
-                                    cases_statuses.name as CaseStatus
-									, cases_seen.when AS seen"
-					)*/
+																	cases.id,
+																	cases.created_at,
+																	cases.description,
+																	cases_sources.name as source,
+																	cases_statuses.name as CaseStatus
+								, cases_seen.when AS seen"
+				)*/
 					array("cases.id",
 						"cases.created_at",
 						"cases.description",
 						"cases_sources.name as source",
-                                    "cases_statuses.name as status"
-									, "cases_seen.when AS seen")
+						"cases_statuses.name as status"
+					, "cases_seen.when AS seen")
 				);
-		}
-		else {
+		} else {
 			$cases = \DB::table('cases')
 				->leftJoin('cases_statuses', 'cases.status', '=', 'cases_statuses.id')
 				->leftJoin('cases_sources', 'cases.source', '=', 'cases_sources.id')
@@ -311,22 +307,22 @@ class CasesController extends Controller {
 				->where('cases_statuses.name', '=', 'Pending')
 				->where('cases.agent', '=', \Auth::user()->id)
 				->select(
-					/*\DB::raw(
-						"
+				/*\DB::raw(
+					"
 
-                                    cases.id,
-                                    cases.created_at,
-                                    cases.description,
-                                    cases_sources.name as source,
-                                    cases_statuses.name as CaseStatus
-									, cases_seen.when AS seen"
-					)*/
+																	cases.id,
+																	cases.created_at,
+																	cases.description,
+																	cases_sources.name as source,
+																	cases_statuses.name as CaseStatus
+								, cases_seen.when AS seen"
+				)*/
 					array("cases.id",
 						"cases.created_at",
 						"cases.description",
 						"cases_sources.name as source",
-                                    "cases_statuses.name as status"
-									, "cases_seen.when AS seen")
+						"cases_statuses.name as status"
+					, "cases_seen.when AS seen")
 				);
 		}
 		/*
@@ -360,7 +356,7 @@ class CasesController extends Controller {
 	 * @return Response
 	 */
 	public function acceptCase($id) {
-	$txtDebug     = __CLASS__ . "" . __FUNCTION__ . "(\$id) \$id - {$id}";
+		$txtDebug = __CLASS__ . "" . __FUNCTION__ . "(\$id) \$id - {$id}";
 		$caseOwnerObj = CaseOwner::where("case_id", '=', $id)
 			->whereAnd("user", '=', Auth::user()->id)
 			->first();
@@ -369,15 +365,15 @@ class CasesController extends Controller {
 		if (sizeof($caseOwnerObj) > 0) {
 			$caseOwnerObj->accept = 1;
 			$caseOwnerObj->save();
-			$caseActivity              = New CaseActivity();
-			$caseActivity->case_id     = $id;
-			$caseActivity->user        = \Auth::user()->id;
+			$caseActivity = New CaseActivity();
+			$caseActivity->case_id = $id;
+			$caseActivity->user = \Auth::user()->id;
 			$caseActivity->addressbook = 0;
-			$caseActivity->note        = "Case Accepted by " . \Auth::user()->name . ' ' . \Auth::user()->surname;
+			$caseActivity->note = "Case Accepted by " . \Auth::user()->name . ' ' . \Auth::user()->surname;
 			$caseActivity->save();
 			$case = CaseReport::find($id);
 			if ($case->status == "Pending") {
-				$case->status      = "Actioned";
+				$case->status = "Actioned";
 				$case->accepted_at = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
 				$case->save();
 			}
@@ -388,14 +384,13 @@ class CasesController extends Controller {
 			foreach ($caseOwners as $owner) {
 				if ($owner->addressbook == 1) {
 					$user = AddressBook::find($owner->user);
-				}
-				else {
+				} else {
 					$user = User::find($owner->user);
 				}
 				$txtDebug .= "\n  \$user - " . print_r($user->toArray(), 1);
 				$data = array(
-					'name'       => $user->name,
-					'caseID'     => $id,
+					'name' => $user->name,
+					'caseID' => $id,
 					'acceptedBy' => \Auth::user()->name . ' ' . \Auth::user()->surname,
 				);
 				\Mail::send('emails.acceptCase', $data, function ($message) use ($user) {
@@ -406,8 +401,8 @@ class CasesController extends Controller {
 		}
 		//die("<pre>{$txtDebug}</pre>");
 		$data = array(
-			'name'       => "AIMS",
-			'caseID'     => $id,
+			'name' => "AIMS",
+			'caseID' => $id,
 			'acceptedBy' => \Auth::user()->name . ' ' . \Auth::user()->surname,
 		);
 		\Mail::send('emails.acceptCase', $data, function ($message) {
@@ -425,58 +420,57 @@ class CasesController extends Controller {
 	 * @return Response
 	 */
 	public function captureCase(Request $request) {
-		$repId       = 0;
+		$repId = 0;
 		$addressbook = 0;
 		if (!$request['repID']) {
-			$user               = new User();
-			$user->role         = 5;
-			$user->title        = 1;
-			$user->language     = 1;
-			$user->gender       = 1;
-			$user->name         = $request['name'];
-			$user->surname      = $request['surname'];
-			$user->cellphone    = $request['mobile'];
-			$user->email        = $request['mobile'] . "siyaleader.net";
-			$user->active       = 2;
-			$user->province     = $request['province'];
-			$user->district     = $request['district'];
+			$user = new User();
+			$user->role = 5;
+			$user->title = 1;
+			$user->language = 1;
+			$user->gender = 1;
+			$user->name = $request['name'];
+			$user->surname = $request['surname'];
+			$user->cellphone = $request['mobile'];
+			$user->email = $request['mobile'] . "siyaleader.net";
+			$user->active = 2;
+			$user->province = $request['province'];
+			$user->district = $request['district'];
 			$user->municipality = $request['municipality'];
-			$user->ward         = $request['ward'];
-			$user->position     = 3;
-			$password           = rand(1000, 99999);
-			$user->password     = \Hash::make($password);
-			$user->area         = $request['area'];
-			$user->api_key      = uniqid();
-			$user->created_by   = \Auth::user()->id;
+			$user->ward = $request['ward'];
+			$user->position = 3;
+			$password = rand(1000, 99999);
+			$user->password = \Hash::make($password);
+			$user->area = $request['area'];
+			$user->api_key = uniqid();
+			$user->created_by = \Auth::user()->id;
 			$user->save();
 			$repId = $user->id;
-		}
-		else {
+		} else {
 			$repId = $request['repID'];
 		}
 		$description = preg_replace("/[^ \w]+/", "", $request['description']);
-		$gps                               = explode(",", $request['GPS']);
-		$case                              = new CaseReport();
-		$case->description                 = $description;
-		$case->user                        = "";
-		$case->status                      = 1;
-		$case->gps_lat                     = $gps[0];
-		$case->gps_lng                     = $gps[1];
-		$case->addressbook                 = 0;
-		$case->reporter                    = $repId;
-		$case->source                      = 3;
-		$case->active                      = 1;
-		$case->house_holder_id             = 1;
-		$case->case_type                   = $request['case_type'];
-		$case->case_sub_type               = $request['case_sub_type'];
-		$case->saps_case_number            = "scscs";
-		$case->client_reference_number     = "test";
-		$case->street_number               = $request['street_number'];
-		$case->route                       = $request['route'];
-		$case->locality                    = $request['locality'];
+		$gps = explode(",", $request['GPS']);
+		$case = new CaseReport();
+		$case->description = $description;
+		$case->user = "";
+		$case->status = 1;
+		$case->gps_lat = $gps[0];
+		$case->gps_lng = $gps[1];
+		$case->addressbook = 0;
+		$case->reporter = $repId;
+		$case->source = 3;
+		$case->active = 1;
+		$case->house_holder_id = 1;
+		$case->case_type = $request['case_type'];
+		$case->case_sub_type = $request['case_sub_type'];
+		$case->saps_case_number = "scscs";
+		$case->client_reference_number = "test";
+		$case->street_number = $request['street_number'];
+		$case->route = $request['route'];
+		$case->locality = $request['locality'];
 		$case->administrative_area_level_1 = $request['administrative_area_level_1'];
-		$case->postal_code                 = $request['postal_code'];
-		$case->country                     = $request['country'];
+		$case->postal_code = $request['postal_code'];
+		$case->country = $request['country'];
 		$case->save();
 
 		return redirect()->back();
@@ -490,16 +484,16 @@ class CasesController extends Controller {
 	 */
 	public function escalate(Request $request) {
 		if ($request['addresses'] != NULL) {
-			$addresses   = explode(',', $request['addresses']);
-			$caseOwners  = CaseOwner::where('case_id', '=', $request['caseID'])->get();
+			$addresses = explode(',', $request['addresses']);
+			$caseOwners = CaseOwner::where('case_id', '=', $request['caseID'])->get();
 			$typeMessage = 'allocated';
-			$typeStatus  = 'Allocated';
+			$typeStatus = 'Allocated';
 			foreach ($addresses as $address) {
 				$user = User::where('id', '=', $address)->first();
 				$data = array(
-					'name'     => $user->name,
-					'caseID'   => $request['caseID'],
-					'content'  => $request['message'],
+					'name' => $user->name,
+					'caseID' => $request['caseID'],
+					'content' => $request['message'],
 					'executor' => \Auth::user()->name . ' ' . \Auth::user()->surname,
 				);
 				\Mail::send('emails.caseAllocated', $data, function ($message) use ($user) {
@@ -512,63 +506,62 @@ class CasesController extends Controller {
 				if (sizeof($user) <= 0) {
 					$user = User::where('id', '=', $address)->first();
 				}
-				$name        = (sizeof($user) <= 0) ? $user->first_name : $user->name;
-				$surname     = (sizeof($user) <= 0) ? $user->surname : $user->surname;
-				$to          = (sizeof($user) <= 0) ? $user->id : $user->id;
-				$type        = (sizeof($user) <= 0) ? 1 : 0;
+				$name = (sizeof($user) <= 0) ? $user->first_name : $user->name;
+				$surname = (sizeof($user) <= 0) ? $user->surname : $user->surname;
+				$to = (sizeof($user) <= 0) ? $user->id : $user->id;
+				$type = (sizeof($user) <= 0) ? 1 : 0;
 				$addressbook = (sizeof($user) <= 0) ? 1 : 0;
-				$cellphone   = (sizeof($user) <= 0) ? $user->surname : $user->cellphone;
+				$cellphone = (sizeof($user) <= 0) ? $user->surname : $user->cellphone;
 				$data = array(
-					'name'       => $name,
-					'caseID'     => $request['caseID'],
-					'content'    => $request['message'],
+					'name' => $name,
+					'caseID' => $request['caseID'],
+					'content' => $request['message'],
 					'typeStatus' => $request['typeStatus']
 				);
-				$details         = CaseReport::where('id', '=', $request['caseID'])->first();
+				$details = CaseReport::where('id', '=', $request['caseID'])->first();
 				$details->status = 7;
 				$details->save();
-				$caseActivity          = New CaseActivity();
+				$caseActivity = New CaseActivity();
 				$caseActivity->case_id = $request['caseID'];
-				$caseActivity->user    = $to;
+				$caseActivity->user = $to;
 				$caseActivity->note = "Case " . $typeMessage . " to " . $name . " " . $surname . " by " . \Auth::user()->name . ' ' . \Auth::user()->surname;
 				$caseActivity->save();
-				$caseEscalationObj               = New CaseEscalator();
-				$caseEscalationObj->case_id      = $request['caseID'];
-				$caseEscalationObj->from         = \Auth::user()->id;
-				$caseEscalationObj->to           = $to;
-				$caseEscalationObj->type         = $type;
-				$caseEscalationObj->description  = $details->description;
-				$caseEscalationObj->category     = $details->case_type;
+				$caseEscalationObj = New CaseEscalator();
+				$caseEscalationObj->case_id = $request['caseID'];
+				$caseEscalationObj->from = \Auth::user()->id;
+				$caseEscalationObj->to = $to;
+				$caseEscalationObj->type = $type;
+				$caseEscalationObj->description = $details->description;
+				$caseEscalationObj->category = $details->case_type;
 				$caseEscalationObj->sub_category = $details->case_sub_type;
 				$caseEscalationObj->investigation_officer = $details->investigation_officer;
-				$caseEscalationObj->investigation_cell    = $details->investigation_cell;
-				$caseEscalationObj->investigation_email   = $details->investigation_email;
-				$caseEscalationObj->status                = 7;
-				$caseEscalationObj->start    = date("Y-m-d");
-				$caseEscalationObj->color    = "#4caf50";
-				$caseEscalationObj->end      = $request['due_date'];
-				$caseEscalationObj->title    = "Case ID: " . $request['caseID'];
+				$caseEscalationObj->investigation_cell = $details->investigation_cell;
+				$caseEscalationObj->investigation_email = $details->investigation_email;
+				$caseEscalationObj->status = 7;
+				$caseEscalationObj->start = date("Y-m-d");
+				$caseEscalationObj->color = "#4caf50";
+				$caseEscalationObj->end = $request['due_date'];
+				$caseEscalationObj->title = "Case ID: " . $request['caseID'];
 				$caseEscalationObj->due_date = $request['due_date'] . " " . $request['due_time'];
-				$caseEscalationObj->message  = $request['message'];
+				$caseEscalationObj->message = $request['message'];
 				$caseEscalationObj->save();
-				$caseOwnerObj          = New CaseOwner();
+				$caseOwnerObj = New CaseOwner();
 				$caseOwnerObj->case_id = $request['caseID'];
 //            $caseOwnerObj->user = $to;
 				$caseOwnerObj->type = 4;
 //            $caseOwnerObj->addressbook = $addressbook;
 				$caseOwnerObj->save();
 				if ($typeStatus == 'Allocated') {
-					$objCase               = CaseReport::find($request['caseID']);
-					$objCaseStatus         = CaseStatus::where('name', '=', $typeStatus)->first();
+					$objCase = CaseReport::find($request['caseID']);
+					$objCaseStatus = CaseStatus::where('name', '=', $typeStatus)->first();
 					$objCase->allocated_at = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
-					$objCase->status       = $objCaseStatus->id;
+					$objCase->status = $objCaseStatus->id;
 					$objCase->save();
-				}
-				else {
-					$objCase              = CaseReport::find($request['caseID']);
-					$objCaseStatus        = CaseStatus::where('name', '=', $typeStatus)->first();
+				} else {
+					$objCase = CaseReport::find($request['caseID']);
+					$objCaseStatus = CaseStatus::where('name', '=', $typeStatus)->first();
 					$objCase->referred_at = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
-					$objCase->status      = $objCaseStatus->id;
+					$objCase->status = $objCaseStatus->id;
 					$objCase->save();
 				}
 //                \Mail::send('emails.caseEscalated', $data, function ($message) use ($typeStatus) {
@@ -635,18 +628,17 @@ class CasesController extends Controller {
 						->get();
 				}
 			}
-		}
-		else if ($request['addresses1'] != NULL) {
-			$addresses   = explode(',', $request['addresses1']);
-			$caseOwners  = CaseOwner::where('case_id', '=', $request['caseID'])->get();
+		} else if ($request['addresses1'] != NULL) {
+			$addresses = explode(',', $request['addresses1']);
+			$caseOwners = CaseOwner::where('case_id', '=', $request['caseID'])->get();
 			$typeMessage = 'Referred';
-			$typeStatus  = 'Referred';
+			$typeStatus = 'Referred';
 			foreach ($addresses as $address) {
 				$user = User::where('id', '=', $address)->first();
 				$data = array(
-					'name'     => $user->name,
-					'caseID'   => $request['caseID'],
-					'content'  => $request['message'],
+					'name' => $user->name,
+					'caseID' => $request['caseID'],
+					'content' => $request['message'],
 					'executor' => \Auth::user()->name . ' ' . \Auth::user()->surname,
 				);
 				\Mail::send('emails.caseEscalation', $data, function ($message) use ($user) {
@@ -659,63 +651,62 @@ class CasesController extends Controller {
 				if (sizeof($user) <= 0) {
 					$user = User::where('id', '=', $address)->first();
 				}
-				$name        = (sizeof($user) <= 0) ? $user->first_name : $user->name;
-				$surname     = (sizeof($user) <= 0) ? $user->surname : $user->surname;
-				$to          = (sizeof($user) <= 0) ? $user->id : $user->id;
-				$type        = (sizeof($user) <= 0) ? 1 : 0;
+				$name = (sizeof($user) <= 0) ? $user->first_name : $user->name;
+				$surname = (sizeof($user) <= 0) ? $user->surname : $user->surname;
+				$to = (sizeof($user) <= 0) ? $user->id : $user->id;
+				$type = (sizeof($user) <= 0) ? 1 : 0;
 				$addressbook = (sizeof($user) <= 0) ? 1 : 0;
-				$cellphone   = (sizeof($user) <= 0) ? $user->surname : $user->cellphone;
+				$cellphone = (sizeof($user) <= 0) ? $user->surname : $user->cellphone;
 				$data = array(
-					'name'       => $name,
-					'caseID'     => $request['caseID'],
-					'content'    => $request['message'],
+					'name' => $name,
+					'caseID' => $request['caseID'],
+					'content' => $request['message'],
 					'typeStatus' => $request['typeStatus']
 				);
-				$details         = CaseReport::where('id', '=', $request['caseID'])->first();
+				$details = CaseReport::where('id', '=', $request['caseID'])->first();
 				$details->status = 7;
 				$details->save();
-				$caseActivity          = New CaseActivity();
+				$caseActivity = New CaseActivity();
 				$caseActivity->case_id = $request['caseID'];
-				$caseActivity->user    = $to;
+				$caseActivity->user = $to;
 				$caseActivity->note = "Case " . $typeMessage . " to " . $name . " " . $surname . " by " . \Auth::user()->name . ' ' . \Auth::user()->surname;
 				$caseActivity->save();
-				$caseEscalationObj               = New CaseEscalator();
-				$caseEscalationObj->case_id      = $request['caseID'];
-				$caseEscalationObj->from         = \Auth::user()->id;
-				$caseEscalationObj->to           = $to;
-				$caseEscalationObj->type         = $type;
-				$caseEscalationObj->description  = $details->description;
-				$caseEscalationObj->category     = $details->case_type;
+				$caseEscalationObj = New CaseEscalator();
+				$caseEscalationObj->case_id = $request['caseID'];
+				$caseEscalationObj->from = \Auth::user()->id;
+				$caseEscalationObj->to = $to;
+				$caseEscalationObj->type = $type;
+				$caseEscalationObj->description = $details->description;
+				$caseEscalationObj->category = $details->case_type;
 				$caseEscalationObj->sub_category = $details->case_sub_type;
 				$caseEscalationObj->investigation_officer = $details->investigation_officer;
-				$caseEscalationObj->investigation_cell    = $details->investigation_cell;
-				$caseEscalationObj->investigation_email   = $details->investigation_email;
-				$caseEscalationObj->status                = 7;
-				$caseEscalationObj->start    = date("Y-m-d");
-				$caseEscalationObj->color    = "#4caf50";
-				$caseEscalationObj->end      = $request['due_date'];
-				$caseEscalationObj->title    = "Case ID: " . $request['caseID'];
+				$caseEscalationObj->investigation_cell = $details->investigation_cell;
+				$caseEscalationObj->investigation_email = $details->investigation_email;
+				$caseEscalationObj->status = 7;
+				$caseEscalationObj->start = date("Y-m-d");
+				$caseEscalationObj->color = "#4caf50";
+				$caseEscalationObj->end = $request['due_date'];
+				$caseEscalationObj->title = "Case ID: " . $request['caseID'];
 				$caseEscalationObj->due_date = $request['due_date'] . " " . $request['due_time'];
-				$caseEscalationObj->message  = $request['message'];
+				$caseEscalationObj->message = $request['message'];
 				$caseEscalationObj->save();
-				$caseOwnerObj          = New CaseOwner();
+				$caseOwnerObj = New CaseOwner();
 				$caseOwnerObj->case_id = $request['caseID'];
 //              $caseOwnerObj->user = $to;
 				$caseOwnerObj->type = 4;
 //              $caseOwnerObj->addressbook = $addressbook;
 				$caseOwnerObj->save();
 				if ($typeStatus == 'Allocated') {
-					$objCase               = CaseReport::find($request['caseID']);
-					$objCaseStatus         = CaseStatus::where('name', '=', $typeStatus)->first();
+					$objCase = CaseReport::find($request['caseID']);
+					$objCaseStatus = CaseStatus::where('name', '=', $typeStatus)->first();
 					$objCase->allocated_at = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
-					$objCase->status       = $objCaseStatus->id;
+					$objCase->status = $objCaseStatus->id;
 					$objCase->save();
-				}
-				else {
-					$objCase              = CaseReport::find($request['caseID']);
-					$objCaseStatus        = CaseStatus::where('name', '=', $typeStatus)->first();
+				} else {
+					$objCase = CaseReport::find($request['caseID']);
+					$objCaseStatus = CaseStatus::where('name', '=', $typeStatus)->first();
 					$objCase->referred_at = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
-					$objCase->status      = $objCaseStatus->id;
+					$objCase->status = $objCaseStatus->id;
 					$objCase->save();
 				}
 //
@@ -840,9 +831,9 @@ class CasesController extends Controller {
 		$contacts = explode(',', $request['pois']);
 		foreach ($contacts as $contact) {
 			$poi = Poi::where('email', '=', $contact)->first();
-			$casepoi          = New CasePoi();
+			$casepoi = New CasePoi();
 			$casepoi->case_id = $request['caseID'];
-			$casepoi->poi_id  = $poi->id;
+			$casepoi->poi_id = $poi->id;
 			$casepoi->save();
 		}
 
@@ -855,11 +846,11 @@ class CasesController extends Controller {
 		if (sizeof($checking_one) == 0 && sizeof($checking_two) == 0) {
 			if ($request['poi_associate'] != "") {
 				if ($request['poi_associate'] != $request['poiID']) {
-					$assocatepoi                   = New PoiAssociate();
-					$assocatepoi->associate_id     = $request['poi_associate'];
-					$assocatepoi->poi_id           = $request['poiID'];
+					$assocatepoi = New PoiAssociate();
+					$assocatepoi->associate_id = $request['poi_associate'];
+					$assocatepoi->poi_id = $request['poiID'];
 					$assocatepoi->association_type = $request['poi_association_type'];
-					$assocatepoi->created_by       = \Auth::user()->id;
+					$assocatepoi->created_by = \Auth::user()->id;
 					$assocatepoi->save();
 
 					return response()->json(['status' => 'ok']);
@@ -873,9 +864,9 @@ class CasesController extends Controller {
 		if (sizeof($checking_one) == 0) {
 			if ($request['poi_associate'] != "") {
 				if ($request['poi_associate'] != $request['poiID']) {
-					$assocatepoi             = New CasePoi();
-					$assocatepoi->case_id    = $request['caseID'];
-					$assocatepoi->poi_id     = $request['poi_associate'];
+					$assocatepoi = New CasePoi();
+					$assocatepoi->case_id = $request['caseID'];
+					$assocatepoi->poi_id = $request['poi_associate'];
 					$assocatepoi->created_by = \Auth::user()->id;
 					$assocatepoi->save();
 
@@ -889,9 +880,9 @@ class CasesController extends Controller {
 		$checking_one = CasePoi::where("case_id", $request['add_case_search'])->where("poi_id", $request['poiID'])->first();
 		if (sizeof($checking_one) == 0) {
 			if ($request['add_case_search'] != "") {
-				$assocatepoi             = New CasePoi();
-				$assocatepoi->case_id    = $request['add_case_search'];
-				$assocatepoi->poi_id     = $request['poiID'];
+				$assocatepoi = New CasePoi();
+				$assocatepoi->case_id = $request['add_case_search'];
+				$assocatepoi->poi_id = $request['poiID'];
 				$assocatepoi->created_by = \Auth::user()->id;
 				$assocatepoi->save();
 
@@ -913,30 +904,30 @@ class CasesController extends Controller {
 	}
 
 	public function allocate(Request $request) {
-		$responders     = $request['responders'];
-		$department     = $request['department'];
-		$category       = $request['category'];
-		$subCategory    = $request['sub_category'];
+		$responders = $request['responders'];
+		$department = $request['department'];
+		$category = $request['category'];
+		$subCategory = $request['sub_category'];
 		$subSubCategory = $request['sub_sub_category'];
 		foreach ($responders as $responder) {
-			$caseOwner          = new CaseOwner();
+			$caseOwner = new CaseOwner();
 			$caseOwner->case_id = $request['caseID'];
-			$caseOwner->user    = $responder;
-			$caseOwner->type    = 1;
+			$caseOwner->user = $responder;
+			$caseOwner->type = 1;
 			$caseOwner->save();
 			$user = User::find($responder);
-			$caseActivity              = New CaseActivity();
-			$caseActivity->case_id     = $request['caseID'];
-			$caseActivity->user        = $user->id;
+			$caseActivity = New CaseActivity();
+			$caseActivity->case_id = $request['caseID'];
+			$caseActivity->user = $user->id;
 			$caseActivity->addressbook = 0;
-			$caseActivity->note        = "Case Referred to " . $user->name . " " . $user->surname . " by " . \Auth::user()->name . ' ' . \Auth::user()->surname;
+			$caseActivity->note = "Case Referred to " . $user->name . " " . $user->surname . " by " . \Auth::user()->name . ' ' . \Auth::user()->surname;
 			$caseActivity->save();
-			$email     = $user->email;
+			$email = $user->email;
 			$cellphone = $user->cellphone;
-			$case      = CaseReport::find($request['caseID']);
+			$case = CaseReport::find($request['caseID']);
 			$data = array(
-				'name'    => $user->name,
-				'caseID'  => $request['caseID'],
+				'name' => $user->name,
+				'caseID' => $request['caseID'],
 				'content' => $case->description
 			);
 			\Mail::send('emails.caseEscalated', $data, function ($message) use ($email) {
@@ -948,25 +939,24 @@ class CasesController extends Controller {
 				$message->to('cooluma@siyaleader.net')->subject("REFER: $cellphone");
 			});
 		}
-		$objDept   = Department::where('slug', '=', $department)->first();
-		$objCat    = Category::where('slug', '=', $category)->first();
+		$objDept = Department::where('slug', '=', $department)->first();
+		$objCat = Category::where('slug', '=', $category)->first();
 		$objSubCat = SubCategory::where('slug', '=', $subCategory)->first();
 		if (strlen($subSubCategory) > 1) {
-			$objSubSubCat   = SubSubCategory::where('slug', '=', $subSubCategory)->first();
+			$objSubSubCat = SubSubCategory::where('slug', '=', $subSubCategory)->first();
 			$objSubSubCatId = $objSubSubCat->id;
-		}
-		else {
+		} else {
 			$objSubSubCatId = 0;
 		}
-		$objCase                   = CaseReport::find($request['caseID']);
-		$objCaseStatus             = CaseStatus::where('name', '=', 'Referred')->first();
-		$objCase->status           = $objCaseStatus->id;
-		$objCase->department       = $objDept->id;
-		$objCase->category         = $objCat->id;
-		$objCase->sub_category     = $objSubCat->id;
+		$objCase = CaseReport::find($request['caseID']);
+		$objCaseStatus = CaseStatus::where('name', '=', 'Referred')->first();
+		$objCase->status = $objCaseStatus->id;
+		$objCase->department = $objDept->id;
+		$objCase->category = $objCat->id;
+		$objCase->sub_category = $objSubCat->id;
 		$objCase->sub_sub_category = $objSubSubCatId;
-		$objCase->referred_at      = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
-		$objCase->updated_by       = \Auth::user()->id;
+		$objCase->referred_at = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
+		$objCase->updated_by = \Auth::user()->id;
 		$objCase->save();
 
 		return 'ok';
@@ -979,21 +969,21 @@ class CasesController extends Controller {
 	 * @return Response
 	 */
 	public function closeCase($id) {
-		$txtDebug          = __CLASS__ . "->" . __FUNCTION__ . "(\$id) \$id - {$id}";
-		$case              = CaseReport::find($id);
-		$case->status      = 3;
+		$txtDebug = __CLASS__ . "->" . __FUNCTION__ . "(\$id) \$id - {$id}";
+		$case = CaseReport::find($id);
+		$case->status = 3;
 		$case->resolved_at = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
 		$case->save();
-		$caseActivity              = New CaseActivity();
-		$caseActivity->case_id     = $id;
-		$caseActivity->user        = \Auth::user()->id;
+		$caseActivity = New CaseActivity();
+		$caseActivity->case_id = $id;
+		$caseActivity->user = \Auth::user()->id;
 		$caseActivity->addressbook = 0;
-		$caseActivity->note        = \Auth::user()->name . ' ' . \Auth::user()->surname . " closed case";
+		$caseActivity->note = \Auth::user()->name . ' ' . \Auth::user()->surname . " closed case";
 		$caseActivity->save();
 		$data = array(
-			'name'     => \Auth::user()->name,
-			'caseID'   => $id,
-			'content'  => $case->description,
+			'name' => \Auth::user()->name,
+			'caseID' => $id,
+			'content' => $case->description,
 			'executor' => \Auth::user()->name . ' ' . \Auth::user()->surname,
 		);
 		$user = User::find($case->reporter);
@@ -1004,9 +994,9 @@ class CasesController extends Controller {
 		$txtDebug .= "\n  \$user - " . ($user ? print_r($user->toArray(), 1) : "");
 		$txtDebug .= "\n  \$case - " . print_r($case->toArray(), 1);
 		$txtDebug .= "\n  \$data - " . print_r($data, 1);
-die("<pre>{$txtDebug}</pre>");
+		die("<pre>{$txtDebug}</pre>");
 		$email = (sizeof($user) <= 0) ? $userAddressbook->email : $user->email;
-die("<pre>{$txtDebug}</pre>");
+		die("<pre>{$txtDebug}</pre>");
 		\Mail::send('emails.caseClosed', $data, function ($message) use ($email) {
 			$message->from('info@siyaleader.net', 'Siyaleader');
 			$message->to($email)->subject("Siyaleader Notification - Case Closed: ");
@@ -1016,24 +1006,24 @@ die("<pre>{$txtDebug}</pre>");
 	}
 
 	public function requestCaseClosure(Request $request) {
-		$case         = CaseReport::find($request['caseID']);
+		$case = CaseReport::find($request['caseID']);
 		$case->status = 2;
 		$case->save();
-		$caseActivity              = New CaseActivity();
-		$caseActivity->case_id     = $request['caseID'];
-		$caseActivity->user        = \Auth::user()->id;
+		$caseActivity = New CaseActivity();
+		$caseActivity->case_id = $request['caseID'];
+		$caseActivity->user = \Auth::user()->id;
 		$caseActivity->addressbook = 0;
-		$caseActivity->note        = \Auth::user()->name . ' ' . \Auth::user()->surname . " requested case closure";
+		$caseActivity->note = \Auth::user()->name . ' ' . \Auth::user()->surname . " requested case closure";
 		$caseActivity->save();
 		$caseAdministrators = User::where('role', '=', 1)
 			->orWhere('role', '=', 3)
 			->get();
 		foreach ($caseAdministrators as $caseAdmin) {
 			$data = array(
-				'name'      => $caseAdmin->name,
-				'caseID'    => $case->id,
-				'content'   => $case->description,
-				'note'      => $request['caseNote'],
+				'name' => $caseAdmin->name,
+				'caseID' => $case->id,
+				'content' => $case->description,
+				'note' => $request['caseNote'],
 				'requestor' => \Auth::user()->name . ' ' . \Auth::user()->surname,
 			);
 			\Mail::send('emails.requestCaseClosure', $data, function ($message) use ($caseAdmin) {
@@ -1059,7 +1049,7 @@ die("<pre>{$txtDebug}</pre>");
 			if (\App\CasesSeen::where($attrCS)->count() == 0) \App\CasesSeen::create($attrCS);
 		}
 		$destinationFolder = 'files/case_' . $id;
-		$case              = null;
+		$case = null;
 		if (!\File::exists($destinationFolder)) {
 			$createDir = \File::makeDirectory($destinationFolder, 0777, true);
 		}
@@ -1083,8 +1073,8 @@ die("<pre>{$txtDebug}</pre>");
 				->leftJoin('cases_statuses', 'cases.status', '=', 'cases_statuses.id')
 				->leftJoin('cases_types', 'cases.case_type', '=', 'cases_types.id')
 				->leftJoin('cases_sub_types', 'cases.case_sub_type', '=', 'cases_sub_types.id')
-				->leftJoin('departments','departments.id','=','cases_types.department')
-				->leftJoin('companies','companies.id','=','departments.company')
+				->leftJoin('departments', 'departments.id', '=', 'cases_types.department')
+				->leftJoin('companies', 'companies.id', '=', 'departments.company')
 				->where('cases.id', '=', $id)
 				->select(\DB::raw("
                                     cases.id,
@@ -1126,14 +1116,13 @@ die("<pre>{$txtDebug}</pre>");
 				)
 				)
 				->get();
-		}
-		elseif ($caseObj->status == 'Pending Closure') {
+		} elseif ($caseObj->status == 'Pending Closure') {
 			$case = \DB::table('cases')
 				->leftJoin('cases_statuses', 'cases.status', '=', 'cases_statuses.id')
 				->leftJoin('cases_types', 'cases.case_type', '=', 'cases_types.id')
 				->leftJoin('cases_sub_types', 'cases.case_sub_type', '=', 'cases_sub_types.id')
-				->leftJoin('departments','departments.id','=','cases_types.department')
-				->leftJoin('companies','companies.id','=','departments.company')
+				->leftJoin('departments', 'departments.id', '=', 'cases_types.department')
+				->leftJoin('companies', 'companies.id', '=', 'departments.company')
 				->where('cases.id', '=', $id)
 				->select(\DB::raw("
                                     cases.id,
@@ -1176,14 +1165,13 @@ die("<pre>{$txtDebug}</pre>");
 				)
 				)
 				->get();
-		}
-		elseif ($caseObj->status == 'Resolved') {
+		} elseif ($caseObj->status == 'Resolved') {
 			$case = \DB::table('cases')
 				->leftJoin('cases_statuses', 'cases.status', '=', 'cases_statuses.id')
 				->leftJoin('cases_types', 'cases.case_type', '=', 'cases_types.id')
 				->leftJoin('cases_sub_types', 'cases.case_sub_type', '=', 'cases_sub_types.id')
-				->leftJoin('departments','departments.id','=','cases_types.department')
-				->leftJoin('companies','companies.id','=','departments.company')
+				->leftJoin('departments', 'departments.id', '=', 'cases_types.department')
+				->leftJoin('companies', 'companies.id', '=', 'departments.company')
 				->where('cases.id', '=', $id)
 				->select(\DB::raw("
                                     cases.id,
@@ -1225,14 +1213,13 @@ die("<pre>{$txtDebug}</pre>");
 				)
 				)
 				->get();
-		}
-		elseif ($caseObj->status == 'Allocated') {
+		} elseif ($caseObj->status == 'Allocated') {
 			$case = \DB::table('cases')
 				->leftJoin('cases_statuses', 'cases.status', '=', 'cases_statuses.id')
 				->leftJoin('cases_types', 'cases.case_type', '=', 'cases_types.id')
 				->leftJoin('cases_sub_types', 'cases.case_sub_type', '=', 'cases_sub_types.id')
-				->leftJoin('departments','departments.id','=','cases_types.department')
-				->leftJoin('companies','companies.id','=','departments.company')
+				->leftJoin('departments', 'departments.id', '=', 'cases_types.department')
+				->leftJoin('companies', 'companies.id', '=', 'departments.company')
 				->where('cases.id', '=', $id)
 				->select(\DB::raw("
                                     cases.id,
@@ -1274,14 +1261,13 @@ die("<pre>{$txtDebug}</pre>");
 				)
 				)
 				->get();
-		}
-		elseif ($caseObj->status == 'Referred') {
+		} elseif ($caseObj->status == 'Referred') {
 			$case = \DB::table('cases')
 				->leftJoin('cases_statuses', 'cases.status', '=', 'cases_statuses.id')
 				->leftJoin('cases_types', 'cases.case_type', '=', 'cases_types.id')
 				->leftJoin('cases_sub_types', 'cases.case_sub_type', '=', 'cases_sub_types.id')
-				->leftJoin('departments','departments.id','=','cases_types.department')
-				->leftJoin('companies','companies.id','=','departments.company')
+				->leftJoin('departments', 'departments.id', '=', 'cases_types.department')
+				->leftJoin('companies', 'companies.id', '=', 'departments.company')
 				->where('cases.id', '=', $id)
 				->select(\DB::raw("
                                     cases.id,
@@ -1324,14 +1310,13 @@ die("<pre>{$txtDebug}</pre>");
 				)
 				)
 				->get();
-		}
-		elseif ($caseObj->status == 'Referred') {
+		} elseif ($caseObj->status == 'Referred') {
 			$case = \DB::table('cases')
 				->leftJoin('cases_statuses', 'cases.status', '=', 'cases_statuses.id')
 				->leftJoin('cases_types', 'cases.case_type', '=', 'cases_types.id')
 				->leftJoin('cases_sub_types', 'cases.case_sub_type', '=', 'cases_sub_types.id')
-				->leftJoin('departments','departments.id','=','cases_types.department')
-				->leftJoin('companies','companies.id','=','departments.company')
+				->leftJoin('departments', 'departments.id', '=', 'cases_types.department')
+				->leftJoin('companies', 'companies.id', '=', 'departments.company')
 				->where('cases.id', '=', $id)
 				->select(\DB::raw("
                                     cases.id,
@@ -1385,35 +1370,35 @@ die("<pre>{$txtDebug}</pre>");
 				)
 			);
 
-		$capturer = array('name'=>"", 'cellphone'=>"", 'email'=>"");
+		$capturer = array('name' => "", 'cellphone' => "", 'email' => "");
 		if ($caseObj->user && \App\User::find($caseObj->user)) $capturer = \App\User::find($caseObj->user);
-		$investigator = array('name'=>"", 'cellphone'=>"", 'email'=>"");
+		$investigator = array('name' => "", 'cellphone' => "", 'email' => "");
 		if ($caseObj->investigation_officer && \App\InvestigationOfficer::find($caseObj->investigation_officer)) $investigator = \App\InvestigationOfficer::find($caseObj->investigation_officer);
-		$reporter = array('name'=>"", 'cellphone'=>"", 'email'=>"");
+		$reporter = array('name' => "", 'cellphone' => "", 'email' => "");
 		if (count($case) > 0 && $case[0]->reporteID && \App\Reporter::find($case[0]->reporteID)) $reporter = \App\Reporter::find($case[0]->reporteID);
-		$txtDebug = "\$caseObj - ".print_r($caseObj,1);
-		$txtDebug .= "\n  \$case - ".print_r($case,1);
-		$txtDebug .= "\n  \$capturer - ".print_r($capturer,1);
-		$txtDebug .= "\n  \$reporter - ".print_r($reporter,1);
-		$txtDebug .= "\n  \$investigator - ".print_r($investigator,1);
+		$txtDebug = "\$caseObj - " . print_r($caseObj, 1);
+		$txtDebug .= "\n  \$case - " . print_r($case, 1);
+		$txtDebug .= "\n  \$capturer - " . print_r($capturer, 1);
+		$txtDebug .= "\n  \$reporter - " . print_r($reporter, 1);
+		$txtDebug .= "\n  \$investigator - " . print_r($investigator, 1);
 		//die("<pre>{$txtDebug}</pre>");
 		$co = new \App\Company();
-		$extra = array('id_company'=>0,'id_department'=>0, 'id_type'=>0, 'id_subtype'=>0);
+		$extra = array('id_company' => 0, 'id_department' => 0, 'id_type' => 0, 'id_subtype' => 0);
 		if ($case[0]->department) {
 			$co = \App\Company::find($case[0]->company);
 			//$co = \App\Company::find("name",$case[0]->department)->first();
-			
+
 		}
-		
-$txtDebug .= "\n  \$co - ".print_r($co,1);
-$txtDebug .= "\n  \$extra - ".print_r($extra,1);
+
+		$txtDebug .= "\n  \$co - " . print_r($co, 1);
+		$txtDebug .= "\n  \$extra - " . print_r($extra, 1);
 		//die("<pre>{$txtDebug}</pre>");
 
-        $checkPosition    = User::where('id',Auth::user()->id)->first();
-        $positionId       =$checkPosition->position;
+		$checkPosition = User::where('id', Auth::user()->id)->first();
+		$positionId = $checkPosition->position;
 
-		return view('cases.test')->with(compact('case', 'reporter', 'capturer', 'investigator', 'co','positionId'));
-		$cases    = CaseReport::where('id', $id)->first();
+		return view('cases.test')->with(compact('case', 'reporter', 'capturer', 'investigator', 'co', 'positionId'));
+		$cases = CaseReport::where('id', $id)->first();
 		$accepted = $cases->accepted;
 
 		return view('cases.test')->with(compact('case', 'accepted'));
@@ -1549,8 +1534,7 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
                                     IF(`cases`.`addressbook` = 1,(SELECT `cellphone` FROM `addressbook` WHERE `addressbook`.`id`= `cases`.`house_holder_id`), (SELECT `client_reference_number` FROM `users` WHERE `users`.`id`= `cases`.`house_holder_id`)) as reference_number
                                    "
 					))->get();
-			}
-			else {
+			} else {
 				$case = \DB::table('cases')
 					->join('cases_statuses', 'cases.status', '=', 'cases_statuses.id')
 					->join('cases_types', 'cases.case_type', '=', 'cases_types.id')
@@ -1597,44 +1581,44 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 	public function captureCaseUpdate(CaseRequest $request) {
 		$txtDebug = __CLASS__ . "." . __FUNCTION__ . "(CaseRequest \$request) \$request - " . print_r($request, 1);
 		die("<pre>{$txtDebug}</pre>");
-		$userRole           = UserRole::where('name', '=', 'House Holder')->first();
-		$user               = New User();
-		$user->role         = $userRole->id;
-		$user->name         = $request['name'];
-		$user->surname      = $request['surname'];
-		$user->cellphone    = $request['cellphone'];
-		$user->id_number    = $request['id_number'];
-		$user->position     = $request['position'];
-		$title              = Title::where('slug', '=', $request['title'])->first();
-		$user->title        = $title->id;
-		$user->gender       = $request['gender'];
-		$user->dob          = $request['dob'];
+		$userRole = UserRole::where('name', '=', 'House Holder')->first();
+		$user = New User();
+		$user->role = $userRole->id;
+		$user->name = $request['name'];
+		$user->surname = $request['surname'];
+		$user->cellphone = $request['cellphone'];
+		$user->id_number = $request['id_number'];
+		$user->position = $request['position'];
+		$title = Title::where('slug', '=', $request['title'])->first();
+		$user->title = $title->id;
+		$user->gender = $request['gender'];
+		$user->dob = $request['dob'];
 		$user->house_number = $request['house_number'];
-		$user->email        = $request['cellphone'] . "@siyaleader.net";
-		$user->created_by   = \Auth::user()->id;
-		$language           = Language::where('slug', '=', $request['language'])->first();
-		$user->language     = $language->id;
-		$province           = Province::where('slug', '=', $request['province'])->first();
-		$user->province     = $province->id;
-		$district           = District::where('slug', '=', $request['district'])->first();
-		$user->district     = $district->id;
-		$municipality       = Municipality::where('slug', '=', $request['municipality'])->first();
+		$user->email = $request['cellphone'] . "@siyaleader.net";
+		$user->created_by = \Auth::user()->id;
+		$language = Language::where('slug', '=', $request['language'])->first();
+		$user->language = $language->id;
+		$province = Province::where('slug', '=', $request['province'])->first();
+		$user->province = $province->id;
+		$district = District::where('slug', '=', $request['district'])->first();
+		$user->district = $district->id;
+		$municipality = Municipality::where('slug', '=', $request['municipality'])->first();
 		$user->municipality = $municipality->id;
-		$ward               = Ward::where('slug', '=', $request['ward'])->first();
-		$user->ward         = $ward->id;
+		$ward = Ward::where('slug', '=', $request['ward'])->first();
+		$user->ward = $ward->id;
 		$user->save();
-		$casePriority          = CasePriority::where('slug', '=', $request['priority'])->first();
-		$case                  = CaseReport::find($request['caseID']);
-		$case->description     = $request['description'];
-		$case->priority        = $casePriority->id;
-		$case->province        = $user->province;
-		$case->district        = $user->district;
-		$case->municipality    = $user->municipality;
-		$case->ward            = $user->ward;
-		$case->area            = $user->area;
+		$casePriority = CasePriority::where('slug', '=', $request['priority'])->first();
+		$case = CaseReport::find($request['caseID']);
+		$case->description = $request['description'];
+		$case->priority = $casePriority->id;
+		$case->province = $user->province;
+		$case->district = $user->district;
+		$case->municipality = $user->municipality;
+		$case->ward = $user->ward;
+		$case->area = $user->area;
 		$case->house_holder_id = $user->id;
-		$case->updated_by      = \Auth::user()->id;
-		$case->updated_at      = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
+		$case->updated_by = \Auth::user()->id;
+		$case->updated_at = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
 		$case->save();
 
 		return 'ok';
@@ -1643,60 +1627,60 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 	public function captureCaseUpdateH(CaseRequestH $request) {
 		$txtDebug = __CLASS__ . "." . __FUNCTION__ . "(CaseRequestH \$request) \$request - " . print_r($request, 1);
 		die("<pre>{$txtDebug}</pre>");
-		$casePriority          = CasePriority::where('slug', '=', $request['priority'])->first();
-		$houseHolderObj        = User::find($request['hseHolderId']);
-		$case                  = CaseReport::find($request['caseID']);
-		$case->province        = $houseHolderObj->province;
-		$case->district        = $houseHolderObj->district;
-		$case->municipality    = $houseHolderObj->municipality;
-		$case->ward            = $houseHolderObj->ward;
-		$case->area            = $houseHolderObj->area;
-		$case->description     = $request['description'];
-		$case->priority        = $casePriority->id;
-		$case->updated_by      = \Auth::user()->id;
+		$casePriority = CasePriority::where('slug', '=', $request['priority'])->first();
+		$houseHolderObj = User::find($request['hseHolderId']);
+		$case = CaseReport::find($request['caseID']);
+		$case->province = $houseHolderObj->province;
+		$case->district = $houseHolderObj->district;
+		$case->municipality = $houseHolderObj->municipality;
+		$case->ward = $houseHolderObj->ward;
+		$case->area = $houseHolderObj->area;
+		$case->description = $request['description'];
+		$case->priority = $casePriority->id;
+		$case->updated_by = \Auth::user()->id;
 		$case->house_holder_id = $request['hseHolderId'];
-		$case->updated_at      = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
+		$case->updated_at = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
 		$case->save();
 
 		return 'ok';
 	}
 
 	public function create(CreateCaseRequest $request) {
-		$txtDebug                 = __CLASS__ . "." . __FUNCTION__ . "(CreateCaseRequest \$request) \$request - " . print_r($request, 1);
-		$case                     = CaseReport::find($request['caseID']);
-		$newCase                  = New CaseReport();
-		$newCase->created_at      = $case->created_at;
-		$newCase->user            = $case->user;
-		$newCase->priority        = $case->priority;
-		$newCase->status          = 1;
-		$newCase->description     = $request['description'];
-		$newCase->province        = $case->province;
-		$newCase->district        = $case->district;
-		$newCase->municipality    = $case->municipality;
-		$newCase->ward            = $case->ward;
-		$newCase->area            = $case->area;
-		$newCase->addressbook     = $case->addressbook;
-		$newCase->source          = 3;
-		$newCase->active          = 1;
+		$txtDebug = __CLASS__ . "." . __FUNCTION__ . "(CreateCaseRequest \$request) \$request - " . print_r($request, 1);
+		$case = CaseReport::find($request['caseID']);
+		$newCase = New CaseReport();
+		$newCase->created_at = $case->created_at;
+		$newCase->user = $case->user;
+		$newCase->priority = $case->priority;
+		$newCase->status = 1;
+		$newCase->description = $request['description'];
+		$newCase->province = $case->province;
+		$newCase->district = $case->district;
+		$newCase->municipality = $case->municipality;
+		$newCase->ward = $case->ward;
+		$newCase->area = $case->area;
+		$newCase->addressbook = $case->addressbook;
+		$newCase->source = 3;
+		$newCase->active = 1;
 		$newCase->house_holder_id = $case->house_holder_id;
-		$newCase->agent           = $case->agent;
+		$newCase->agent = $case->agent;
 		die("<pre>{$txtDebug}</pre>");
 		$newCase->save();
-		$relatedCase             = New CaseRelated();
-		$relatedCase->parent     = $request['caseID'];
-		$relatedCase->child      = $newCase->id;
+		$relatedCase = New CaseRelated();
+		$relatedCase->parent = $request['caseID'];
+		$relatedCase->child = $newCase->id;
 		$relatedCase->created_by = \Auth::user()->id;
 		$relatedCase->created_at = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
 		$relatedCase->save();
 		$response["message"] = "Case created successfully";
-		$response["error"]   = FALSE;
-		$response["caseID"]  = $request['caseID'];
+		$response["error"] = FALSE;
+		$response["caseID"] = $request['caseID'];
 
 		return \Response::json($response, 201);
 	}
 
 	function workflow($id) {
-		$case      = CaseReport::find($id);
+		$case = CaseReport::find($id);
 		$workflows = \DB::table('workflows')
 			->where('sub_category_id', '=', $case->sub_category)
 			->select(
@@ -1718,7 +1702,6 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 	}
 
 	function createCaseAgent(Request $request) {
-
 
 
 		$txtDebug = __CLASS__ . "." . __FUNCTION__ . "(CreateCaseAgentRequest \$request) \$request - " . print_r($request->all(), 1);
@@ -1748,24 +1731,23 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 			$house_holder_id = $user->id;
 		}*/
 		$house_holder_id = ($house_holder_id == 0) ? $request['hseHolderId'] : $house_holder_id;
-		$case_type        = ($request['case_type'] == 0) ? 5 : $request['case_type'];
-		$case_sub_type    = ($request['case_sub_type'] == 0) ? 7 : $request['case_sub_type'];
+		$case_type = ($request['case_type'] == 0) ? 5 : $request['case_type'];
+		$case_sub_type = ($request['case_sub_type'] == 0) ? 7 : $request['case_sub_type'];
 		$house_holder_obj = User::find($house_holder_id);
 		if ($request['officers'] == 0) {
-		$txtDebug .= "\n  Creating new officer";
-			$officerObj            = new InvestigationOfficer();
-			$officerObj->name      = array_key_exists("investigation_officer", $_REQUEST) ? $request['investigation_officer'] : "";
-			$officerObj->email     = array_key_exists("investigation_email",$_REQUEST) ? $request['investigation_email'] : "";
-			$officerObj->cellphone = array_key_exists("investigation_cell",$_REQUEST) ? $request['investigation_cell'] : "";
+			$txtDebug .= "\n  Creating new officer";
+			$officerObj = new InvestigationOfficer();
+			$officerObj->name = array_key_exists("investigation_officer", $_REQUEST) ? $request['investigation_officer'] : "";
+			$officerObj->email = array_key_exists("investigation_email", $_REQUEST) ? $request['investigation_email'] : "";
+			$officerObj->cellphone = array_key_exists("investigation_cell", $_REQUEST) ? $request['investigation_cell'] : "";
 			$officerObj->save();
 			$officer = $officerObj->id;
-		}
-		else {
+		} else {
 			$officerObj = InvestigationOfficer::find($request['officers']);
-			$officer    = $officerObj->id;
-			$txtDebug .= "\n  Using existing officer: ".print_r($officerObj,1);
+			$officer = $officerObj->id;
+			$txtDebug .= "\n  Using existing officer: " . print_r($officerObj, 1);
 		}
-		$txtDebug .= "\n  \$officer - ".print_r($officer,1);
+		$txtDebug .= "\n  \$officer - " . print_r($officer, 1);
 		//die("<pre>{$txtDebug}</pre>");
 
 		// VD BEGIN: Reporter
@@ -1774,58 +1756,58 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 		if ($request['reporter'] == 0 && $request['reporter_name']) {
 			$txtDebug .= "\n  Creating new reporter";
 			$oReporter = new \App\Reporter();
-			$oReporter->name      = array_key_exists('reporter_name',$_REQUEST) ? $request['reporter_name'] : "";
-			$oReporter->email     = array_key_exists('reporter_email', $_REQUEST) ? $request['reporter_email'] : "";
-			$oReporter->cellphone = array_key_exists('reporter_cell',$_REQUEST) ? $request['reporter_cell'] : "";
+			$oReporter->name = array_key_exists('reporter_name', $_REQUEST) ? $request['reporter_name'] : "";
+			$oReporter->email = array_key_exists('reporter_email', $_REQUEST) ? $request['reporter_email'] : "";
+			$oReporter->cellphone = array_key_exists('reporter_cell', $_REQUEST) ? $request['reporter_cell'] : "";
 			//if ($request['reporter_email'] != "" || $request['reporter_cell'] ) 
 			$oReporter->save();
-			$txtDebug .= ", new id - ".$oReporter->id;
+			$txtDebug .= ", new id - " . $oReporter->id;
 			$id_reporter = $oReporter->id;
 		} else if ($request['reporter']) {
 			$oReporter = \App\Reporter::find($request['reporter']);
-			$txtDebug .= "\n  Using existing reporter: ".print_r($oReporter,1);
+			$txtDebug .= "\n  Using existing reporter: " . print_r($oReporter, 1);
 			$id_reporter = $oReporter->id;
 		}
 		// VD END: Reporter
 //die("<pre>{$txtDebug}</pre>");
-		$newCase                              = New CaseReport();
-		$newCase->created_at                  = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
+		$newCase = New CaseReport();
+		$newCase->created_at = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
 		$newCase->occured_at = "{$request['occured_at_date']} {$request['occured_at_time']}";
-		$newCase->user                        = \Auth::user()->id;
-		$newCase->reporter                    = $id_reporter;
-		$newCase->house_holder_id             = $house_holder_id;
-		$newCase->description                 = $request['description'];
-		$newCase->case_type                   = is_array($case_type) ? $case_type[0] : $case_type;
-		$newCase->case_sub_type               = is_array($case_sub_type) ? $case_sub_type[0] : $case_sub_type;
-		$newCase->saps_case_number            = $request['saps_case_number'];
-		$newCase->saps_station                = $request['saps_station'];
-		$newCase->investigation_officer       = $officer;
-		$newCase->investigation_cell          = $request['investigation_cell'];
-		$newCase->investigation_email         = $request['investigation_email'];
-		$newCase->investigation_note          = $request['investigation_note'];
-		$newCase->client_reference_number     = $request['client_reference_number'];
-		$newCase->rate_value                  = $request['rate_value'];
-		$newCase->status                      = 1;
-		$newCase->addressbook                 = 0;
-        $newCase->department                  = $request['department'];
-		$newCase->source                      = 3;
-		$newCase->active                      = 1;
-		$newCase->street_number               = $request['street_number'];
-		$newCase->id_company                   = $request['company'];
-		$newCase->route                       = $request['route'];
-		$newCase->locality                    = $request['locality'];
+		$newCase->user = \Auth::user()->id;
+		$newCase->reporter = $id_reporter;
+		$newCase->house_holder_id = $house_holder_id;
+		$newCase->description = $request['description'];
+		$newCase->case_type = is_array($case_type) ? $case_type[0] : $case_type;
+		$newCase->case_sub_type = is_array($case_sub_type) ? $case_sub_type[0] : $case_sub_type;
+		$newCase->saps_case_number = $request['saps_case_number'];
+		$newCase->saps_station = $request['saps_station'];
+		$newCase->investigation_officer = $officer;
+		$newCase->investigation_cell = $request['investigation_cell'];
+		$newCase->investigation_email = $request['investigation_email'];
+		$newCase->investigation_note = $request['investigation_note'];
+		$newCase->client_reference_number = $request['client_reference_number'];
+		$newCase->rate_value = $request['rate_value'];
+		$newCase->status = 1;
+		$newCase->addressbook = 0;
+		$newCase->department = $request['department'];
+		$newCase->source = 3;
+		$newCase->active = 1;
+		$newCase->street_number = $request['street_number'];
+		$newCase->id_company = $request['company'];
+		$newCase->route = $request['route'];
+		$newCase->locality = $request['locality'];
 		$newCase->administrative_area_level_1 = $request['administrative_area_level_1'];
-		$newCase->postal_code                 = $request['postal_code'];
-		$newCase->country                     = $request['country'];
-		$newCase->gps_lat                     = $request['gpsAddressLat'];
-		$newCase->gps_lng                     = $request['gpsAddressLong'];
+		$newCase->postal_code = $request['postal_code'];
+		$newCase->country = $request['country'];
+		$newCase->gps_lat = $request['gpsAddressLat'];
+		$newCase->gps_lng = $request['gpsAddressLong'];
 		$newCase->address = $request['address'];
 		$newCase->save();
 
 		$create_case_owner_data = array(
-			"case_id"     => $newCase->id,
-			"user"        => $newCase->user,
-			"type"        => 1,
+			"case_id" => $newCase->id,
+			"user" => $newCase->user,
+			"type" => 1,
 			"addressbook" => 0
 		);
 		$user = User::find(\Auth::user()->id);
@@ -1837,17 +1819,17 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 		}
 		foreach ($first_responders as $first_responder) {
 			$create_case_owner_data = array(
-				"case_id"     => $newCase->id,
-				"user"        => $first_responder->responder,
-				"type"        => 1,
+				"case_id" => $newCase->id,
+				"user" => $first_responder->responder,
+				"type" => 1,
 				"addressbook" => 0
 			);
 			$this->case_owners->create_case_owner($create_case_owner_data);
 		}
 		$this->case_responders->send_comms_to_first_responders($newCase, $first_responders);
-		$caseNote          = new CaseNote();
-		$caseNote->note    = $request['investigation_note'] ? $request['investigation_note'] : "";
-		$caseNote->user    = \Auth::user()->id;
+		$caseNote = new CaseNote();
+		$caseNote->note = $request['investigation_note'] ? $request['investigation_note'] : "";
+		$caseNote->user = \Auth::user()->id;
 		$caseNote->case_id = $newCase->id;
 		$caseNote->save();
 
@@ -1856,8 +1838,7 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 			if (!File::exists($destinationFolder)) {
 				$createDir = \File::makeDirectory($destinationFolder, 0777, true);
 			}
-		}
-		else {
+		} else {
 			$destinationFolder = 'files/case_' . $newCase->id;
 			if (!File::exists($destinationFolder)) {
 				$createDir = \File::makeDirectory($destinationFolder, 0777, true);
@@ -1866,17 +1847,17 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 			$fileFullPath = $destinationFolder . '/' . $fileName;
 			if (!File::exists($fileFullPath)) {
 				$request->file('caseFile')->move($destinationFolder, $fileName);
-				$caseFile          = new CaseFile();
-				$caseFile->file    = $fileName;
+				$caseFile = new CaseFile();
+				$caseFile->file = $fileName;
 				$caseFile->img_url = $fileFullPath;
-				$caseFile->user    = \Auth::user()->id;
+				$caseFile->user = \Auth::user()->id;
 				$caseFile->case_id = $newCase->id;
 				$caseFile->save();
 			}
 		}
 		$response["message"] = "Case created successfully";
-		$response["error"]   = FALSE;
-		$response["caseID"]  = $newCase->id;
+		$response["error"] = FALSE;
+		$response["caseID"] = $newCase->id;
 		//return "ok";
 		\Session::flash('success', 'Well done! Case ' . $newCase->id . ' has been successfully created');
 
@@ -1885,7 +1866,7 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 
 	public function getCases() {
 		$searchString = \Input::get('q');
-		$cases        = \DB::table('cases')
+		$cases = \DB::table('cases')
 			->whereRaw(
 				"CONCAT(`cases`.`id`, ' ', `cases`.`description`) LIKE '%{$searchString}%'")
 			->select(
@@ -1899,13 +1880,14 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 		$data = array();
 		foreach ($cases as $case) {
 			$data[] = array(
-				"id"   => "{$case->id}",
+				"id" => "{$case->id}",
 				"name" => "Case Number: {$case->id} >  Description: {$case->description}",
 			);
 		}
 
 		return $data;
 	}
+
 	function relatedCases($id) {
 		$relatedCases = \DB::table('related_cases')
 			->join('cases', 'related_cases.child', '=', 'cases.id')
@@ -1938,25 +1920,24 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 					if (\Auth::check()) $join->on('cases_seen.uid', '=', \DB::raw(\Auth::id()));
 				})
 				->select(
-					/*\DB::raw(
-						"
+				/*\DB::raw(
+					"
 
-                                    cases.id,
-                                    cases.created_at,
-                                    cases.description,
-                                    cases_sources.name as source,
-                                    cases_statuses.name as CaseStatus
-									, cases_seen.when AS seen"
-					)*/
+																	cases.id,
+																	cases.created_at,
+																	cases.description,
+																	cases_sources.name as source,
+																	cases_statuses.name as CaseStatus
+								, cases_seen.when AS seen"
+				)*/
 					array("cases.id",
 						"cases.created_at",
 						"cases.description",
 						"cases_sources.name as source",
-                                    "cases_statuses.name as CaseStatus"
-									, "cases_seen.when AS seen")
+						"cases_statuses.name as CaseStatus"
+					, "cases_seen.when AS seen")
 				);
-		}
-		else {
+		} else {
 			$cases = \DB::table('cases')
 				->leftJoin('cases_statuses', 'cases.status', '=', 'cases_statuses.id')
 				->leftJoin('cases_sources', 'cases.source', '=', 'cases_sources.id')
@@ -1966,21 +1947,21 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 				})
 				->where('cases.agent', '=', \Auth::user()->id)
 				->select(
-					/*\DB::raw("
+				/*\DB::raw("
 
-                                            cases.id,
-                                            cases.created_at,
-                                            cases.description,
-                                            cases_sources.name as source,
-                                            cases_statuses.name as CaseStatus
-											, cases_seen.when AS seen"
-					)*/
+																					cases.id,
+																					cases.created_at,
+																					cases.description,
+																					cases_sources.name as source,
+																					cases_statuses.name as CaseStatus
+										, cases_seen.when AS seen"
+				)*/
 					array("cases.id",
 						"cases.created_at",
 						"cases.description",
 						"cases_sources.name as source",
-                                            "cases_statuses.name as CaseStatus"
-											, "cases_seen.when AS seen")
+						"cases_statuses.name as CaseStatus"
+					, "cases_seen.when AS seen")
 				);
 		}
 		/*
@@ -2023,19 +2004,18 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 	}
 
 	public function updateCase(Request $req) {
-		$txtDebug    = __CLASS__ . "" . __FUNCTION__."(\$req) \$req - ".print_r($req->all(),1);
+		$txtDebug = __CLASS__ . "" . __FUNCTION__ . "(\$req) \$req - " . print_r($req->all(), 1);
 
 		$case = \App\CaseReport::find($req['caseID']);
 		$reporter = \App\Reporter::find($case['reporter']);
 
 		$vals = array();
-		foreach ($req->all() AS $k=>$v)
-		 {
+		foreach ($req->all() AS $k => $v) {
 			if (is_array($v))
-			 $vals[$k] = $v[0];
+				$vals[$k] = $v[0];
 			else $vals[$k] = $v;
-		  }
-		$txtDebug .= "\n  \$vals - ".print_r($vals,1);
+		}
+		$txtDebug .= "\n  \$vals - " . print_r($vals, 1);
 
 
 		$case->fill($vals);
@@ -2044,8 +2024,8 @@ $txtDebug .= "\n  \$extra - ".print_r($extra,1);
 		if ($vals['reporter_cellphone']) $reporter['cellphone'] = $vals['reporter_cellphone'];
 		if ($vals['reporter_email']) $reporter['email'] = $vals['reporter_email'];
 		if (array_key_exists("reporter", $vals)) $case['reporter'] = $vals['reporter'];
-		$txtDebug .= "\n  \$case - ".print_r($case,1);
-		$txtDebug .= "\n  \$reporter - ".print_r($reporter,1);
+		$txtDebug .= "\n  \$case - " . print_r($case, 1);
+		$txtDebug .= "\n  \$reporter - " . print_r($reporter, 1);
 		//die("<pre>{$txtDebug}</pre>");
 		$saved = $case->save();
 

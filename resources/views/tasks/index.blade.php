@@ -38,7 +38,11 @@
                                 <th>Status</th>
                                 <th>Start Date</th>
                                 <th>Due Date</th>
-                                <th>Assigned To</th>
+                                <th>Assigner</th>
+                                <th>Assignee</th>
+                                <th>Est Hrs</th>
+                                <th>Act Hrs</th>
+                                <th>% Done</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -73,7 +77,11 @@
                             <th>Status</th>
                             <th>Start Date</th>
                             <th>Due Date</th>
-                            <th>Assigned To</th>
+                            <th>Assigner</th>
+                            <th>Assignee</th>
+                            <th>Est Hrs</th>
+                            <th>Act Hrs</th>
+                            <th>% Done</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -168,11 +176,22 @@
                     {
                         data: function (d) {
 
-                            var names = d.user.name + " " + d.user.surname;
+                            var names = d.task.user ? (d.task.user.name + " " + d.task.user.surname) : "";
                             return names;
 
                         }, "name": 'tasks.user_id'
                     },
+                    {
+                        data: function (d) {
+
+                            var names = d.user ? (d.user.name + " " + d.user.surname) : "";
+                            return names;
+
+                        }, "name": 'tasks.user_id'
+                    },
+                    {data: 'task.estimated_hours', name: 'tasks.estimated_hours'},
+                    {data: 'task.actual_hours', name: 'tasks.actual_hours'},
+                    {data: 'task.complete', name: 'tasks.complete'},
                     {data: 'actions', name: 'actions'},
                 ],
 
@@ -238,11 +257,22 @@
                     {
                         data: function (d) {
 
-                            var names = d.user.name + " " + d.user.surname;
+                            var names = d.task.user ? (d.task.user.name + " " + d.task.user.surname) : "";
                             return names;
 
                         }, "name": 'tasks.user_id'
                     },
+                    {
+                        data: function (d) {
+
+                            var names = d.user ? (d.user.name + " " + d.user.surname) : "";
+                            return names;
+
+                        }, "name": 'tasks.user_id'
+                    },
+                    {data: 'task.estimated_hours', name: 'tasks.estimated_hours'},
+                    {data: 'task.actual_hours', name: 'tasks.actual_hours'},
+                    {data: 'task.complete', name: 'tasks.complete'},
                     {data: 'actions', name: 'actions'},
                 ],
 

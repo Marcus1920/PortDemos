@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 use App\Reporter;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use App\Position;
 use App\Department;
@@ -61,7 +63,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-		$txtDebug = __CLASS__."".__FUNCTION__."()";
+    	$txtDebug = __CLASS__."->".__FUNCTION__."(), line ".__LINE__." in ".__FILE__;
         if (\Schema::hasTable('positions'))
         {
             $positions          = Position::orderBy('name','ASC')->get();
@@ -93,21 +95,6 @@ class AppServiceProvider extends ServiceProvider
              \View::share('selectCalendarEventTypes',$selectCalendarEventTypes);
 
         }
-
-        if (\Schema::hasTable('case_statuses'))
-        {
-            $statuses          = CaseStatus::orderBy('name','ASC')->get();
-            $selectStatuses    = array();
-            $selectStatuses[0] = "Select / All";
-
-            foreach ($statuses as $status) {
-                $selectStatuses[$status->slug] = $status->name;
-            }
-
-            \View::share('selectStatuses',$selectStatuses);
-
-        }
-
 
 
         if (\Schema::hasTable('calendar_event_types'))
@@ -290,7 +277,7 @@ class AppServiceProvider extends ServiceProvider
              \View::share('selectCasesTypes',$selectCasesTypes);
              \View::share('caseTypes',$caseTypes);
         }
-	    if (\Schema::hasTable('cases_types')) {
+	    if (\Schema::hasTable('cases_sub_types')) {
 		    $caseSubTypes          = CaseSubType::orderBy('name','ASC')->get();
 		    \View::share('caseSubTypes',$caseSubTypes);
 	    }
@@ -359,7 +346,6 @@ class AppServiceProvider extends ServiceProvider
 
         }
 
-
         if (\Schema::hasTable('provinces'))
         {
             $provinces          = Province::orderBy('name','ASC')->get();
@@ -388,18 +374,6 @@ class AppServiceProvider extends ServiceProvider
 
         }
 
-        if (\Schema::hasTable('companies'))
-        {
-            $companies          = Municipality::orderBy('name','ASC')->get();
-            $selectCompanies    = array();
-            $selectCompanies[0] = "Select Company";
-            foreach ($companies as $company) {
-                $selectCompanies[$company->slug] = $company->name;
-            }
-
-             \View::share('selectCompanies',$selectCompanies);
-
-        }
         if (\Schema::hasTable('municipalities'))
         {
             $municipalities          = Municipality::orderBy('name','ASC')->get();
@@ -491,20 +465,6 @@ class AppServiceProvider extends ServiceProvider
              \View::share('selectRelationships',$selectRelationships);
 
         }
-
-        if (\Schema::hasTable('reporters'))
-        {
-            $reporters         = Reporter::orderBy('name','ASC')->get();
-            $selectCasesReporters    = array();
-            $selectCasesReporters[0] = "Select Report";
-            foreach ($reporters as $reporter) {
-                $selectCasesReporters[$reporter->id] = $reporter->name;
-            }
-
-            \View::share('selectCasesReporters',$selectCasesReporters);
-
-        }
-
 
 
         if (\Schema::hasTable('cases')) {
@@ -627,24 +587,60 @@ class AppServiceProvider extends ServiceProvider
 			    $cntDep = \App\Department::where("company", $co->id)->count();
 			    $optsCompanies[$co->id] = "{$co->name} ({$cntDep})";
 		    }
-
+            \View::share('companies',$companies);
 	    }
 	    \View::share('optsCompanies',$optsCompanies);
-
-        $txtDebug .= "\n  \$optsCompanies - ".print_r($optsCompanies,1);
+$txtDebug .= "\n  \$optsCompanies - ".print_r($optsCompanies,1);
 	    $optsReporters    = array("Select / Add");
 	    if (\Schema::hasTable('reporters'))
 	    {
-		$reporters          = \App\Reporter::orderBy('name','ASC')->get();
-        $txtDebug .= "\n  \$reporters - ".print_r($reporters,1);
+		    $reporters          = \App\Reporter::orderBy('name','ASC')->get();
+$txtDebug .= "\n  \$reporters - ".print_r($reporters,1);
 		    foreach ($reporters as $reporter) {
 			    $optsReporters[$reporter->id] = $reporter->name;
 		    }
-        $txtDebug .= "\n  \$optsReporters - ".print_r($optsReporters,1);
+$txtDebug .= "\n  \$optsReporters - ".print_r($optsReporters,1);
 	    }
 //die("<pre>{$txtDebug}</pre>");
 	    \View::share('optsReporters',$optsReporters);
 
+			if (\Schema::hasTable('titles'))
+			{
+				$titles          = \App\Title::orderBy('name','ASC')->get();
+				//$titles          = \DB::table::orderBy('name','ASC')->get();
+				\View::share('titles',$titles);
+			}
+
+	    $optsCaseStatuses    = array("Select / Add");
+	    if (\Schema::hasTable("cases_statuses")) {
+		    $casestatuses = \App\CaseStatus::select("*")->get();
+		    //$txtDebug .= "\n  \$casestatuses - ".print_r($casestatuses,1);
+		    foreach ($casestatuses as $status) {
+			    $optsCaseStatuses[$status->id] = array( 'id'=>$status->id, 'name'=>$status->name, 'slug'=>$status->slug );
+		    }
+	    }
+	    //$optsCaseStatuses    = array_merge(array("Select / Add"), \App\CaseStatus::lists(array("name"),"slug")->all());
+	    //$txtDebug .= "\n  \$optsCaseStatuses - ".print_r($optsCaseStatuses,1);
+	    \View::share('optsCaseStatuses',$optsCaseStatuses);
+
+
+
+	    //die("<pre>{$txtDebug}</pre>");
+
+			View()->composer('*',function($view){
+				$txtDebug = __CLASS__."->".__FUNCTION__."(), line ".__LINE__." in ".__FILE__;
+				$txtDebug .= "\n  Auth - ".var_export(\Auth::check(),1);
+				$branding = array('bg_colour'=>"",'bg_colour_login'=>"",'bg_image'=>"",'bg_image_login'=>"");
+				//$branding['bg_image'] = \Auth::check() ? env("STYLE_BG_IMAGE", "") : trim(env("STYLE_BG_IMAGE_LOGIN") != "") ? env("STYLE_BG_IMAGE_LOGIN", env("STYLE_BG_IMAGE", "")) : env("STYLE_BG_IMAGE", "");
+				$branding['bg_image'] = \Auth::check() ? env("STYLE_BG_IMAGE", "") : (trim(env("STYLE_BG_IMAGE_LOGIN") != "") ? env("STYLE_BG_IMAGE_LOGIN", env("STYLE_BG_IMAGE", "")) : env("STYLE_BG_IMAGE", ""));
+				$branding['badge'] = \Auth::check() ? env("STYLE_BADGE", "") : (trim(env("STYLE_BADGE_LOGIN") != "") ? env("STYLE_BADGE_LOGIN", env("STYLE_BADGE", "")) : env("STYLE_BADGE", ""));
+				$branding['bg_colour'] = \Auth::check() ? env("STYLE_BG_COLOUR", "") : (trim(env("STYLE_BG_COLOUR_LOGIN") != "") ? env("STYLE_BG_COLOUR_LOGIN", env("STYLE_BG_COLOUR", "")) : env("STYLE_BG_COLOUR", ""));
+				$branding['bg_colour_login'] = env("STYLE_BG_COLOUR_LOGIN", "");
+				$txtDebug .= "\n  \$branding A - ".print_r($branding,1);
+				//die("<pre>{$txtDebug}</pre>");
+				//$view->with('branding',$branding);
+				\View::share('branding',$branding);
+			});
 
         View()->composer('master',function($view){
 
@@ -678,7 +674,7 @@ class AppServiceProvider extends ServiceProvider
               $tasks  = \App\TaskOwner::with('user','task','task.status')
                   ->where('user_id',$userId->id)
                   ->where('task_owner_type_id',2)->orderBy('id','desc')->take(3)->get();
-
+//die("\$tasks - <pre>".print_r($tasks,1)."</pre>");
               $view->with('tasks',$tasks);
 
               $noOfPendingAllocationCases=CaseReport::where('user', '=', \Auth::user()->id)
@@ -897,7 +893,56 @@ class AppServiceProvider extends ServiceProvider
 						$view->with('noFormsIn',$noFormsIn);
           }
 
+					$sitename = env("SITE_NAME", "Unspecified Site Name");
+					$title = $sitename;
+					if (env("APP_DEBUG", false) && array_key_exists("HTTP_HOST", $_SERVER)) $title .= " (" . $_SERVER['HTTP_HOST'] . ")";
+					//Route::getCurrentRoute()->getUri();
+					$title .= " - " . Route::getCurrentRoute()->getUri();
+					///$title .= " - " . Route::getCurrentRoute();
+					//die("title - {$title}");
+					$view->with('titlee',$title);
+					\View::share('sitenamee',$sitename);
+
         });
+
+        $sitename = env("SITE_NAME", "Unspecified Site Name");
+			$title = $sitename;
+			if (env("APP_DEBUG", false) && array_key_exists("HTTP_HOST", $_SERVER)) $title .= " (" . $_SERVER['HTTP_HOST'] . ")";
+			//Route::getCurrentRoute()->getUri();
+			//$title .= " - " . Route::getCurrentRoute()->getUri();
+			///$title .= " - " . Route::getCurrentRoute();
+			//die("title - {$title}");
+			\View::share('title',$title);
+			\View::share('sitename',$sitename);
+
+			/*Blade::extend(function ($view, $compiler) {
+				$path = $compiler->getPath();
+die("djkhfdj fs");
+				if (strpos($path, 'views/translation.blade.php') !== false) {
+					return $view;
+				}
+
+				$app_path = app_path();
+
+				$path = str_replace($app_path, '', $path);
+
+				//$view = "@include('translation', ['domain' => '$path'])\n$view";
+
+				return $view;
+			});*/
+			Blade::extend(function($view, $compiler) {
+				//die();
+				$app_path = app_path();
+				$base_path = base_path();
+
+				/*$bladepath = Blade::getPath();
+				$bladepathmin = str_replace(array($base_path, "\\"), array("","/"), $bladepath);*/
+				$bladepath = str_replace("\\", "/", Blade::getPath());
+				$bladepathmin = str_replace(str_replace("\\", "/", $base_path), "", $bladepath);
+				$view = preg_replace("/@bladepathmin/", $bladepathmin, $view);
+				$view = preg_replace("/@bladepath/", $bladepath, $view);
+				return $view;
+			});
 
       }
 

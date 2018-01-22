@@ -13,7 +13,7 @@
 
 @endif
 
-var markerPosition_{!! $id !!} = new google.maps.LatLng({!! $options['latitude'] ? $options['latitude'] : 0 !!}, {!! $options['longitude'] !!});
+var markerPosition_{!! $id !!} = new google.maps.LatLng({!! $options['latitude'] ? $options['latitude'] : 0 !!}, {!! $options['longitude'] ? $options['longitude'] : 0 !!});
 
 var marker_{!! $id !!} = new google.maps.Marker({
 	position: markerPosition_{!! $id !!},

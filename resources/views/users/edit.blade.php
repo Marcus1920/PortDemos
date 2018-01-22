@@ -23,7 +23,7 @@
             <div class="form-group">
                 {!! Form::label('Title', 'Title', array('class' => 'col-md-2 control-label')) !!}
                 <div class="col-md-6">
-                  {!! Form::select('title',['0' => 'Select/All','Mr' => 'Mr','Mrs' => 'Mrs','Miss' => 'Miss','Ms' => 'Ms'],0,['class' => 'form-control' ,'id' => 'title']) !!}
+                  {!! Form::select("title", array("None / Select")+$titles->pluck(array("name"), "id")->all(), 0, array('class'=>"form-control input-sm", 'id'=>"title", 'style'=>"width: initial; display: inline-block")) !!}
                   @if ($errors->has('title')) <p class="help-block red">*{{ $errors->first('title') }}</p> @endif
                 </div>
             </div>
@@ -181,8 +181,8 @@
             <div class="form-group">
                 {!! Form::label('Company', 'Company', array('class' => 'col-md-2 control-label')) !!}
               <div class="col-md-6">
-                {!! Form::select("company", $optsCompanies, null, array('class'=>"form-control input-sm selCompany", 'id'=>"company", 'style'=>"width: initial; display: inline-block")) !!}
-
+                {!! Form::select("company", $optsCompanies, null, array('class'=>"form-control input-sm hasDependents selCompany", 'id'=>"company", 'style'=>"width: initial; display: inline-block")) !!}
+								@if ($errors->has('company')) <p class="help-block red">*{{ $errors->first('company') }}</p> @endif
               </div>
             </div>
 
@@ -191,6 +191,7 @@
                 {!! Form::label('Department', 'Department', array('class' => 'col-md-2 control-label')) !!}
                 <div class="col-md-6">
                   {!! Form::select('department',$selectDepartments,0,['class' => 'form-control input-sm selDepartment' ,'id' => 'department']) !!}
+									@if ($errors->has('department')) <p class="help-block red">*{{ $errors->first('department') }}</p> @endif
               </div>
             </div>
 
@@ -198,6 +199,7 @@
                 {!! Form::label('Position', 'Position', array('class' => 'col-md-2 control-label')) !!}
                 <div class="col-md-6">
                   {!! Form::select('position',$selectPositions,0,['class' => 'form-control input-sm' ,'id' => 'position']) !!}
+									@if ($errors->has('position')) <p class="help-block red">*{{ $errors->first('position') }}</p> @endif
               </div>
             </div>
 
@@ -230,6 +232,20 @@
                   @if ($errors->has('role')) <p class="help-block red">*{{ $errors->first('role') }}</p> @endif
               </div>
             </div>
+
+              <div class="form-group">
+                {!! Form::label('password', 'Password', array('class' => 'col-md-2 control-label')) !!}
+                <div class="col-md-6">
+                  {!! Form::text('password',NULL,['class' => 'form-control input-sm','id' => 'password']) !!}
+
+                </div>
+                <div style="clear: both"></div>
+                {!! Form::label('passwordconfirm', 'Confirm', array('class' => 'col-md-2 control-label')) !!}
+                <div class="col-md-6">
+                  {!! Form::text('passwordconfirm',NULL,['class' => 'form-control input-sm','id' => 'passwordconfirm']) !!}
+
+                </div>
+              </div>
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">

@@ -12,9 +12,11 @@
 <!-- Alternative -->
 <div class="block-area" id="alternative-buttons">
     <h3 class="block-title">User Groups Listing</h3>
+		@can("action.user-groups.add")
     <a class="btn btn-sm" data-toggle="modal" data-target=".modalAddRole">
      Add User Groups
     </a>
+    @endcan
 </div>
 
 <!-- Responsive Table -->
@@ -116,8 +118,9 @@
             "processing": true,
             "serverSide": true,
             //"dom": '<"toolbar">frtip',
-            "dom": 'frtip',
+        "dom": 'lfrtip',
             "order" :[[1,"desc"]],
+        "ordering": false,
             "ajax": "{!! url('/permissions-list/" + id +"')!!}",
              "columns": [
             {data: function(d){
@@ -125,7 +128,8 @@
                   return "<input class='checkbox-custom chk'  onClick='activateToolBar();' name='chk_assigned[]' value=" + d.id + " title='"+(d.id+" - "+d.name+"("+d.perm_id+")")+"' type='checkbox'>";
 
             }},
-            {data: 'name', name: 'name'},
+          //{data: 'name', name: 'permissions.name'},
+          {data: function(d) { return '<span title="'+d.name+'">'+d.title+'</span>'; }}
 
 
            ],
@@ -170,12 +174,11 @@ $("#inGID").val(id);
 
 
   var checkValue =  $(this).attr("data-value");
-
   if (checkValue == 0)
   {
     $(this).attr('data-value','1');
     $(this).html('deselect/All');
-    $('.chk').each(function() {
+    $(this).closest('table').find('.chk').each(function() {
             this.checked = true;
     });
   }
@@ -183,7 +186,7 @@ $("#inGID").val(id);
 
     $(this).attr('data-value','0');
      $(this).html('select/All');
-    $('.chk').each(function() {
+    $(this).closest('table').find('.chk').each(function() {
             this.checked = false;
     });
   }
@@ -209,6 +212,7 @@ console.log("launchGroupPermissions");
                 "dom": 'rtip',
 				 "ajax": "{!! url('/permissions-list/" + id +"?filter=unassigned')!!}",
                 "order" :[[0,"desc"]],
+        "ordering": false,
                  "columns": [
 
                     {data: function(d){
@@ -216,7 +220,8 @@ console.log("launchGroupPermissions");
                       return "<input class='checkbox-custom chk' name='chk_unassigned[]' value=" + d.id + " title='"+(d.id+" - "+d.name)+"' type='checkbox'>";
 
                     }},
-                    {data: 'name', name: 'permissions.name'}
+          //{data: 'name', name: 'permissions.name'}
+          {data: function(d) { return '<span title="'+d.name+'">'+d.title+'</span>'; }}
                    
 
                ],
@@ -247,7 +252,7 @@ console.log("launchGroupPermissions");
   {
     $(this).attr('data-value','1');
     $(this).html('deselect/All');
-    $('.chk').each(function() {
+    $(this).closest('table').find('.chk').each(function() {
             this.checked = true;
     });
   }
@@ -255,7 +260,7 @@ console.log("launchGroupPermissions");
 
     $(this).attr('data-value','0');
      $(this).html('select/All');
-    $('.chk').each(function() {
+    $(this).closest('table').find('.chk').each(function() {
             this.checked = false;
     });
   }

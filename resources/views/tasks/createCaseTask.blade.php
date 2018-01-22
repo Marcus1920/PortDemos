@@ -62,6 +62,13 @@
 </div>
 
 <div class="form-group">
+                {!! Form::label('estimated_hours', 'Estimated Hours', array('class' => 'col-md-3 control-label')) !!}
+                <div class="col-md-6">
+                    {!! Form::text("estimated_hours", null, array('class' => 'form-control input-sm','id' => 'estimated_hours')) !!}
+                </div>
+            </div>
+
+<div class="form-group">
     <div class="col-md-offset-3 col-md-10">
         <button type="submit" type="button" class="btn btn-sm">Add Task</button>
     </div>

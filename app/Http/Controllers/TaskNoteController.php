@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\TaskNoteService;
-use App\Services\TaskOwnerService;
-use App\Services\TaskActivityService;
+use App\services\TaskNoteService;
+use App\services\TaskOwnerService;
+use App\services\TaskActivityService;
 use App\TaskNote;
 use App\TaskActivity;
 use Illuminate\Http\Request;

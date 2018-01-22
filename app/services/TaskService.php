@@ -25,9 +25,14 @@ class TaskService
     public function getTasksPerUser($userId,$type)
     {
 
-        $tasks  = TaskOwner::with('user','task','task.status')
+        $tasks  = TaskOwner::with('user','task','task.status', 'task.user')
                                 ->where('user_id',$userId)
                                 ->where('task_owner_type_id',$type);
+			$tasks = $tasks->get()->each(function ($item, $key) {
+				$notes = \App\TaskNote::where("task_id",$item->task->id);
+				$item->task->setAttribute("actual_hours", 0);
+				foreach ($notes->get() AS $note) $item->task->actual_hours += $note->hours;
+			});
         return $tasks;
     }
 
@@ -57,11 +62,28 @@ class TaskService
 
         public function getAssignedByMeTasksPerUser($userId)
         {
-
+					$txtDebug = __CLASS__."".__FUNCTION__."()";
             $myCreatedTasks  =  TaskOwner::where('task_owner_type_id',1)->where('user_id',$userId)->lists('task_id')->toArray();
-            $myAssignedTasks =  TaskOwner::with('user','task','task.status')
+            $myAssignedTasks =  TaskOwner::with('user','task','task.status','task.user','task.notes')
                                             ->whereIn('task_id',$myCreatedTasks)
                                             ->where('task_owner_type_id',2);
+            //die();
+					$myAssignedTasks = $myAssignedTasks->get()->each(function ($item, $key) {
+						//$r = $t->task->fucked;
+						$notes = \App\TaskNote::where("task_id",$item->task->id);
+						//echo "<pre>\n  \$notes - ".print_r($notes->get(),1)."</pre>";
+						$item->task->setAttribute("actual_hours", 0);
+						foreach ($notes->get() AS $note) $item->task->actual_hours += $note->hours;
+					});
+            foreach ($myAssignedTasks AS $ti=>$t) {
+
+							//$myAssignedTasks[$ti]->task->setAttribute("fucked", 7);
+							//$t->task->setAttribute("fucked", 7);
+							//$myAssignedTasks[$ti]->task->setRawAttributes(array('fuck'=>"you"));
+							//$t->setRawAttributes(array('fuck'=>"you"));
+						}
+					$txtDebug .= "\n  \$myAssignedTasks - ".print_r($myAssignedTasks,1);
+					//die("<pre>{$txtDebug}</pre>");
             return $myAssignedTasks;
 
         }
@@ -89,6 +111,7 @@ class TaskService
             $task->title                    = $request['title'];
             $task->complete                 = 0;
             $task->due_date                 = $request['due_date'];
+            $task->estimated_hours                 = $request['estimated_hours'];
             $task->date_received            = $request['date_received'];
             $task->date_booked_out          = $request['date_booked_out'];
             $task->commencement_date        = $request['commencement_date'];
@@ -125,6 +148,7 @@ class TaskService
             $task->complete             = $form['complete'];
             $task->commencement_date    = $form['commencement_date'];
             $task->due_date             = $form['due_date'];
+						if (array_key_exists("estimated_hours", $form)) $task->estimated_hours                 = $form['estimated_hours'];
             $task->save();
 
             $this->assignTask($form);

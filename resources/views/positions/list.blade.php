@@ -12,9 +12,11 @@
 <!-- Alternative -->
 <div class="block-area" id="alternative-buttons">
     <h3 class="block-title">Positions Listing</h3>
+    @can("action.positions.add")
     <a class="btn btn-sm" data-toggle="modal" onClick="launchAddPositionModal();" data-target=".modalAddPosition">
      Add Position
     </a>
+    @endcan
 </div>
 
 <!-- Responsive Table -->

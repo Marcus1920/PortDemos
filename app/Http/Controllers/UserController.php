@@ -75,6 +75,7 @@ class UserController extends Controller {
 			->where('group_permissions.group_id', '=', \Auth::user()->role)
 			->first();
 		$users = \DB::table('users')
+			->leftJoin('users_roles', 'users.role', '=', 'users_roles.id')
 			->leftJoin('users_statuses', 'users.active', '=', 'users_statuses.id')
 			->leftJoin('positions', 'users.position', '=', 'positions.id')
 			->select(
@@ -87,6 +88,7 @@ class UserController extends Controller {
                                          users.email,
                                          users.cellphone,
                                          users_statuses.name as active,
+                                         users_roles.name as role,
                                          positions.name as position
                                         "
 				)
@@ -125,20 +127,22 @@ class UserController extends Controller {
 	public function responder() {
 		$searchString = \Input::get('q');
 		$contacts     = \DB::table('users')
-			->join('positions', 'users.position', '=', 'positions.id')
-			->join('departments', 'users.department', '=', 'departments.id')
-			->whereRaw("CONCAT(`users`.`name`, ' ', `users`.`surname`, ' ', `users`.`email`,' ', `positions`.`name`,' ', `departments`.`name`) LIKE '%{$searchString}%'")
+			->leftJoin('positions', 'users.position', '=', 'positions.id')
+			->leftJoin('departments', 'users.department', '=', 'departments.id')
+			->whereRaw("CONCAT(`users`.`name`, ' ', `users`.`surname`, ' ', `users`.`email`,' ', `position`,' ', `department`) LIKE '%{$searchString}%'")
 			->select(\DB::raw("
                                `users`.`id`,
                                `users`.`name`,
                                `users`.`surname`,
                                `users`.`email`,
                                `users`.`cellphone`,
-                               `positions`.`name` as position,
-                               `departments`.`name` as department
+                               IFNULL(`positions`.`name`, 'unspecified position') as position,
+                               IFNULL(`departments`.`name`,'unspecified department') as department
 
                               "))
-			->get();
+			;//->get();
+			//die("responder() SQL - ".$contacts->toSql());
+			$contacts = $contacts->get();
 		$data = array();
 		if (count($contacts) > 0) {
 			foreach ($contacts as $contact) {
@@ -473,6 +477,7 @@ class UserController extends Controller {
 		$userObj->id         = "c-m-" . $CasePoiAssociate->case_id;
 		$userObj->name       = "Case Number: " . $CasePoiAssociate->case_id;
 		$userObj->picture    = "images/poi/profile/node-icons-case.png";
+		$userObj->picture    = "images/icon_case.png";
 		$userObj->type       = "Poi Association";
 		$userObj->loaded     = true;
 		$linkObj             = new \stdClass();
@@ -1576,7 +1581,7 @@ $txtDebug .= "\n  \$associates_nodes - ".print_r($associates_nodes,1);
 		$poi = Poi::find($poi_id);
 		$txtDebug .= PHP_EOL . "  \$poi - " . print_r($poi->toArray(), 1);
 
-		die("<pre>{$txtDebug}</pre>");
+		//die("<pre>{$txtDebug}</pre>");
 		return view('users.casestopeople')->with('poi', $poi);
 	}
 
@@ -2196,6 +2201,7 @@ $txtDebug .= "\n  \$associates_nodes - ".print_r($associates_nodes,1);
                                                             users.postal_code,
                                                             users.country,
                                                             users.company,
+                                                            users.department,
                                                             users.alt_email,
                                                             users.alt_cellphone
                                                           "
@@ -2211,7 +2217,7 @@ $txtDebug .= "\n  \$associates_nodes - ".print_r($associates_nodes,1);
 		}
 		if ($userObj->language > 0) {
 			$language       = Language::find($userObj->language);
-			$user->language = $language ? $language->slug : "";
+			$user->language = $language ? $language->slug : "Unspecified";
 		}
 		if ($userObj->affiliation > 0) {
 			$affiliation       = Affiliation::find($userObj->affiliation);
@@ -2219,7 +2225,8 @@ $txtDebug .= "\n  \$associates_nodes - ".print_r($associates_nodes,1);
 		}
 		if ($userObj->department > 0) {
 			$department       = Department::find($userObj->department);
-			$user->department = $department ? $department->slug : "unknown";
+			//$user->department = $department ? $department->slug : "unknown";
+			//$user->department = $department ? $department->id : 0;
 		}
 		if ($userObj->position > 0) {
 			$position       = Position::find($userObj->position);
@@ -2227,7 +2234,7 @@ $txtDebug .= "\n  \$associates_nodes - ".print_r($associates_nodes,1);
 		}
 		if ($userObj->title > 0) {
 			$title       = Title::find($userObj->title);
-			$user->title = $title->slug;
+			$user->title = $title->id;
 		}
 
 		return [$user];
@@ -2283,7 +2290,7 @@ $txtDebug .= "\n  \$associates_nodes - ".print_r($associates_nodes,1);
 		$txtDebug .= "\n  Here E";
 		$title                             = Title::where('slug', '=', $request['title'])->first();
 		$txtDebug .= "\n  Here F";
-		$user->title                       = $title ? $title->id : 0;
+		$user->title                       = array_key_exists("title", $request->all()) ? $request['title'] : 0;
 		$user->name                        = $request['name'];
 		$user->surname                     = $request['surname'];
 		$user->id_number                   = $request['id_number'];
@@ -2307,7 +2314,8 @@ $txtDebug .= "\n  \$associates_nodes - ".print_r($associates_nodes,1);
 		$user->country                     = $request['country'];
 		$txtDebug .= "\n  Here G";
 		$department                        = Department::where('slug', '=', $request['department'])->first();
-		$user->department                  = (sizeof($department) > 0) ? $department->id : 0;
+		//$user->department                  = (sizeof($department) > 0) ? $department->id : 0;
+		$user->department = array_key_exists("department", $request->all()) ? $request['department'] : 0;
 		$position                          = Position::where('slug', '=', $request['position'])->first();
 		$user->position                    = (sizeof($position) > 0) ? $position->id : 0;
 		$txtDebug .= "\n  Here H";
@@ -2315,16 +2323,35 @@ $txtDebug .= "\n  \$associates_nodes - ".print_r($associates_nodes,1);
 		$user->api_key                     = uniqid();
 		////$user->created_by                  = \Auth::check() ? \Auth::user()->id : 1;
 		$user->affiliation                 = $users_if;
+		$password = array_key_exists("password", $request->all()) ? $request['password'] : rand(1000, 99999);
+		if (trim($password) != "") {
+			$hash = \Hash::make($password);
+			$txtDebug .= "\n  Updating password: {$password}, hash - {$hash}";
+			$user->password = $hash;
+		}
+
 		$txtDebug .= "\n  Here X";
 		$user->updated_by = \Auth::check() ? \Auth::user()->id : 1;
 		$user->updated_at = \Carbon\Carbon::now('Africa/Johannesburg')->toDateTimeString();
 		$userStatusObj    = UserStatus::where('name', '=', 'active')->first();
 		//    $user->active        = $userStatusObj->id;
 		$txtDebug .= "\n  \$user (B): ".print_r($user->toArray(),1);
-		//die($txtDebug);
-		$user->update();
-		//echo "\n  Here Z";
-		\Session::flash('success', 'well done! User ' . $request['name'] . ' has been successfully updated!');
+		///die($txtDebug);
+		if ($user->update()) {
+			\Session::flash('success', 'well done! User ' . $request['name'] . ' has been successfully updated!');
+			$data = array(
+				'name'     => $user->name,
+				'password'   => $password,
+				'sitename'=>\View::getShared()['sitename'],
+			);
+			if (trim($password) != "") \Mail::send('emails.passwordupdated', $data, function ($message) use ($user) {
+				$message->from(env("SITE_EMAIL",'info@siyaleader.net'), \View::getShared()['sitename']);
+				$message->to($user->email)->subject(\View::getShared()['sitename']." Notification - Password Updated");
+			});
+
+		} else {
+			\Session::flash('error', 'Sorry, problem updating user ' . $request['name'].'!!');
+		}
 
 		return redirect()->back();
 	}

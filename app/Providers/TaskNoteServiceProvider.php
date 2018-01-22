@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\TaskNoteService;
+use App\services\TaskNoteService;
 use Illuminate\Support\ServiceProvider;
 
 class TaskNoteServiceProvider extends ServiceProvider

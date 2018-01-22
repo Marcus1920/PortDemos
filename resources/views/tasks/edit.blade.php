@@ -16,7 +16,7 @@
     <label for="inputCategory" class="col-md-2 control-label">Category</label>
     <div class="col-md-10">
 
-        {!! Form::select('task_category_id',$selectTaskCategories,$task->category->id,['class' => 'form-control input-sm' ,'id' => 'task_category_id']) !!}
+        {!! Form::select('task_category_id',$selectTaskCategories,$task && $task->category ? $task->category->id : 0,['class' => 'form-control input-sm' ,'id' => 'task_category_id']) !!}
 
     </div>
 </div>
@@ -65,16 +65,43 @@
 </div>
 
 <hr class="whiter m-t-10" /><br>
-
 <div class="form-group">
-    <label for="inputPercentageComplete" class="col-md-2 control-label"> % Complete</label>
+    <div class="col-md-6" style="text-align: center">
+        Estimated Hours -
+            @if($task->estimated_hours)
+            {{--{!! Form::text("estimated_hours", $task->estimated_hours, array('class' => 'form-control input-sm','id' => 'estimated_hours', 'disabled'=>"", 'size'=>2, 'style'=>"width: initial; display: initial")) !!}--}}
+        {{$task->estimated_hours}}
+            @else
+            {!! Form::text("estimated_hours", $task->estimated_hours, array('class' => 'form-control input-sm','id' => 'estimated_hours', 'size'=>2, 'style'=>"width: initial; display: initial")) !!}
+            @endif
+    </div>
+    <div class="col-md-6" style="text-align: center">
+        Actual hours - {{ $task->actual_hours }}
+    </div>
+</div>
+<div class="form-group">
+		<div class="col-md-2" style="padding: 0 !important; text-align: right">
+			<label class="range" style="">{{ $task->complete }}</label> % <br/>
+	    <label for="inputPercentageComplete" class="control-label" style="padding: 0 !important; text-align: initial">Complete</label>
+		</div>
     <div class="col-md-10">
 
 
-        {!! Form::text('complete',$task->complete,['class' => 'form-control input-sm spinner-2 spinedit','id' => 'complete']) !!}
+        <!--{!! Form::text('complete',$task->complete,['class' => 'form-control input-sm spinner-2 spinedit','id' => 'complete']) !!}-->
+<br/>				<input id="complete" name="complete" type="range" min="0" max="100" step="1" value="{{ $task->complete }}" />
         @if ($errors->has('complete')) <p class="help-block red">*{{ $errors->first('complete') }}</p> @endif
 
-
+    </div>
+    <div style="clear: both; display: none" id="wNote">
+        <div class="col-md-2"></div>
+        <div class="col-md-6">
+            <label class="col-md-2" style="text-align: right">Note</label>
+            <textarea class="form-control  input-sm"  rows="5"  id="note" rows="5" name="note"></textarea>
+        </div>
+        <div class="col-md-2">
+            <label class="col-md-2" style="text-align: right">Hours</label>
+            <input class="form-control" type="text" name="hours" id="hours" />
+        </div>
     </div>
 
 </div>
@@ -120,3 +147,12 @@
     </div>
 </div>
 {!! Form::close() !!}
+
+<script>
+    $("#note").on("blur",function(ev) {
+        console.log("Blurry: ev - ",ev);
+        console.log("  val - ",$(ev.currentTarget).val());
+        if ($.trim($(ev.currentTarget).val()) == "") $("button[type=submit]").attr("disabled", "disabled");
+        else $("button[type=submit]").removeAttr("disabled");
+    });
+</script>

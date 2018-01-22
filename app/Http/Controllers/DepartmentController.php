@@ -18,7 +18,9 @@ class DepartmentController extends Controller
      */
     public function index($company = null)
     {
-        $departments = Department::select(array('id','company','name','created_at','acronym'));
+        $departments = Department::select(array('id','company','name','created_at','acronym'
+				, \DB::raw('(select count(*) from cases_types where cases_types.department = departments.id) AS cntTypes')
+				));
         if ($company) $departments->where("company", $company);
         return \Datatables::of($departments)
                             ->addColumn('actions','<a class="btn btn-xs btn-alt" data-toggle="modal" onClick="launchUpdateDepartmentModal({{$id}});" data-target=".modalEditDepartment">Edit</a>')
@@ -69,10 +71,15 @@ class DepartmentController extends Controller
     public function update(DepartmentRequest $request)
     {
 
-        $dept             = Department::where('id',$request['deptID'])->first();
+        $dept             = Department::findOrNew($request['deptID']);
 				$dept->company       = $request['company'];
         $dept->name       = $request['name'];
         $dept->acronym    = $request['acronym'];
+				$slug                = preg_replace('/\s+/','-',$request['name']);
+        if (!$dept->id) {
+					$dept->created_by = \Auth::user()->id;
+					$dept->slug    = $slug;
+				}
         $dept->updated_by = \Auth::user()->id;
         $dept->save();
         \Session::flash('success', 'well done! Role '.$request['name'].' has been successfully added!');

@@ -54,7 +54,7 @@ class MapsController extends Controller
                       <br/>
                       <tr><td>Case Description : </td><td>$case->description</td></tr>
                       </div>";
-
+$images='markers_2/marker1.png';
             if($case->case_type==1)
             {
                 $images='markers_2/marker1.png';
@@ -99,8 +99,9 @@ class MapsController extends Controller
             {
                 $images='markers_2/marker11.png';
             }
-$images='markers_2/marker1.png';
+
             $address->informationWindow($case->gps_lat, $case->gps_lng, $content, ['marker' => true,'animation' => 'DROP','label'=>$case->id,'draggable'=>true,'icon' =>$images]);
+						//$address->informationWindow($case->gps_lat && is_numeric($case->gps_lat) ? $case->gps_lat : 0, $case->gps_lng && is_numeric($case->gps_lng) ? $case->gps_lng : 0, $content, ['marker' => true,'animation' => 'DROP','label'=>$case->id,'draggable'=>true]);
             //http://www.iconsdb.com/icons/preview/soylent-red/map-marker-2-xl.png
         }
 

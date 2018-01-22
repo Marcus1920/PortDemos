@@ -12,9 +12,11 @@
 <!-- Alternative -->
 <div class="block-area" id="alternative-buttons">
     <h3 class="block-title">Meeting Listing</h3>
+    @can("action.meetings.add")
     <a class="btn btn-sm" data-toggle="modal" onClick="launchMeetingModal();" data-target=".modalAddMeeting">
      Add Meeting
     </a>
+    @endcan
 </div>
 
 <!-- Responsive Table -->

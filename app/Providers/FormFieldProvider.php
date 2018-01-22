@@ -37,7 +37,9 @@ class FormFieldProvider extends ServiceProvider {
 				$s = preg_split('/;/', $line);
 				$txtDebug .= ", \$s: count - ".count($s);
 				//$codes[] = array('name'=>$s[0],'iso'=>$s[1],'code'=>$s[2]);
-				$codes[$s[2]] = $s[0];
+				$sTitle = $s[0];
+				//$codes[$s[2]] = $sTitle;
+				$codes[] = array('code'=>$s[2],'title'=>$sTitle, 'cc'=>$s[1]);
 			}
 		}
 		$txtDebug .= "\n  \$codes: count - ".count($codes).", ".print_r($codes,1);

@@ -48,7 +48,7 @@ class SubSubCategoriesController extends Controller
         $SubSubCategory               = new SubSubCategory();
         $SubSubCategory->name         = $request['name'];
         $slug                         = preg_replace('/\s+/','-',$request['name']);
-        $SubSubCategory->slug         = $slug;
+        $SubSubCategory->slug         = $request['subCatID'].$slug;
         $SubSubCategory->sub_category = $request['subCatID'];
         $SubSubCategory->created_by  = \Auth::user()->id;
         $SubSubCategory->save();

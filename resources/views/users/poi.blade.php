@@ -11,9 +11,11 @@
 <!-- Alternative -->
 <div class="block-area" id="alternative-buttons">
     <h3 class="block-title">POI Listing</h3>
+    @can("action.poi.add")
     <a href="{{ url('add-poi-user') }}" class="btn btn-sm">
        Add New Person
     </a>
+    @endcan
 </div>
 
 <!-- Responsive Table -->

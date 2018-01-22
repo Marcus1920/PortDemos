@@ -15,7 +15,7 @@
                     <span class="btn btn-file btn-alt btn-sm">
                     <span class="fileupload-new">Select file</span>
                     <span class="fileupload-exists">Change</span>
-                    <input type="file" name="caseFile" id="caseFile"/>
+                    <input type="file" name="caseFile[]" id="caseFile" multiple/>
                 </span>
                 </div>
 

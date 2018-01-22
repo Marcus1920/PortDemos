@@ -12,9 +12,11 @@
 <!-- Alternative -->
 <div class="block-area" id="alternative-buttons">
     <h3 class="block-title">Association Listing</h3>
+    @can("action.affiliations.add")
     <a class="btn btn-sm" data-toggle="modal" data-target=".modalAddAffiliation">
      Add Association
     </a>
+    @endcan
 </div>
 
 <!-- Responsive Table -->

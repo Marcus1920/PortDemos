@@ -23,9 +23,9 @@
 	
 
     RewriteEngine On
-	RewriteBase /PortsLive
-RewriteCond %{SERVER_PORT} 8080
-RewriteRule (.*) https://154.0.164.72%{REQUEST_URI} [L,R]
+#	RewriteBase /PortsLive
+#RewriteCond %{SERVER_PORT} 8080
+#RewriteRule (.*) https://154.0.164.72%{REQUEST_URI} [L,R]
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)/$ /$1 [L,R=301]

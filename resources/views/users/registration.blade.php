@@ -72,7 +72,7 @@
             <div class="form-group">
                 {!! Form::label('Cell Number', 'Cell Number', array('class' => 'col-md-2 control-label')) !!}
                 <div class="col-md-6">
-                  {!! Form::select('cellphone_countrycode', array_replace($optsDialingCodes, array(''=>"Select Country")), "", array('class'=>"form-control input-sm", 'style'=>"display: inline-block; width: 10em !important;", 'title'=>"Select country")) !!}
+                  {!! Form::select('cellphone_countrycode', array_replace(collect($optsDialingCodes)->pluck("title", "code")->toArray(), array(''=>"Select Country")), "", array('class'=>"form-control input-sm", 'style'=>"display: inline-block; width: 10em !important;", 'title'=>"Select country")) !!}
                   {!! Form::text('cellphone',NULL,['class' => 'form-control input-sm','id' => 'cellphone' ,'placeholder'=> ' +27 612 11 000', 'style'=>"display: inline-block; width: 10em !important;"]) !!}
                   @if ($errors->has('cellphone')) <p class="help-block red">* {{ $errors->first('cellphone') }}</p> @endif
               </div>
@@ -81,7 +81,7 @@
             <div class="form-group">
                 {!! Form::label('Alternative Cell Number', 'Alternative Cell Number', array('class' => 'col-md-2 control-label')) !!}
                 <div class="col-md-6">
-                  {!! Form::select('alt_cellphone_countrycode', array_replace($optsDialingCodes, array(''=>"Select Country")), "", array('class'=>"form-control input-sm", 'style'=>"display: inline-block; width: 10em !important;", 'title'=>"Select country")) !!}
+                  {!! Form::select('alt_cellphone_countrycode', array_replace(collect($optsDialingCodes)->pluck("title", "code")->toArray(), array(''=>"Select Country")), "", array('class'=>"form-control input-sm", 'style'=>"display: inline-block; width: 10em !important;", 'title'=>"Select country")) !!}
                   {!! Form::text('alt_cellphone',NULL,['class' => 'form-control input-sm','id' => 'alt_cellphone' ,'placeholder'=> ' +27 612 364 457', 'style'=>"display: inline-block; width: 10em !important;"]) !!}
                   @if ($errors->has('alt_cellphone')) <p class="help-block red">* {{ $errors->first('alt_cellphone') }}</p> @endif
               </div>
@@ -172,7 +172,7 @@
             <div class="form-group">
                 {!! Form::label('Company', 'Company', array('class' => 'col-md-2 control-label')) !!}
               <div class="col-md-6">
-                {!! Form::select("company", $optsCompanies, null, array('class'=>"form-control input-sm selCompany", 'id'=>"company", 'style'=>"width: initial; display: inline-block")) !!}
+                {!! Form::select("company", $optsCompanies, null, array('class'=>"form-control input-sm selCompany hasDependents", 'id'=>"company", 'style'=>"width: initial; display: inline-block")) !!}
                   @if ($errors->has('company')) <p class="help-block red">*{{ $errors->first('company') }}</p> @endif
               </div>
             </div>
@@ -181,7 +181,8 @@
             <div class="form-group">
                 {!! Form::label('Department', 'Department', array('class' => 'col-md-2 control-label')) !!}
                 <div class="col-md-6">
-                  {!! Form::select('department',$selectDepartments,0,['class' => 'form-control input-sm selDepartment' ,'id' => 'department']) !!}
+                  <!--{!! Form::select('department',$selectDepartments,0,['class' => 'form-control input-sm selDepartment' ,'id' => 'department']) !!}-->
+									{!! Form::select('department',array("Select company"),0,['class' => 'form-control input-sm selDepartment' ,'id' => 'department']) !!}
                   @if ($errors->has('department')) <p class="help-block red">*{{ $errors->first('department') }}</p> @endif
               </div>
             </div>

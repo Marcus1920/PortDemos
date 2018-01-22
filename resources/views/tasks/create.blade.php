@@ -31,6 +31,7 @@
                     {!! Form::text('case_id',NULL,['class' => 'form-control input-sm','id' => 'case_id','disabled']) !!}
                 </div>
             </div>
+
             <div class="form-group">
                 {!! Form::label('Task Title', 'Task Title', array('class' => 'col-md-3 control-label validate[required]')) !!}
                 <div class="col-md-6">
@@ -38,6 +39,7 @@
                     @if ($errors->has('title')) <p class="help-block red">*{{ $errors->first('title') }}</p> @endif
                 </div>
             </div>
+
             <div class="form-group">
                 {!! Form::label('Task Delegation', 'Task Delegation', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
@@ -45,6 +47,7 @@
                     @if ($errors->has('task_user_id')) <p class="help-block red">*{{ $errors->first('task_user_id') }}</p> @endif
                 </div>
             </div>
+
             <div class="form-group">
                 {!! Form::label('From', 'From', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
@@ -58,6 +61,7 @@
 
                 </div>
             </div>
+
             <div class="form-group">
                 {!! Form::label('To', 'To', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
@@ -71,6 +75,7 @@
 
                 </div>
             </div>
+
             <div class="form-group">
                 {!! Form::label('Priority', 'Priority', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
@@ -78,12 +83,21 @@
                     @if ($errors->has('priority_id')) <p class="help-block red">*{{ $errors->first('priority_id') }}</p> @endif
                 </div>
             </div>
+
             <div class="form-group">
                 {!! Form::label('Description', 'Description', array('class' => 'col-md-3 control-label')) !!}
                 <div class="col-md-6">
                     <textarea rows="5" id="description" name="description" class="form-control" maxlength="500" title="short"></textarea>
                 </div>
             </div>
+
+            <div class="form-group">
+                {!! Form::label('estimated_hours', 'Estimated Hours', array('class' => 'col-md-3 control-label')) !!}
+                <div class="col-md-6">
+                    {!! Form::text("estimated_hours", null, array('class' => 'form-control input-sm','id' => 'estimated_hours')) !!}
+                </div>
+            </div>
+
             <div class="form-group">
                 <div class="col-md-offset-3 col-md-10">
                     <button type="submit" type="button" class="btn btn-sm">Add Task</button>

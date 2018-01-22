@@ -66,7 +66,7 @@ class AddressBookController extends Controller {
 	}
 
 	public function store(Request $request) {
-		$txtDebug = __CLASS__."".__FUNCTION__."(\$request) \$request - ".print_r($request->all(), 1);
+		$txtDebug = __CLASS__."".__FUNCTION__."(\$request) \$request - ".print_r($request->all(),1);
 		$addressbook               = new addressbook();
 		$addressbook->user         = $request['user'];
 		$addressbook->first_name   = $request['first_name'];
@@ -144,7 +144,7 @@ class AddressBookController extends Controller {
 
 	public function update(Request $request, $id = null) {
 		$txtDebug = __CLASS__."".__FUNCTION__."(\$request, \$id) \$id - {$id}, \$request - ".print_r($request->all(),1);
-		$data          = AddressBook::where("id", $request['id'])->first();
+		$data = AddressBook::where("id",$request['id'])->first();
 		$txtDebug .= "\n  \$data A - ".print_r($data, 1);
 		$data->setAttribute('notes',$request['notes']);
 		$txtDebug .= "\n  \$data B - ".print_r($data->first(), 1);

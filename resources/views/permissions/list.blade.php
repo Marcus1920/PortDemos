@@ -11,8 +11,12 @@
 <h4 class="page-title">Permissions</h4>
 <!-- Alternative -->
 <div class="block-area" id="alternative-buttons">
-    <h3 class="block-title">Permissions Listing</h3>
-
+  <h3 class="block-title">Permissions Listing</h3>
+  @can("action.permissions.add")
+  <a class="btn btn-sm" data-toggle="modal" data-target=".modalEditPermission" onClick="launchPermissionsModal();">
+    Add Permission
+  </a>
+  @endcan
 </div>
 
 <!-- Responsive Table -->
@@ -29,7 +33,9 @@
             <thead>
               <tr>
                     <th>Id</th>
-                    <th>name</th>
+                    <th>Permission</th>
+                    <th>Description</th>
+                    <th>Data</th>
                     <th>Actions</th>
               </tr>
             </thead>
@@ -49,8 +55,8 @@
       var oPoiTable     = $('#permissionsTable').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "dom": 'Bfrtip',
-                "order" :[[0,"desc"]],
+                "dom": 'lfrtip',
+                "order" :[[1,"asc"]],
                 "ajax": "{!! url('/permissions-list')!!}",
                 "buttons": [
                     'copyHtml5',
@@ -66,15 +72,17 @@
 
                     {data: 'id', name: 'permissions.id'},
                     {data: 'name', name: 'permissions.name'},
+                    {data: 'title', name: 'permissions.title'},
+                    //{data: function(d) { console.log('d - ',d); return '<div title="'+d.name+'">'+d.title+'</div>'; }, name: 'permissions.name'},
+                   {data: 'data', name: 'permissions.data'},
                     {data: 'actions',  name: 'actions'}
 
                ],
 
             "aoColumnDefs": [
-                { "bSearchable": false, "aTargets": [ 1] },
-                { "bSortable": false, "aTargets": [ 1] }
+                { "searchable": false, "targets": [ 4] },
+                { "sortable": false, "targets": [ 4] }
             ]
-
          });
 
 
@@ -252,7 +260,6 @@
                     {data: 'actions',  name: 'actions'},
 
                ],
-
          });
 
          $('a.toggle-vis').on( 'click', function (e) {
@@ -287,7 +294,7 @@
         $('#updateUserForm #district').attr('disabled','disabled');
         $('#updateUserForm #municipality').attr('disabled','disabled');
         $('#updateUserForm #ward').attr('disabled','disabled');
-        $('#modalEditUser').modal('show');
+        $('#modalEditPermission').modal('show');
 
     @endif
 
@@ -305,10 +312,19 @@
             {
 
                $("#modalEditPermission #name").val(data[0].name);
+               $("#modalEditPermission #title").val(data[0].title);
+               var dbstuff = data[0].data ? String(data[0].data) : "";
+               var table = dbstuff ? dbstuff.split(".")[0] : "";
+               var field = dbstuff ? dbstuff.split(".")[1] : "";
+               $("#modalEditPermission #dbtable").val(table);
+               $("#modalEditPermission #dbfield").val(field);
 
             }
             else {
                $("#modalEditPermission #name").val('');
+               $("#modalEditPermission #title").val('');
+               $("#modalEditPermission #dbtable").val('');
+               $("#modalEditPermission #dbfield").val('');
             }
 
         }
